@@ -1,5 +1,9 @@
-import Header from './components/Header'
+import ArticleComponent from './components/ArticleComponent'
 
 export default function Home() {
-  return 
+  return (
+    <main className='mt-8'>
+      <ArticleComponent />
+    </main>
+  )
 }

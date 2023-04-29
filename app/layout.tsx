@@ -4,7 +4,7 @@ import Header from './components/Header'
 
 const poppins = Poppins({
   weight: ['300', '400', '600', '700'],
-  preload: false
+  preload: false,
 })
 
 export const metadata = {
@@ -19,7 +19,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang='en'>
-      <body className={`${poppins.className} min-h-screen bg-primaryBackgroundColor`}>
+      <body
+        className={`${poppins.className} min-h-screen bg-primaryBackgroundColorLight tracking-wide`}
+      >
         <Header />
         {children}
       </body>

@@ -10,8 +10,8 @@ module.exports = {
       colors: {
         lightColor: '#3d3d3d',
         lightColorAlt: 'rgba(0, 0, 0, .6)',
-        primaryBackgroundColor: '#fff',
-        secondaryBackgroundColor: '#f1f1f1',
+        primaryBackgroundColorLight: '#fff',
+        secondaryBackgroundColorLight: '#f1f1f1',
         transparentLightColor: '#f1f1f1',
         transparentDarkColor: 'rgba(0,0,0,.75)',
       },
