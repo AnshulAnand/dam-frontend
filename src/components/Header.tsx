@@ -176,12 +176,12 @@ function Header() {
                 </Link>
               </li>
               <li className='list-item screen-lg-hidden'>
-                <Link href='/sign/in' className='list-link'>
+                <Link href='/sign-in' className='list-link'>
                   Sign in
                 </Link>
               </li>
               <li className='list-item screen-lg-hidden'>
-                <Link href='/sign/up' className='list-link'>
+                <Link href='/sign-up' className='list-link'>
                   Sign up
                 </Link>
               </li>

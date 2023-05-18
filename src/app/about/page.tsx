@@ -36,7 +36,7 @@ const About = () => {
           forward to connecting with you!
         </p>
         <p>
-          <Link href='/sign/up'>Make an account</Link> and start writing about your
+          <Link href='/sign-up'>Make an account</Link> and start writing about your
           favourite show or comic, engage with alike fans, share your thoughts
           and make friends!
         </p>

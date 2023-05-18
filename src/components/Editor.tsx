@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react'
 import { EditorState, convertToRaw } from 'draft-js'
 import draftToHtml from 'draftjs-to-html'
 import DOMPurify from 'dompurify'
-import page from '../new/page.module.css'
+import page from '@/app/new/page.module.css'
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
 
 const Editor = dynamic(

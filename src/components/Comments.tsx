@@ -2,7 +2,7 @@
 
 import { RiThumbUpLine, RiPencilLine, RiDeleteBinLine } from 'react-icons/ri'
 import { useEffect, useState } from 'react'
-import page from '../articles/[article]/page.module.css'
+import page from '@/app/articles/[article]/page.module.css'
 import Profile from './Profile'
 import Reply from './Reply'
 
