@@ -1,0 +1,41 @@
+.section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--gap);
+}
+
+.main {
+  margin-top: 10rem;
+  max-width: 800px;
+  margin-inline: auto;
+}
+
+.editor_class {
+  background-color: var(--secondary-background-color);
+  padding: 1rem;
+}
+
+.toolbar_class {
+  border: 1px solid #ccc;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.btn_container {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.btn_container button {
+  cursor: pointer;
+  background-color: var(--secondary-background-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem 2rem;
+}
+
+.btn_container button:hover {
+  background-color: var(--transparent-dark-color);
+}

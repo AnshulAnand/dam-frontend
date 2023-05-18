@@ -12,11 +12,23 @@
     "@types/node": "20.2.1",
     "@types/react": "18.2.6",
     "@types/react-dom": "18.2.4",
+    "dompurify": "^3.0.3",
+    "draft-js": "^0.11.7",
+    "draftjs-to-html": "^0.9.1",
     "eslint": "8.40.0",
     "eslint-config-next": "13.4.2",
     "next": "13.4.2",
+    "next-nprogress-bar": "^1.2.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-draft-wysiwyg": "^1.15.0",
+    "react-icons": "^4.8.0",
     "typescript": "5.0.4"
+  },
+  "devDependencies": {
+    "@types/dompurify": "^3.0.2",
+    "@types/draft-js": "^0.11.10",
+    "@types/draftjs-to-html": "^0.8.1",
+    "@types/react-draft-wysiwyg": "^1.13.4"
   }
 }
