@@ -209,11 +209,11 @@ function Header() {
               <RiCloseLine className='icon close-menu-icon' />
             </button>
 
-            <Link href='/sign/in' className='list-link screen-sm-hidden'>
+            <Link href='/sign-in' className='list-link screen-sm-hidden'>
               Sign in
             </Link>
             <Link
-              href='/sign/up'
+              href='/sign-up'
               className='btn sign-up-btn fancy-border screen-sm-hidden'
             >
               <span>Sign up</span>

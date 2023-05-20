@@ -22,11 +22,9 @@ function RichTextEditor() {
 
   useEffect(() => {
     const rawContentState = convertToRaw(editorState.getCurrentContent())
-    const markup = draftToHtml(rawContentState)
+    const markup = DOMPurify.sanitize(draftToHtml(rawContentState))
     setConvertedContent(markup)
   }, [editorState])
-
-  console.log(DOMPurify.sanitize(convertedContent as string))
 
   return (
     <Editor
