@@ -156,6 +156,11 @@ function Header() {
                 </Link>
               </li>
               <li className='list-item'>
+                <Link href='/official-posts' className='list-link'>
+                  Official Posts
+                </Link>
+              </li>
+              <li className='list-item'>
                 <Link href='/tags' className='list-link'>
                   Tags
                 </Link>

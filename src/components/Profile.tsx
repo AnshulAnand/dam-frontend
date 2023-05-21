@@ -10,7 +10,7 @@ function Profile({
   forArticle: boolean
 }) {
   return (
-    <Link href={'anandanshul02'} className='profile'>
+    <Link href={'/@anandanshul02'} className='profile'>
       <img
         src='/images/featured/featured-1.jpg'
         alt='pfp'

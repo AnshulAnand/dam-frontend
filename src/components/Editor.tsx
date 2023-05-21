@@ -25,7 +25,9 @@ function RichTextEditor() {
     const markup = DOMPurify.sanitize(draftToHtml(rawContentState))
     setConvertedContent(markup)
   }, [editorState])
-
+  
+  console.log(convertedContent)
+  
   return (
     <Editor
       editorState={editorState}

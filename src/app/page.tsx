@@ -84,7 +84,7 @@ export default function Home() {
           </div>
         </div>
         <div className='see-more-container'>
-          <Link href='#' className='btn see-more-btn place-items-center'>
+          <Link href='/articles' className='btn see-more-btn place-items-center'>
             See more <RiArrowRightSLine className='icon' />
           </Link>
         </div>
@@ -248,7 +248,7 @@ export default function Home() {
             </Link>
           </div>
           <div className='see-more-container'>
-            <Link href='#' className='btn see-more-btn place-items-center'>
+            <Link href='/official-posts' className='btn see-more-btn place-items-center'>
               See more <RiArrowRightSLine className='icon' />
             </Link>
           </div>
@@ -266,7 +266,7 @@ export default function Home() {
           </div>
         </div>
         <div className='see-more-container'>
-          <Link href='#' className='btn see-more-btn place-items-center'>
+          <Link href='/tags' className='btn see-more-btn place-items-center'>
             See more <RiArrowRightSLine className='icon' />
           </Link>
         </div>
