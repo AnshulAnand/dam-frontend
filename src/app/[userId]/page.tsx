@@ -25,6 +25,14 @@ const Profile: FC<PageProps> = ({ params }) => {
             <div className={page.user_name}>
               <h1>Anshul Anand (@{params.userId.replace('%40', '')})</h1>
             </div>
+            <div className={page.user_bio}>
+              <p>
+                Lorem ipsum, dolor sit amet consectetur adipisicing elit. Itaque
+                assumenda maiores, officia reiciendis dolor blanditiis aliquam
+                harum corrupti dolorem, animi excepturi vel quisquam totam in
+                recusandae a cum suscipit. Quo!
+              </p>
+            </div>
             <div className={page.user_info}>
               <div>
                 <RiCake2Line className='icon' /> 23/08/2023
@@ -44,6 +52,11 @@ const Profile: FC<PageProps> = ({ params }) => {
               <a href='https://www.instagram.com/anshulanand02' target='_blank'>
                 instagram.com/anshulanand02
               </a>
+            </div>
+            <div>
+              <Link className={page.profile_edit} href='/edit-profile'>
+                Edit Profile
+              </Link>
             </div>
           </div>
         </main>
