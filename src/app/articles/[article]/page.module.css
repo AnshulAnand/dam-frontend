@@ -47,7 +47,6 @@
 
 .article_data {
   display: flex;
-  flex-wrap: wrap;
   justify-content: space-between;
   height: 100px;
   margin-bottom: var(--gap);
@@ -81,16 +80,47 @@
 }
 
 .comments {
+  position: fixed;
+  top: 0;
+  right: 0;
   background-color: var(--secondary-background-color);
-  padding-block: 2rem;
-  margin-bottom: var(--gap);
-  height: 80vh;
-  overflow-y: scroll;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  height: 100vh;
+  width: 400px;
+  overflow-y: auto;
+  z-index: 1000;
+  transform: translateX(400px);
+  transition: transform 0.5s ease-in;
 }
 
-.comments > h2 {
+.comments_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  background-color: inherit;
+  padding-top: 2rem;
+  padding-bottom: 1rem;
+  z-index: 10;
+}
+
+.comments_header h2 {
   margin-left: var(--gap);
-  margin-bottom: var(--gap);
+}
+
+.comments_header button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  cursor: pointer;
+  font-size: 3rem;
+  border-radius: 50%;
+}
+
+.comments_header button:hover {
+  background-color: var(--transparent-dark-color);
 }
 
 .comments::-webkit-scrollbar {
@@ -113,40 +143,28 @@
   margin-top: 2rem;
 }
 
-.button,
-.edit_btn,
-.delete_btn,
-.share_btn,
-.like_btn {
-  margin-left: 2rem;
-  margin-bottom: 1rem;
-  cursor: pointer;
-  padding: 1rem 2rem;
+.controls {
+  width: 400px;
   border-radius: 100px;
-  background-color: var(--primary-background-color);
+  height: 40px;
+  padding: 1rem 2rem;
+  margin-inline: auto;
+  margin-top: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--secondary-background-color);
+  position: sticky;
+  bottom: 2rem;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
-.edit_btn,
-.delete_btn,
-.share_btn,
-.like_btn {
+.controls button {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 1.1rem;
-  border-radius: 50%;
-}
-
-.button:hover,
-.edit_btn:hover,
-.delete_btn:hover,
-.share_btn:hover,
-.like_btn:hover {
-  background-color: var(--transparent-dark-color);
-}
-
-.replies {
-  /* display: none; */
+  gap: 10px;
+  cursor: pointer;
 }
 
 .user_articles {
@@ -194,16 +212,25 @@
   .main {
     max-width: 500px;
   }
+  .article_data {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-block: var(--gap);
+  }
 }
 
 @media screen and (max-width: 768px) {
   .main {
     max-width: 100%;
   }
-  .article_data {
-    justify-content: center;
-    align-items: center;
-    margin-block: var(--gap);
+  .comments {
+    top: 20vh;
+    height: 80vh;
+    width: 100vw;
+    border-top-left-radius: 50px;
+    border-top-right-radius: 50px;
+    transform: translateY(80vh);
   }
   .desktop_ad {
     display: none;

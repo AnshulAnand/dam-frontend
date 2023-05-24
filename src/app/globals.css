@@ -114,6 +114,10 @@ body.light-theme {
   display: none;
 }
 
+.comments.visible {
+  transform: translateX(0px);
+}
+
 /* Profile */
 .profile {
   display: flex;
