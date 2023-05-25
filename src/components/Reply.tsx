@@ -1,6 +1,11 @@
 'use client'
 
-import { RiThumbUpLine, RiPencilLine, RiDeleteBinLine } from 'react-icons/ri'
+import {
+  RiThumbUpLine,
+  RiPencilLine,
+  RiDeleteBinLine,
+  RiMessage3Line,
+} from 'react-icons/ri'
 import page from '@/app/articles/[article]/page.module.css'
 import Profile from './Profile'
 
@@ -9,13 +14,13 @@ function Reply() {
     <div className={page.reply}>
       <div className={page.profile}>
         <Profile width={40} height={40} forArticle={false} />
-        <div style={{ display: 'flex' }}>
-          <div className={page.edit_btn}>
+        <div className={page.btn_container}>
+          <button className={page.btn}>
             <RiPencilLine />
-          </div>
-          <div style={{ marginLeft: '1rem' }} className={page.delete_btn}>
+          </button>
+          <button className={page.btn}>
             <RiDeleteBinLine />
-          </div>
+          </button>
         </div>
       </div>
       <p>
@@ -24,18 +29,14 @@ function Reply() {
         illum libero assumenda, illo asperiores vitae fugit, voluptate nulla
         repellat eum?
       </p>
-      <button
-        className={page.button}
-        style={{ marginLeft: 0, marginTop: '1rem' }}
-      >
-        <RiThumbUpLine />
-      </button>
-      <button
-        style={{ marginLeft: '1rem', marginTop: '1rem' }}
-        className={page.button}
-      >
-        Reply
-      </button>
+      <div className={page.btn_container}>
+        <button className={`${page.btn} ${page.comment_btn}`}>
+          <RiThumbUpLine className={page.icon} /> 176
+        </button>
+        <button className={page.btn}>
+          <RiMessage3Line className={page.icon} />
+        </button>
+      </div>
     </div>
   )
 }

@@ -1,14 +1,15 @@
-import Link from 'next/link'
-import page from './page.module.css'
-import Comments from '@/components/Comments'
-import Profile from '@/components/Profile'
-import Controls from '@/components/Controls'
 import {
   RiShareForwardLine,
   RiThumbUpLine,
   RiPencilLine,
   RiDeleteBinLine,
 } from 'react-icons/ri'
+import Link from 'next/link'
+import page from './page.module.css'
+import Comments from '@/components/Comments'
+import Profile from '@/components/Profile'
+import Controls from '@/components/Controls'
+import CommentSection from '@/components/CommentSection'
 
 const article = () => {
   return (
@@ -72,6 +73,7 @@ const article = () => {
               veniam quaerat nulla possimus, asperiores vero voluptatum placeat.
               Eveniet!
             </p>
+            <small className={page.article_views}>193k views</small>
           </article>
 
           {/* Mobile advertisement */}
@@ -97,15 +99,16 @@ const article = () => {
           </div>
 
           {/* Controls */}
-          <Controls />
+          {/* <Controls> */}
+          {/* Comments */}
+          {/* <Comments /> */}
+          {/* </Controls>  */}
+          <CommentSection />
         </main>
 
         {/* Desktop advertisement */}
         <div className={page.desktop_ad}>Advertisement</div>
       </section>
-
-      {/* Comments */}
-      <Comments />
     </>
   )
 }

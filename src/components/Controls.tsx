@@ -1,3 +1,5 @@
+'use client'
+
 import {
   RiShareForwardLine,
   RiThumbUpLine,
@@ -7,7 +9,7 @@ import {
 } from 'react-icons/ri'
 import page from '@/app/articles/[article]/page.module.css'
 
-const Controls = () => {
+const Controls = ({ children }: { children: any }) => {
   return (
     <div className={page.controls}>
       <button>
