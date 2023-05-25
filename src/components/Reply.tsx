@@ -6,10 +6,24 @@ import {
   RiDeleteBinLine,
   RiMessage3Line,
 } from 'react-icons/ri'
+import { useState, useEffect } from 'react'
 import page from '@/app/articles/[article]/page.module.css'
 import Profile from './Profile'
 
 function Reply() {
+  const [isVisible, setIsVisible] = useState(false)
+  const [showReplyInputClass, setShowReplyInputClass] = useState('d-none')
+
+  const showReply = () => {
+    if (isVisible) setIsVisible(false)
+    else setIsVisible(true)
+  }
+
+  useEffect(() => {
+    if (isVisible) setShowReplyInputClass('d-blobk')
+    else setShowReplyInputClass('d-none')
+  }, [isVisible])
+
   return (
     <div className={page.reply}>
       <div className={page.profile}>
@@ -33,10 +47,13 @@ function Reply() {
         <button className={`${page.btn} ${page.comment_btn}`}>
           <RiThumbUpLine className={page.icon} /> 176
         </button>
-        <button className={page.btn}>
+        <button onClick={showReply} className={page.btn}>
           <RiMessage3Line className={page.icon} />
         </button>
       </div>
+      <form className={`${page.reply_input} ${showReplyInputClass}`}>
+        <textarea placeholder='Write your reply...' />
+      </form>
     </div>
   )
 }

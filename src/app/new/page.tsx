@@ -5,12 +5,29 @@ const Editor = () => {
   return (
     <section className={`container ${page.section}`}>
       <main className={page.main}>
-        <RichTextEditor />
+        <form>
+          <RichTextEditor />
+          <div className={page.tags}>
+            <div>
+              <input type='text' placeholder='Tag' />
+              <input type='text' placeholder='Tag' />
+              <input type='text' placeholder='Tag' />
+            </div>
+            <div>
+              <input type='text' placeholder='Tag' />
+              <input type='text' placeholder='Tag' />
+              <input type='text' placeholder='Tag' />
+            </div>
+          </div>
+          <div className={page.description}>
+            <input type='text' placeholder='Description (optional)' />
+          </div>
+          <div className={page.btn_container}>
+            <button type='submit'>Submit</button>
+            <button className={page.cancel_btn}>Cancel</button>
+          </div>
+        </form>
       </main>
-      <div className={page.btn_container}>
-        <button>Submit</button>
-        <button>Cancel</button>
-      </div>
     </section>
   )
 }

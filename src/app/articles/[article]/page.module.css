@@ -131,7 +131,8 @@
   background-color: var(--transparent-dark-color);
 }
 
-.comments_input {
+.comments_input > textarea,
+.reply_input > textarea {
   width: 100%;
   padding: 10px;
   resize: vertical;
@@ -160,6 +161,10 @@
   /* padding-inline: var(--gap); */
   padding-left: 1rem;
 }
+
+/* .reply_input {
+  display: none;
+} */
 
 .btn_container {
   display: flex;

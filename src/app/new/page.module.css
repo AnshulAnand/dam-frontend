@@ -16,6 +16,42 @@
   padding: 1rem;
 }
 
+.tags {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1rem;
+  gap: 1rem;
+}
+
+.tags div {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.tags input {
+  background-color: var(--secondary-background-color);
+  padding: 10px;
+  outline: none;
+  width: inherit;
+}
+
+.description {
+  margin-top: 1rem;
+  width: 100%;
+}
+
+.description input {
+  padding: 10px;
+  background-color: var(--secondary-background-color);
+  outline: none;
+  width: inherit;
+}
+
 .toolbar_class {
   border: 1px solid #ccc;
   color: rgba(0, 0, 0, 0.6);
@@ -25,6 +61,7 @@
   display: flex;
   justify-content: center;
   gap: 1rem;
+  margin-top: 1rem;
 }
 
 .btn_container button {
@@ -38,4 +75,14 @@
 
 .btn_container button:hover {
   background-color: var(--transparent-dark-color);
+}
+
+.cancel_btn {
+  color: red !important;
+}
+
+@media screen and (max-width: 500px) {
+  .tags {
+    flex-direction: column;
+  }
 }

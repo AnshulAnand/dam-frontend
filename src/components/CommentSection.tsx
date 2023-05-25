@@ -37,10 +37,9 @@ function CommentSection() {
             <RiCloseLine />
           </button>
         </div>
-        <textarea
-          className={page.comments_input}
-          placeholder='Write your comment...'
-        />
+        <form className={`${page.comments_input}`}>
+          <textarea placeholder='Write your comment...' />
+        </form>
         {/* Comment container */}
         <Comment />
         <Comment />
