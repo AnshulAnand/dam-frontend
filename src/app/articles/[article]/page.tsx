@@ -3,15 +3,25 @@ import page from './page.module.css'
 import Profile from '@/components/Profile'
 import CommentSection from '@/components/CommentSection'
 import UserArticles from '@/components/UserArticles'
+import { RiEyeLine } from 'react-icons/ri'
 
-const article = () => {
+async function getArticle() {
+  const res = await fetch(
+    'http://localhost:5000/articles/naruto-vs-luffy-60052'
+  )
+  return res.json()
+}
+
+const article = async () => {
+  const article = await getArticle()
+
   return (
     <>
       <section className={`container ${page.section}`}>
         <main className={page.main}>
           {/* Article */}
           <article className={page.article}>
-            <h1 className={page.article_title}>Sample article title</h1>
+            <h1 className={page.article_title}>{article.title}e</h1>
             <div className={page.article_tags}>
               <Link href={'/tags/onepiece'}>#onepiece</Link>
               <Link href={'/tags/naruto'}>#naruto</Link>
@@ -28,45 +38,10 @@ const article = () => {
             <div className={page.article_image}>
               <img src='/images/featured/featured-2.jpg' alt='image' />
             </div>
-            <p>
-              Lorem, ipsum dolor sit amet consectetur adipisicing elit. Debitis
-              eius possimus hic eligendi distinctio rerum incidunt, esse quasi
-              eum molestiae ducimus ipsam quae, aliquid ullam placeat dolorum
-              nulla vero. Quam? Lorem ipsum dolor sit, amet consectetur
-              adipisicing elit. Sapiente repellat consequatur culpa, repudiandae
-              aut dolores iusto. Rem natus soluta, dolores, ad deleniti, aut
-              dolorem corrupti quasi amet unde delectus hic?
-            </p>
-            <br />
-            <p>
-              Lorem, ipsum dolor sit amet consectetur adipisicing elit. Debitis
-              eius possimus hic eligendi distinctio rerum incidunt, esse quasi
-              eum molestiae ducimus ipsam quae, aliquid ullam placeat dolorum
-              nulla vero. Quam? Lorem ipsum dolor sit amet consectetur,
-              adipisicing elit. Vero quod necessitatibus, aspernatur pariatur
-              asperiores earum quas adipisci veritatis quidem facilis! Nihil
-              veniam quaerat nulla possimus, asperiores vero voluptatum placeat.
-              Eveniet!
-            </p>
-            <br />
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia
-              voluptates, laboriosam voluptatum quos non consequuntur nesciunt
-              necessitatibus tempora quod inventore corporis rem nihil itaque,
-              at provident minus aliquam veritatis. Labore?
-            </p>
-            <br />
-            <p>
-              Lorem, ipsum dolor sit amet consectetur adipisicing elit. Debitis
-              eius possimus hic eligendi distinctio rerum incidunt, esse quasi
-              eum molestiae ducimus ipsam quae, aliquid ullam placeat dolorum
-              nulla vero. Quam? Lorem ipsum dolor sit amet consectetur,
-              adipisicing elit. Vero quod necessitatibus, aspernatur pariatur
-              asperiores earum quas adipisci veritatis quidem facilis! Nihil
-              veniam quaerat nulla possimus, asperiores vero voluptatum placeat.
-              Eveniet!
-            </p>
-            <p className={page.article_views}>193k views</p>
+            <p>{article.body}</p>
+            <div className={page.article_views}>
+              <RiEyeLine /> <p>193k views</p>
+            </div>
           </article>
 
           {/* Mobile advertisement */}
