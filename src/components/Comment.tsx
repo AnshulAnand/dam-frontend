@@ -13,6 +13,18 @@ import Reply from './Reply'
 const Comment = () => {
   const [repliesVisible, setRepliesVisible] = useState(false)
   const [repliesVisibleClass, setRepliesVisibleClass] = useState('d-none')
+  const [isVisible, setIsVisible] = useState(false)
+  const [showReplyInputClass, setShowReplyInputClass] = useState('d-none')
+
+  const showReplyInput = () => {
+    if (isVisible) setIsVisible(false)
+    else setIsVisible(true)
+  }
+
+  useEffect(() => {
+    if (isVisible) setShowReplyInputClass('d-blobk')
+    else setShowReplyInputClass('d-none')
+  }, [isVisible])
 
   const showReplies = () => {
     if (repliesVisible) setRepliesVisible(false)
@@ -56,10 +68,13 @@ const Comment = () => {
         >
           <RiChat1Line className={page.icon} /> 198
         </button>
-        <button className={page.btn}>
+        <button onClick={showReplyInput} className={page.btn}>
           <RiMessage3Line className={page.icon} />
         </button>
       </div>
+      <form className={`${page.reply_input} ${showReplyInputClass}`}>
+        <textarea placeholder='Write your reply...' />
+      </form>
       {/* Child comments */}
       <div className={`${page.replies} ${repliesVisibleClass}`}>
         <Reply />

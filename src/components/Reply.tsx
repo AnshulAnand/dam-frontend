@@ -14,7 +14,7 @@ function Reply() {
   const [isVisible, setIsVisible] = useState(false)
   const [showReplyInputClass, setShowReplyInputClass] = useState('d-none')
 
-  const showReply = () => {
+  const showReplyInput = () => {
     if (isVisible) setIsVisible(false)
     else setIsVisible(true)
   }
@@ -47,7 +47,7 @@ function Reply() {
         <button className={`${page.btn} ${page.comment_btn}`}>
           <RiThumbUpLine className={page.icon} /> 176
         </button>
-        <button onClick={showReply} className={page.btn}>
+        <button onClick={showReplyInput} className={page.btn}>
           <RiMessage3Line className={page.icon} />
         </button>
       </div>

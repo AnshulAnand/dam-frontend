@@ -1,15 +1,8 @@
-import {
-  RiShareForwardLine,
-  RiThumbUpLine,
-  RiPencilLine,
-  RiDeleteBinLine,
-} from 'react-icons/ri'
 import Link from 'next/link'
 import page from './page.module.css'
-import Comments from '@/components/Comments'
 import Profile from '@/components/Profile'
-import Controls from '@/components/Controls'
 import CommentSection from '@/components/CommentSection'
+import UserArticles from '@/components/UserArticles'
 
 const article = () => {
   return (
@@ -73,36 +66,16 @@ const article = () => {
               veniam quaerat nulla possimus, asperiores vero voluptatum placeat.
               Eveniet!
             </p>
-            <small className={page.article_views}>193k views</small>
+            <p className={page.article_views}>193k views</p>
           </article>
 
           {/* Mobile advertisement */}
           <div className={page.mobile_ad}>Mobile Advertisement</div>
 
           {/* User Articles */}
-          <div className={page.user_articles}>
-            <div className={page.user_articles_profile}>
-              <h3>
-                Latest articles by
-                <Link href={'anshulanand02'} className={page.user_link}>
-                  anshulanand02
-                </Link>
-              </h3>
-            </div>
-            <div className={page.articles}>
-              <Link href={'#'}>Sample article title</Link>
-              <Link href={'#'}>Sample article title</Link>
-              <Link href={'#'}>Sample article title</Link>
-              <Link href={'#'}>Sample article title</Link>
-              <Link href={'#'}>Sample article title</Link>
-            </div>
-          </div>
+          <UserArticles />
 
-          {/* Controls */}
-          {/* <Controls> */}
           {/* Comments */}
-          {/* <Comments /> */}
-          {/* </Controls>  */}
           <CommentSection />
         </main>
 

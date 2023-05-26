@@ -69,6 +69,7 @@
 }
 
 .article_views {
+  font-size: small;
   margin-top: var(--gap);
 }
 
