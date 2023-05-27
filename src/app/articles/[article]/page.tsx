@@ -3,17 +3,18 @@ import page from './page.module.css'
 import Profile from '@/components/Profile'
 import CommentSection from '@/components/CommentSection'
 import UserArticles from '@/components/UserArticles'
+import returnDate from '@/utils/returnDate'
+import readingTime from '@/utils/readingTime'
 import { RiEyeLine } from 'react-icons/ri'
 
-async function getArticle() {
-  const res = await fetch(
-    'http://localhost:5000/articles/naruto-vs-luffy-60052'
-  )
+async function getArticle(article: string) {
+  const res = await fetch(`http://localhost:5000/articles/${article}`)
   return res.json()
 }
 
-const article = async () => {
-  const article = await getArticle()
+const Article = async ({ params }: { params: { article: string } }) => {
+  const article = await getArticle(params.article)
+  console.log(article)
 
   return (
     <>
@@ -21,26 +22,34 @@ const article = async () => {
         <main className={page.main}>
           {/* Article */}
           <article className={page.article}>
-            <h1 className={page.article_title}>{article.title}e</h1>
+            <h1 className={page.article_title}>{article.title}</h1>
             <div className={page.article_tags}>
-              <Link href={'/tags/onepiece'}>#onepiece</Link>
-              <Link href={'/tags/naruto'}>#naruto</Link>
-              <Link href={'/tags/vsbattles'}>#vsbattles</Link>
+              {article.tags.map((tag: string, i: number) => (
+                <Link key={i} href={`/tags/${tag}`}>
+                  #{tag}
+                </Link>
+              ))}
             </div>
             <div className={page.article_data}>
-              <Profile width={50} height={50} forArticle={true} />
+              {/* @ts-expect-error Server Component */}
+              <Profile
+                userId={article.user}
+                width={50}
+                height={50}
+                forArticle={true}
+              />
               <div className={page.article_info}>
-                <span>May 5th 2023</span>
+                <span>{returnDate(article)}</span>
                 <span className={page.spacer}></span>
-                <span>8 Min read</span>
+                <span>{readingTime(article)} Min read</span>
               </div>
             </div>
             <div className={page.article_image}>
-              <img src='/images/featured/featured-2.jpg' alt='image' />
+              <img src={article.image} alt='image' />
             </div>
             <p>{article.body}</p>
             <div className={page.article_views}>
-              <RiEyeLine /> <p>193k views</p>
+              <RiEyeLine /> <p>{article.views} views</p>
             </div>
           </article>
 
@@ -61,4 +70,4 @@ const article = async () => {
   )
 }
 
-export default article
+export default Article

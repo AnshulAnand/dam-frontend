@@ -6,10 +6,7 @@ const Articles = () => {
     <section className={page.section}>
       <div className={page.container}>
         <main className={page.main}>
-          <Link
-            href='/articles/63e1f17ab55c299f3e972086'
-            className={page.article}
-          >
+          <Link href='/articles/naruto-vs-luffy-60052' className={page.article}>
             <img
               src='/images/featured/featured-1.jpg'
               alt=''
@@ -22,16 +19,18 @@ const Articles = () => {
             >
               <div className='article-data'>
                 <span>May 5th 2023</span>
-                <span className='article-data-spacer' id={page.article_data_spacer}></span>
+                <span
+                  className='article-data-spacer'
+                  id={page.article_data_spacer}
+                ></span>
                 <span>8 Min read</span>
               </div>
-              <h3 className='title article-title' id={page.article_title}>Sample Article Title</h3>
+              <h3 className='title article-title' id={page.article_title}>
+                Sample Article Title
+              </h3>
             </div>
           </Link>
-          <Link
-            href='/articles/63e1f17ab55c299f3e972086'
-            className={page.article}
-          >
+          <Link href='/articles/naruto-vs-luffy-23b99' className={page.article}>
             <img
               src='/images/featured/featured-1.jpg'
               alt=''
@@ -44,16 +43,18 @@ const Articles = () => {
             >
               <div className='article-data'>
                 <span>May 5th 2023</span>
-                <span className='article-data-spacer' id={page.article_data_spacer}></span>
+                <span
+                  className='article-data-spacer'
+                  id={page.article_data_spacer}
+                ></span>
                 <span>8 Min read</span>
               </div>
-              <h3 className='title article-title' id={page.article_title}>Sample Article Title</h3>
+              <h3 className='title article-title' id={page.article_title}>
+                Sample Article Title
+              </h3>
             </div>
           </Link>
-          <Link
-            href='/articles/63e1f17ab55c299f3e972086'
-            className={page.article}
-          >
+          <Link href='/articles/naruto-vs-luffy-60052' className={page.article}>
             <img
               src='/images/featured/featured-1.jpg'
               alt=''
@@ -66,16 +67,18 @@ const Articles = () => {
             >
               <div className='article-data'>
                 <span>May 5th 2023</span>
-                <span className='article-data-spacer' id={page.article_data_spacer}></span>
+                <span
+                  className='article-data-spacer'
+                  id={page.article_data_spacer}
+                ></span>
                 <span>8 Min read</span>
               </div>
-              <h3 className='title article-title' id={page.article_title}>Sample Article Title</h3>
+              <h3 className='title article-title' id={page.article_title}>
+                Sample Article Title
+              </h3>
             </div>
           </Link>
-          <Link
-            href='/articles/63e1f17ab55c299f3e972086'
-            className={page.article}
-          >
+          <Link href='/articles/naruto-vs-luffy-60052' className={page.article}>
             <img
               src='/images/featured/featured-1.jpg'
               alt=''
@@ -88,16 +91,18 @@ const Articles = () => {
             >
               <div className='article-data'>
                 <span>May 5th 2023</span>
-                <span className='article-data-spacer' id={page.article_data_spacer}></span>
+                <span
+                  className='article-data-spacer'
+                  id={page.article_data_spacer}
+                ></span>
                 <span>8 Min read</span>
               </div>
-              <h3 className='title article-title' id={page.article_title}>Sample Article Title</h3>
+              <h3 className='title article-title' id={page.article_title}>
+                Sample Article Title
+              </h3>
             </div>
           </Link>
-          <Link
-            href='/articles/63e1f17ab55c299f3e972086'
-            className={page.article}
-          >
+          <Link href='/articles/naruto-vs-luffy-60052' className={page.article}>
             <img
               src='/images/featured/featured-1.jpg'
               alt=''
@@ -110,16 +115,18 @@ const Articles = () => {
             >
               <div className='article-data'>
                 <span>May 5th 2023</span>
-                <span className='article-data-spacer' id={page.article_data_spacer}></span>
+                <span
+                  className='article-data-spacer'
+                  id={page.article_data_spacer}
+                ></span>
                 <span>8 Min read</span>
               </div>
-              <h3 className='title article-title' id={page.article_title}>Sample Article Title</h3>
+              <h3 className='title article-title' id={page.article_title}>
+                Sample Article Title
+              </h3>
             </div>
           </Link>
-          <Link
-            href='/articles/63e1f17ab55c299f3e972086'
-            className={page.article}
-          >
+          <Link href='/articles/naruto-vs-luffy-60052' className={page.article}>
             <img
               src='/images/featured/featured-1.jpg'
               alt=''
@@ -132,16 +139,18 @@ const Articles = () => {
             >
               <div className='article-data'>
                 <span>May 5th 2023</span>
-                <span className='article-data-spacer' id={page.article_data_spacer}></span>
+                <span
+                  className='article-data-spacer'
+                  id={page.article_data_spacer}
+                ></span>
                 <span>8 Min read</span>
               </div>
-              <h3 className='title article-title' id={page.article_title}>Sample Article Title</h3>
+              <h3 className='title article-title' id={page.article_title}>
+                Sample Article Title
+              </h3>
             </div>
           </Link>
-          <Link
-            href='/articles/63e1f17ab55c299f3e972086'
-            className={page.article}
-          >
+          <Link href='/articles/naruto-vs-luffy-60052' className={page.article}>
             <img
               src='/images/featured/featured-1.jpg'
               alt=''
@@ -154,16 +163,18 @@ const Articles = () => {
             >
               <div className='article-data'>
                 <span>May 5th 2023</span>
-                <span className='article-data-spacer' id={page.article_data_spacer}></span>
+                <span
+                  className='article-data-spacer'
+                  id={page.article_data_spacer}
+                ></span>
                 <span>8 Min read</span>
               </div>
-              <h3 className='title article-title' id={page.article_title}>Sample Article Title</h3>
+              <h3 className='title article-title' id={page.article_title}>
+                Sample Article Title
+              </h3>
             </div>
           </Link>
-          <Link
-            href='/articles/63e1f17ab55c299f3e972086'
-            className={page.article}
-          >
+          <Link href='/articles/naruto-vs-luffy-60052' className={page.article}>
             <img
               src='/images/featured/featured-1.jpg'
               alt=''
@@ -176,16 +187,18 @@ const Articles = () => {
             >
               <div className='article-data'>
                 <span>May 5th 2023</span>
-                <span className='article-data-spacer' id={page.article_data_spacer}></span>
+                <span
+                  className='article-data-spacer'
+                  id={page.article_data_spacer}
+                ></span>
                 <span>8 Min read</span>
               </div>
-              <h3 className='title article-title' id={page.article_title}>Sample Article Title</h3>
+              <h3 className='title article-title' id={page.article_title}>
+                Sample Article Title
+              </h3>
             </div>
           </Link>
-          <Link
-            href='/articles/63e1f17ab55c299f3e972086'
-            className={page.article}
-          >
+          <Link href='/articles/naruto-vs-luffy-60052' className={page.article}>
             <img
               src='/images/featured/featured-1.jpg'
               alt=''
@@ -198,16 +211,18 @@ const Articles = () => {
             >
               <div className='article-data'>
                 <span>May 5th 2023</span>
-                <span className='article-data-spacer' id={page.article_data_spacer}></span>
+                <span
+                  className='article-data-spacer'
+                  id={page.article_data_spacer}
+                ></span>
                 <span>8 Min read</span>
               </div>
-              <h3 className='title article-title' id={page.article_title}>Sample Article Title</h3>
+              <h3 className='title article-title' id={page.article_title}>
+                Sample Article Title
+              </h3>
             </div>
           </Link>
-          <Link
-            href='/articles/63e1f17ab55c299f3e972086'
-            className={page.article}
-          >
+          <Link href='/articles/naruto-vs-luffy-60052' className={page.article}>
             <img
               src='/images/featured/featured-1.jpg'
               alt=''
@@ -220,10 +235,15 @@ const Articles = () => {
             >
               <div className='article-data'>
                 <span>May 5th 2023</span>
-                <span className='article-data-spacer' id={page.article_data_spacer}></span>
+                <span
+                  className='article-data-spacer'
+                  id={page.article_data_spacer}
+                ></span>
                 <span>8 Min read</span>
               </div>
-              <h3 className='title article-title' id={page.article_title}>Sample Article Title</h3>
+              <h3 className='title article-title' id={page.article_title}>
+                Sample Article Title
+              </h3>
             </div>
           </Link>
         </main>
