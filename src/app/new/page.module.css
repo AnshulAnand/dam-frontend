@@ -11,6 +11,10 @@
   margin-inline: auto;
 }
 
+.title {
+  margin-bottom: 1rem;
+}
+
 .editor_class {
   background-color: var(--secondary-background-color);
   padding: 1rem;
@@ -40,11 +44,13 @@
   width: inherit;
 }
 
+.title,
 .description {
   margin-top: 1rem;
   width: 100%;
 }
 
+.title input,
 .description input {
   padding: 10px;
   background-color: var(--secondary-background-color);

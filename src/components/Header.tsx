@@ -8,11 +8,18 @@ import {
   RiCloseLine,
 } from 'react-icons/ri'
 import Link from 'next/link'
+import useCurrentUser from '@/lib/user'
 import { useState, useEffect, useRef } from 'react'
 
 function Header() {
-  const [currentTheme, setCurrentTheme] = useState<null | string>(null)
-  useEffect(() => setCurrentTheme(localStorage.getItem('damTheme')), [])
+  const { user, isLoading, isError } = useCurrentUser()
+  if (isError) console.log({ isError })
+
+  const [lightTheme, setLightTheme] = useState(false)
+  useEffect(
+    () => setLightTheme(localStorage.getItem('damLightTheme') === 'active'),
+    []
+  )
   const [sunIconDisplay, setSunIconDisplay] = useState('d-block')
   const [moonIconDisplay, setMoonIconDisplay] = useState('d-none')
   const searchInput = useRef<HTMLInputElement>(null)
@@ -29,35 +36,16 @@ function Header() {
     'btn place-items-center screen-lg-hidden menu-toggle-icon'
   )
 
-  const setStyleProperty = (property: string, value: string) => {
-    document.documentElement.style.setProperty(property, value)
-  }
-
   const handleMenuClick = () => setToggle(!toggle)
 
   const handleThemeClick = () => {
-    const theme = localStorage.getItem('damTheme')
+    const theme = localStorage.getItem('damLightTheme')
     if (!theme) {
-      localStorage.setItem('damTheme', 'active')
-      setCurrentTheme('active')
-      setStyleProperty('--light-color', '#3d3d3d')
-      setStyleProperty('--light-color-alt', 'rgba(0, 0, 0, 0.6)')
-      setStyleProperty('--primary-background-color', '#fff')
-      setStyleProperty('--secondary-background-color', '#f1f1f1')
-      setStyleProperty('--hover-light-color', '#fff')
-      setStyleProperty('--hover-dark-color', '#131417')
-      setStyleProperty('--transparent-dark-color', '#f1f1f1')
-      setStyleProperty('--transparent-light-color', 'rgba(0, 0, 0, 0.1)')
+      localStorage.setItem('damLightTheme', 'active')
+      setLightTheme(true)
     } else {
-      localStorage.removeItem('damTheme')
-      setCurrentTheme(null)
-      setStyleProperty('--light-color', '#fff')
-      setStyleProperty('--light-color-alt', '#afb6cd')
-      setStyleProperty('--primary-background-color', '#131417')
-      setStyleProperty('--secondary-background-color', '#252830')
-      setStyleProperty('--hover-light-color', '#fff')
-      setStyleProperty('--transparent-dark-color', 'rgba(0, 0, 0, 0.75)')
-      setStyleProperty('--transparent-light-color', 'rgba(255, 255, 255, 0.05)')
+      localStorage.removeItem('damLightTheme')
+      setLightTheme(false)
     }
   }
 
@@ -71,11 +59,8 @@ function Header() {
   }
 
   const handleSearchClose = () => {
-    if (searchStatus) {
-      setSerachStatus(false)
-    } else {
-      setSerachStatus(true)
-    }
+    if (searchStatus) setSerachStatus(false)
+    else setSerachStatus(true)
   }
 
   useEffect(() => {
@@ -103,37 +88,22 @@ function Header() {
   }, [toggle])
 
   useEffect(() => {
-    if (searchStatus) {
+    if (searchStatus)
       setSearchFormClass('search-form-container container activated')
-    } else {
-      setSearchFormClass('search-form-container container')
-    }
+    else setSearchFormClass('search-form-container container')
   }, [searchStatus])
 
   useEffect(() => {
-    if (currentTheme) {
-      setSunIconDisplay('d-none')
+    if (lightTheme) {
+      document.body.classList.add('light-theme')
       setMoonIconDisplay('d-block')
-      setStyleProperty('--light-color', '#3d3d3d')
-      setStyleProperty('--light-color-alt', 'rgba(0, 0, 0, 0.6)')
-      setStyleProperty('--primary-background-color', '#fff')
-      setStyleProperty('--secondary-background-color', '#f1f1f1')
-      setStyleProperty('--hover-light-color', '#fff')
-      setStyleProperty('--hover-dark-color', '#131417')
-      setStyleProperty('--transparent-dark-color', '#f1f1f1')
-      setStyleProperty('--transparent-light-color', 'rgba(0, 0, 0, 0.1)')
+      setSunIconDisplay('d-none')
     } else {
-      setSunIconDisplay('d-block')
+      document.body.classList.remove('light-theme')
       setMoonIconDisplay('d-none')
-      setStyleProperty('--light-color', '#fff')
-      setStyleProperty('--light-color-alt', '#afb6cd')
-      setStyleProperty('--primary-background-color', '#131417')
-      setStyleProperty('--secondary-background-color', '#252830')
-      setStyleProperty('--hover-light-color', '#fff')
-      setStyleProperty('--transparent-dark-color', 'rgba(0, 0, 0, 0.75)')
-      setStyleProperty('--transparent-light-color', 'rgba(255, 255, 255, 0.05)')
+      setSunIconDisplay('d-block')
     }
-  }, [currentTheme])
+  }, [lightTheme])
 
   return (
     <>
@@ -180,16 +150,33 @@ function Header() {
                   Contact
                 </Link>
               </li>
-              <li className='list-item screen-lg-hidden'>
-                <Link href='/sign-in' className='list-link'>
-                  Sign in
-                </Link>
-              </li>
-              <li className='list-item screen-lg-hidden'>
-                <Link href='/sign-up' className='list-link'>
-                  Sign up
-                </Link>
-              </li>
+              {user === undefined ? (
+                <>
+                  <li className='list-item screen-lg-hidden'>
+                    <Link href='/sign-in' className='list-link'>
+                      Sign in
+                    </Link>
+                  </li>
+                  <li className='list-item screen-lg-hidden'>
+                    <Link href='/sign-up' className='list-link'>
+                      Sign up
+                    </Link>
+                  </li>
+                </>
+              ) : (
+                <>
+                  <li className='list-item screen-lg-hidden'>
+                    <Link href='/logout' className='list-link'>
+                      Logout
+                    </Link>
+                  </li>
+                  <li className='list-item screen-lg-hidden'>
+                    <Link href={`/@${user.username}`} className='list-link'>
+                      Profile
+                    </Link>
+                  </li>
+                </>
+              )}
             </ul>
           </div>
 
@@ -214,15 +201,31 @@ function Header() {
               <RiCloseLine className='icon close-menu-icon' />
             </button>
 
-            <Link href='/sign-in' className='list-link screen-sm-hidden'>
-              Sign in
-            </Link>
-            <Link
-              href='/sign-up'
-              className='btn sign-up-btn fancy-border screen-sm-hidden'
-            >
-              <span>Sign up</span>
-            </Link>
+            {user === undefined ? (
+              <>
+                <Link href='/sign-in' className='list-link screen-sm-hidden'>
+                  Sign in
+                </Link>
+                <Link
+                  href='/sign-up'
+                  className='btn sign-up-btn fancy-border screen-sm-hidden'
+                >
+                  <span>Sign up</span>
+                </Link>
+              </>
+            ) : (
+              <>
+                <Link href='logout' className='list-link screen-sm-hidden'>
+                  Logout
+                </Link>
+                <Link
+                  href={`/@${user.username}`}
+                  className='btn sign-up-btn fancy-border screen-sm-hidden'
+                >
+                  <span>Profile</span>
+                </Link>
+              </>
+            )}
           </div>
         </nav>
       </header>

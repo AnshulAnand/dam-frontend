@@ -1,5 +1,6 @@
 .section {
   display: flex;
+  flex-direction: column;
 }
 
 .container {
@@ -46,6 +47,19 @@
   width: 300px;
   height: 500px;
   background-color: aliceblue;
+}
+
+.btn_load_more {
+  width: 150px;
+  cursor: pointer;
+  padding: 1rem 1.5rem;
+  margin-top: 2rem;
+  border-radius: 100px;
+  margin-inline: auto;
+}
+
+.btn_load_more:hover {
+  background-color: var(--secondary-background-color);
 }
 
 @media only screen and (max-width: 1250px) {

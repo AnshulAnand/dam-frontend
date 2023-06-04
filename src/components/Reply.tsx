@@ -6,11 +6,51 @@ import {
   RiDeleteBinLine,
   RiMessage3Line,
 } from 'react-icons/ri'
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
+import useCurrentUser from '@/lib/user'
+import { postReply } from '@/lib/replies'
 import page from '@/app/articles/[article]/page.module.css'
 import Profile from './Profile'
+import useSWRMutation from 'swr/mutation'
 
-function Reply() {
+function Reply({
+  reply,
+  articleId,
+  commentId,
+}: {
+  reply: any
+  articleId: string
+  commentId: string
+}) {
+  const { trigger, isMutating, data, error } = useSWRMutation(
+    'http://localhost:5000/replies',
+    postReply /* options */
+  )
+
+  const [replyBody, setReplyBody] = useState('')
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    try {
+      const result = await trigger(
+        {
+          reply: {
+            body: replyBody,
+            parentArticle: articleId,
+            parentComment: commentId,
+          },
+        } /* options */
+      )
+      console.log({ data })
+      console.log({ result })
+    } catch (e) {
+      // error handling
+      console.log(e)
+    }
+  }
+
+  const { user, isLoading, isError } = useCurrentUser()
+
   const [isVisible, setIsVisible] = useState(false)
   const [showReplyInputClass, setShowReplyInputClass] = useState('d-none')
 
@@ -27,22 +67,28 @@ function Reply() {
   return (
     <div className={page.reply}>
       <div className={page.profile}>
-        <Profile width={40} height={40} forArticle={false} />
+        <Profile
+          userId={reply.user}
+          width={40}
+          height={40}
+          forArticle={false}
+        />
         <div className={page.btn_container}>
-          <button className={page.btn}>
-            <RiPencilLine />
-          </button>
-          <button className={page.btn}>
-            <RiDeleteBinLine />
-          </button>
+          {user && user._id === reply.user ? (
+            <>
+              <button className={page.btn}>
+                <RiPencilLine />
+              </button>
+              <button className={page.btn}>
+                <RiDeleteBinLine />
+              </button>
+            </>
+          ) : (
+            <></>
+          )}
         </div>
       </div>
-      <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus
-        cum, dolorum nobis ipsam obcaecati reprehenderit itaque ad amet nostrum
-        illum libero assumenda, illo asperiores vitae fugit, voluptate nulla
-        repellat eum?
-      </p>
+      <p>{reply.body}</p>
       <div className={page.btn_container}>
         <button className={`${page.btn} ${page.comment_btn}`}>
           <RiThumbUpLine className={page.icon} /> 176
@@ -51,8 +97,15 @@ function Reply() {
           <RiMessage3Line className={page.icon} />
         </button>
       </div>
-      <form className={`${page.reply_input} ${showReplyInputClass}`}>
-        <textarea placeholder='Write your reply...' />
+      <form
+        onSubmit={handleSubmit}
+        className={`${page.reply_input} ${showReplyInputClass}`}
+      >
+        <textarea
+          onChange={e => setReplyBody(e.target.value)}
+          placeholder='Write your reply...'
+        />
+        <button type='submit'>Post</button>
       </form>
     </div>
   )

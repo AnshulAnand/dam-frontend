@@ -1,6 +1,9 @@
 import { FC } from 'react'
 import Link from 'next/link'
 import page from './page.module.css'
+import returnDate from '@/utils/returnDate'
+import ProfileEditBtn from '@/components/ProfileEditBtn'
+import UserProfileArticles from '@/components/UserProfileArticles'
 import {
   RiMapPinUserLine,
   RiLink,
@@ -13,32 +16,47 @@ interface PageProps {
   params: { userId: string }
 }
 
-const Profile: FC<PageProps> = ({ params }) => {
-  console.log(params.userId.replace('%40', ''))
+async function getCurrentUser() {
+  const res = await fetch('http://localhost:5000/users/current', { credentials: 'include' })
+  return res.json()
+}
+
+async function getUserByUsername(username: string) {
+  const res = await fetch(`http://localhost:5000/users/username/${username}`)
+  return res.json()
+}
+
+const Profile: FC<PageProps> = async ({ params }) => {
+  const currentUser = await getCurrentUser()
+  const user = await getUserByUsername(params.userId.replace('%40', ''))
+  console.log({ user })
+  console.log({currentUser})
+
+  if (!user) {
+    console.log({ message: 'No user found' })
+    return
+  }
 
   return (
     <section className={page.section}>
       <div className={page.container}>
         <main className={page.main}>
-          <img src='/images/featured/featured-1.jpg' alt='' />
+          <img src={user.image} alt='' />
           <div className={page.user_data}>
             <div className={page.user_name}>
-              <h1>Anshul Anand (@{params.userId.replace('%40', '')})</h1>
+              <h1>{user.name} (@{user.username})</h1>
             </div>
             <div className={page.user_bio}>
               <p>
-                Lorem ipsum, dolor sit amet consectetur adipisicing elit. Itaque
-                assumenda maiores, officia reiciendis dolor blanditiis aliquam
-                harum corrupti dolorem, animi excepturi vel quisquam totam in
-                recusandae a cum suscipit. Quo!
+                {user.bio}
               </p>
             </div>
             <div className={page.user_info}>
               <div>
-                <RiCake2Line className='icon' /> 23/08/2023
+                <RiCake2Line className='icon' /> {returnDate(user)}
               </div>
               <div>
-                <RiMapPinUserLine className='icon' /> New Delhi
+                <RiMapPinUserLine className='icon' /> {user.country}
               </div>
               <div>
                 <RiEyeLine className='icon' /> 23M content views
@@ -49,180 +67,15 @@ const Profile: FC<PageProps> = ({ params }) => {
             </div>
             <div className={page.user_link}>
               <RiLink className='icon' />
-              <a href='https://www.instagram.com/anshulanand02' target='_blank'>
-                instagram.com/anshulanand02
+              <a href={user.link} target='_blank'>
+                {user.link}
               </a>
             </div>
-            <div>
-              <Link className={page.profile_edit} href='/edit-profile'>
-                Edit Profile
-              </Link>
-            </div>
+            <ProfileEditBtn user={user} />
           </div>
         </main>
         <div className={page.user_articles}>
-          <Link
-            href='/articles/63e1f17ab55c299f3e972086'
-            className={page.article}
-          >
-            <img
-              src='/images/featured/featured-1.jpg'
-              alt=''
-              className='article-image'
-            />
-            <span className='article-category'>onepiece</span>
-            <div
-              className='article-data-container'
-              id={page.article_data_container}
-            >
-              <div className='article-data'>
-                <span>May 5th 2023</span>
-                <span
-                  className='article-data-spacer'
-                  id={page.article_data_spacer}
-                ></span>
-                <span>8 Min read</span>
-              </div>
-              <h3 className='title article-title' id={page.article_title}>
-                Sample Article Title
-              </h3>
-            </div>
-          </Link>
-          <Link
-            href='/articles/63e1f17ab55c299f3e972086'
-            className={page.article}
-          >
-            <img
-              src='/images/featured/featured-1.jpg'
-              alt=''
-              className='article-image'
-            />
-            <span className='article-category'>onepiece</span>
-            <div
-              className='article-data-container'
-              id={page.article_data_container}
-            >
-              <div className='article-data'>
-                <span>May 5th 2023</span>
-                <span
-                  className='article-data-spacer'
-                  id={page.article_data_spacer}
-                ></span>
-                <span>8 Min read</span>
-              </div>
-              <h3 className='title article-title' id={page.article_title}>
-                Sample Article Title
-              </h3>
-            </div>
-          </Link>
-          <Link
-            href='/articles/63e1f17ab55c299f3e972086'
-            className={page.article}
-          >
-            <img
-              src='/images/featured/featured-1.jpg'
-              alt=''
-              className='article-image'
-            />
-            <span className='article-category'>onepiece</span>
-            <div
-              className='article-data-container'
-              id={page.article_data_container}
-            >
-              <div className='article-data'>
-                <span>May 5th 2023</span>
-                <span
-                  className='article-data-spacer'
-                  id={page.article_data_spacer}
-                ></span>
-                <span>8 Min read</span>
-              </div>
-              <h3 className='title article-title' id={page.article_title}>
-                Sample Article Title
-              </h3>
-            </div>
-          </Link>
-          <Link
-            href='/articles/63e1f17ab55c299f3e972086'
-            className={page.article}
-          >
-            <img
-              src='/images/featured/featured-1.jpg'
-              alt=''
-              className='article-image'
-            />
-            <span className='article-category'>onepiece</span>
-            <div
-              className='article-data-container'
-              id={page.article_data_container}
-            >
-              <div className='article-data'>
-                <span>May 5th 2023</span>
-                <span
-                  className='article-data-spacer'
-                  id={page.article_data_spacer}
-                ></span>
-                <span>8 Min read</span>
-              </div>
-              <h3 className='title article-title' id={page.article_title}>
-                Sample Article Title
-              </h3>
-            </div>
-          </Link>
-          <Link
-            href='/articles/63e1f17ab55c299f3e972086'
-            className={page.article}
-          >
-            <img
-              src='/images/featured/featured-1.jpg'
-              alt=''
-              className='article-image'
-            />
-            <span className='article-category'>onepiece</span>
-            <div
-              className='article-data-container'
-              id={page.article_data_container}
-            >
-              <div className='article-data'>
-                <span>May 5th 2023</span>
-                <span
-                  className='article-data-spacer'
-                  id={page.article_data_spacer}
-                ></span>
-                <span>8 Min read</span>
-              </div>
-              <h3 className='title article-title' id={page.article_title}>
-                Sample Article Title
-              </h3>
-            </div>
-          </Link>
-          <Link
-            href='/articles/63e1f17ab55c299f3e972086'
-            className={page.article}
-          >
-            <img
-              src='/images/featured/featured-1.jpg'
-              alt=''
-              className='article-image'
-            />
-            <span className='article-category'>onepiece</span>
-            <div
-              className='article-data-container'
-              id={page.article_data_container}
-            >
-              <div className='article-data'>
-                <span>May 5th 2023</span>
-                <span
-                  className='article-data-spacer'
-                  id={page.article_data_spacer}
-                ></span>
-                <span>8 Min read</span>
-              </div>
-              <h3 className='title article-title' id={page.article_title}>
-                Sample Article Title
-              </h3>
-            </div>
-          </Link>
+          <UserProfileArticles />          
         </div>
       </div>
     </section>

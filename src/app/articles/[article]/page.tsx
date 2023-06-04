@@ -17,7 +17,6 @@ const Article = async ({ params }: { params: { article: string } }) => {
   console.log(article)
 
   return (
-    <>
       <section className={`container ${page.section}`}>
         <main className={page.main}>
           {/* Article */}
@@ -31,7 +30,6 @@ const Article = async ({ params }: { params: { article: string } }) => {
               ))}
             </div>
             <div className={page.article_data}>
-              {/* @ts-expect-error Server Component */}
               <Profile
                 userId={article.user}
                 width={50}
@@ -47,7 +45,7 @@ const Article = async ({ params }: { params: { article: string } }) => {
             <div className={page.article_image}>
               <img src={article.image} alt='image' />
             </div>
-            <p>{article.body}</p>
+            <div className={page.article_body} dangerouslySetInnerHTML={{__html: article.body}}/>
             <div className={page.article_views}>
               <RiEyeLine /> <p>{article.views} views</p>
             </div>
@@ -60,13 +58,12 @@ const Article = async ({ params }: { params: { article: string } }) => {
           <UserArticles />
 
           {/* Comments */}
-          <CommentSection />
+          <CommentSection articleId={article._id} />
         </main>
 
         {/* Desktop advertisement */}
         <div className={page.desktop_ad}>Advertisement</div>
       </section>
-    </>
   )
 }
 

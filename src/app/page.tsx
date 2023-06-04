@@ -1,8 +1,21 @@
 import { RiArrowRightSLine, RiMailSendLine } from 'react-icons/ri'
 import Link from 'next/link'
 import Tag from '@/components/Tag'
+import returnDate from '@/utils/returnDate'
+import readingTime from '@/utils/readingTime'
 
-export default function Home() {
+async function getArticles() {
+  const res = await fetch(`http://localhost:5000/articles?page=1&limit=3`)
+  return res.json()
+}
+
+export default async function Home() {
+  const articles = await getArticles()
+
+  const article1 = articles.results[0]
+  const article2 = articles.results[1]
+  const article3 = articles.results[2]
+
   const tags = ['bleach', 'db', 'jojo', 'naruto', 'onepiece', 'opm']
 
   return (
@@ -20,60 +33,60 @@ export default function Home() {
               </span>
             </div>
             <Link
-              href='/articles/63e1f17ab55c299f3e972086'
+              href={`/articles/${article1.url}`}
               className='article featured-article featured-article-1'
             >
               <img
-                src='/images/featured/featured-1.jpg'
+                src={article1.image}
                 alt=''
                 className='article-image'
               />
-              <span className='article-category'>onepiece</span>
+              <span className='article-category'>{article1.tags[0]}</span>
               <div className='article-data-container'>
                 <div className='article-data'>
-                  <span>May 5th 2023</span>
+                  <span>{returnDate(article1)}</span>
                   <span className='article-data-spacer'></span>
-                  <span>8 Min read</span>
+                  <span>{readingTime(article1)} Min read</span>
                 </div>
-                <h3 className='title article-title'>Sample Article Title</h3>
+                <h3 className='title article-title'>{article1.title}</h3>
               </div>
             </Link>
             <Link
-              href='/articles/63e1f17ab55c299f3e972086'
+              href={`/articles/${article2.url}`}
               className='article featured-article featured-article-2'
             >
               <img
-                src='/images/featured/featured-2.jpg'
+                src={article2.image}
                 alt=''
                 className='article-image'
               />
-              <span className='article-category'>dragonball</span>
+              <span className='article-category'>{article2.tags[0]}</span>
               <div className='article-data-container'>
                 <div className='article-data'>
-                  <span>May 5th 2023</span>
+                  <span>{returnDate(article2)}</span>
                   <span className='article-data-spacer'></span>
-                  <span>4 Min read</span>
+                  <span>{readingTime(article2)} Min read</span>
                 </div>
-                <h3 className='title article-title'>Sample article title</h3>
+                <h3 className='title article-title'>{article2.title}</h3>
               </div>
             </Link>
             <Link
-              href='/articles/63e1f17ab55c299f3e972086'
+              href={`/articles/${article3.url}`}
               className='article featured-article featured-article-3'
             >
               <img
-                src='/images/featured/featured-3.jpg'
+                src={article3.image}
                 alt=''
                 className='article-image'
               />
-              <span className='article-category'>jojo</span>
+              <span className='article-category'>{article3.tags[0]}</span>
               <div className='article-data-container'>
                 <div className='article-data'>
-                  <span>May 5th 2023</span>
+                  <span>{returnDate(article3)}</span>
                   <span className='article-data-spacer'></span>
-                  <span>5 Min read</span>
+                  <span>{readingTime(article3)} Min read</span>
                 </div>
-                <h3 className='title article-title'>Sample article title</h3>
+                <h3 className='title article-title'>{article3.title}</h3>
               </div>
             </Link>
           </div>
