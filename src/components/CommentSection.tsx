@@ -7,11 +7,11 @@ import {
   RiChat1Line,
   RiCloseLine,
 } from 'react-icons/ri'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import page from '@/app/articles/[article]/page.module.css'
-import { useComments, postComment } from '@/lib/comments'
+import { useComments, usePostComment } from '@/lib/comments'
+import { useLikeArticle } from '@/lib/article'
 import Comment from './Comment'
-import useSWRMutation from 'swr/mutation'
 
 function FetchComments({
   page,
@@ -28,42 +28,40 @@ function FetchComments({
   ))
 }
 
-function CommentSection({ articleId }: { articleId: string }) {
-  const { trigger, isMutating, data, error } = useSWRMutation(
-    'http://localhost:5000/comments',
-    postComment /* options */
-  )
-
+function CommentSection({ article }: { article: any }) {
   const [count, setCount] = useState(1)
   const [commentBody, setCommentBody] = useState('')
 
   let list: any = []
   for (let i = 0; i < count; i++) {
-    list.push(<FetchComments page={i + 1} articleId={articleId} />)
+    list.push(<FetchComments page={i + 1} articleId={article._id} />)
   }
 
   const [commentsVisible, setCommentsVisible] = useState(false)
-  const [commentsVisibleClass, setCommentsVisibleClass] = useState('')
 
-  const showComments = () => {
-    if (!commentsVisible) setCommentsVisible(true)
-  }
-
-  const hideComments = () => {
-    if (commentsVisible) setCommentsVisible(false)
-  }
-
-  useEffect(() => {
-    if (commentsVisible) setCommentsVisibleClass('visible')
-    else setCommentsVisibleClass('')
-  }, [commentsVisible])
+  const { triggerPostComment, postCommentError } = usePostComment()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     try {
-      const result = await trigger(
+      const result = await triggerPostComment(
         {
-          comment: { body: commentBody, parentArticle: articleId },
+          comment: { body: commentBody, parentArticle: article._id },
+        } /* options */
+      )
+    } catch (e) {
+      // error handling
+      console.log(e)
+    }
+  }
+
+  const { triggerLikeArticle, likeArticleError } = useLikeArticle()
+
+  const handleLike = async () => {
+    try {
+      const result = await triggerLikeArticle(
+        {
+          body: { articleId: article._id },
         } /* options */
       )
     } catch (e) {
@@ -74,10 +72,10 @@ function CommentSection({ articleId }: { articleId: string }) {
 
   return (
     <>
-      <div className={`${page.comments} ${commentsVisibleClass}`}>
+      <div className={`${page.comments} ${commentsVisible ? 'visible' : ''}`}>
         <div className={page.comments_header}>
           <h2>Comments</h2>
-          <button onClick={hideComments}>
+          <button onClick={() => setCommentsVisible(!commentsVisible)}>
             <RiCloseLine />
           </button>
         </div>
@@ -99,10 +97,10 @@ function CommentSection({ articleId }: { articleId: string }) {
       </div>
       {/* Controls */}
       <div className={page.controls}>
-        <button>
-          <RiThumbUpLine />5
+        <button onClick={handleLike}>
+          <RiThumbUpLine /> {article.likes}
         </button>
-        <button onClick={showComments}>
+        <button onClick={() => setCommentsVisible(!commentsVisible)}>
           <RiChat1Line />9
         </button>
         <button>

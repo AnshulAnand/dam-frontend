@@ -7,13 +7,14 @@ import {
   RiChat1Line,
   RiMessage3Line,
 } from 'react-icons/ri'
-import React, { useEffect, useState } from 'react'
+import { useState } from 'react'
 import useCurrentUser from '@/lib/user'
-import { useReplies, postReply } from '@/lib/replies'
+import { useReplies } from '@/lib/replies'
+import { usePostReply } from '@/lib/replies'
+import { useEditComment } from '@/lib/comments'
 import page from '@/app/articles/[article]/page.module.css'
 import Profile from './Profile'
 import Reply from './Reply'
-import useSWRMutation from 'swr/mutation'
 
 function FetchReplies({
   page,
@@ -40,17 +41,10 @@ const Comment = ({
   articleId: string
 }) => {
   const [repliesVisible, setRepliesVisible] = useState(false)
-  const [repliesVisibleClass, setRepliesVisibleClass] = useState('d-none')
-  const [isVisible, setIsVisible] = useState(false)
-  const [showReplyInputClass, setShowReplyInputClass] = useState('d-none')
+  const [replyInputVisible, setReplyInputVisible] = useState(false)
+  const [editCommentInputVisible, setEditCommentInputVisible] = useState(false)
   const [replyBody, setReplyBody] = useState('')
-
-  const { trigger, isMutating, data, error } = useSWRMutation(
-    'http://localhost:5000/replies',
-    postReply /* options */
-  )
-
-  if (error) console.log(error)
+  const [commentBody, setCommentBody] = useState(comment.body)
 
   const { user, isLoading, isError } = useCurrentUser()
 
@@ -67,10 +61,13 @@ const Comment = ({
     )
   }
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  // POST Reply
+  const { triggerPostReply, postReplyError } = usePostReply()
+
+  const handleReplySubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     try {
-      const result = await trigger(
+      const result = await triggerPostReply(
         {
           reply: {
             body: replyBody,
@@ -79,37 +76,31 @@ const Comment = ({
           },
         } /* options */
       )
-      console.log({ data })
-      console.log({ result })
     } catch (e) {
       // error handling
       console.log(e)
     }
   }
 
-  const showReplyInput = () => {
-    if (isVisible) setIsVisible(false)
-    else setIsVisible(true)
-  }
+  // EDIT Comment
+  const { triggerEditComment, editCommentError } = useEditComment()
 
-  useEffect(() => {
-    if (isVisible) setShowReplyInputClass('d-blobk')
-    else setShowReplyInputClass('d-none')
-  }, [isVisible])
-
-  const showReplies = () => {
-    if (repliesVisible) setRepliesVisible(false)
-    else setRepliesVisible(true)
-  }
-
-  useEffect(() => {
-    if (repliesVisible) setRepliesVisibleClass('d-block')
-    else setRepliesVisibleClass('d-none')
-  }, [repliesVisible])
-
-  const editBtnClick = () => {
-    if (isVisible) setIsVisible(false)
-    else setIsVisible(true)
+  const handleEditSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    try {
+      const result = await triggerEditComment(
+        {
+          editedComment: {
+            body: commentBody,
+            parentArticle: articleId,
+            commentId: comment._id,
+          },
+        } /* options */
+      )
+    } catch (e) {
+      // error handling
+      console.log(e)
+    }
   }
 
   return (
@@ -126,7 +117,12 @@ const Comment = ({
           <div className={page.btn_container}>
             {user && user._id === comment.user ? (
               <>
-                <button className={page.btn} onClick={editBtnClick}>
+                <button
+                  className={page.btn}
+                  onClick={() =>
+                    setEditCommentInputVisible(!editCommentInputVisible)
+                  }
+                >
                   <RiPencilLine />
                 </button>
                 <button className={page.btn}>
@@ -142,21 +138,27 @@ const Comment = ({
       </div>
       <div className={page.btn_container}>
         <button className={`${page.btn} ${page.comment_btn}`}>
-          <RiThumbUpLine className={page.icon} /> 287
+          <RiThumbUpLine className={page.icon} /> {comment.likes}
         </button>
         <button
           className={`${page.btn} ${page.comment_btn}`}
-          onClick={showReplies}
+          onClick={() => setRepliesVisible(!repliesVisible)}
         >
           <RiChat1Line className={page.icon} /> 198
         </button>
-        <button onClick={showReplyInput} className={page.btn}>
+        <button
+          onClick={() => setReplyInputVisible(!replyInputVisible)}
+          className={page.btn}
+        >
           <RiMessage3Line className={page.icon} />
         </button>
       </div>
+      {/* Reply input form */}
       <form
-        onSubmit={handleSubmit}
-        className={`${page.reply_input} ${showReplyInputClass}`}
+        onSubmit={handleReplySubmit}
+        className={`${page.reply_input} ${
+          replyInputVisible ? 'd-block' : 'd-none'
+        }`}
       >
         <textarea
           onChange={e => setReplyBody(e.target.value)}
@@ -164,8 +166,24 @@ const Comment = ({
         />
         <button type='submit'>Post</button>
       </form>
+      {/* Edit comment form */}
+      <form
+        onSubmit={handleEditSubmit}
+        className={`${page.reply_input} ${
+          editCommentInputVisible ? 'd-block' : 'd-none'
+        }`}
+      >
+        <textarea
+          value={commentBody}
+          onChange={e => setCommentBody(e.target.value)}
+          placeholder='Write your reply...'
+        />
+        <button type='submit'>Post</button>
+      </form>
       {/* Child comments */}
-      <div className={`${page.replies} ${repliesVisibleClass}`}>
+      <div
+        className={`${page.replies} ${repliesVisible ? 'd-block' : 'd-none'}`}
+      >
         {list}
         <button
           onClick={() => setCount(count + 1)}

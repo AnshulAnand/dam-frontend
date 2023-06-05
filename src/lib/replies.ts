@@ -1,6 +1,7 @@
 'use client'
 
 import useSWR from 'swr'
+import useSWRMutation from 'swr/mutation'
 
 // GET Comments
 async function getReplies(url: string) {
@@ -23,7 +24,7 @@ export function useReplies(page: number, articleId: string, commentId: string) {
 }
 
 // POST Reply
-export async function postReply(url: string, { arg }: { arg: { reply: any } }) {
+async function postReply(url: string, { arg }: { arg: { reply: any } }) {
   const res = await fetch(url, {
     method: 'POST',
     credentials: 'include',
@@ -39,4 +40,46 @@ export async function postReply(url: string, { arg }: { arg: { reply: any } }) {
     throw error
   }
   return res.json()
+}
+
+export function usePostReply() {
+  const { trigger, isMutating, data, error } = useSWRMutation(
+    'http://localhost:5000/replies',
+    postReply /* options */
+  )
+
+  return {
+    triggerPostReply: trigger,
+    postReplyError: error,
+  }
+}
+
+// EDIT Reply
+async function editReply(url: string, { arg }: { arg: { editedReply: any } }) {
+  const res = await fetch(url, {
+    method: 'PATCH',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(arg.editedReply),
+  })
+  if (!res.ok) {
+    const error: any = new Error('An error occurred while fetching the data.')
+    error.info = await res.json()
+    error.status = res.status
+    throw error
+  }
+  return res.json()
+}
+
+export function useEditReply() {
+  const { trigger, isMutating, data, error } = useSWRMutation(
+    'http://localhost:5000/replies',
+    editReply /* options */
+  )
+  return {
+    triggerEditReply: trigger,
+    editReplyError: error,
+  }
 }

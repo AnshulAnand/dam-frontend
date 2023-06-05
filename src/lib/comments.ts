@@ -1,6 +1,7 @@
 'use client'
 
 import useSWR from 'swr'
+import useSWRMutation from 'swr/mutation'
 
 // GET Comments
 async function getComments(url: string) {
@@ -23,10 +24,7 @@ export function useComments(page: number, articleId: string) {
 }
 
 // POST Comment
-export async function postComment(
-  url: string,
-  { arg }: { arg: { comment: any } }
-) {
+async function postComment(url: string, { arg }: { arg: { comment: any } }) {
   const res = await fetch(url, {
     method: 'POST',
     credentials: 'include',
@@ -42,4 +40,78 @@ export async function postComment(
     throw error
   }
   return res.json()
+}
+
+export function usePostComment() {
+  const { trigger, isMutating, data, error } = useSWRMutation(
+    'http://localhost:5000/comments',
+    postComment /* options */
+  )
+  return {
+    triggerPostComment: trigger,
+    postCommentError: error,
+  }
+}
+
+// EDIT Comment
+async function editComment(
+  url: string,
+  { arg }: { arg: { editedComment: any } }
+) {
+  const res = await fetch(url, {
+    method: 'PATCH',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(arg.editedComment),
+  })
+  if (!res.ok) {
+    const error: any = new Error('An error occurred while fetching the data.')
+    error.info = await res.json()
+    error.status = res.status
+    throw error
+  }
+  return res.json()
+}
+
+export function useEditComment() {
+  const { trigger, isMutating, data, error } = useSWRMutation(
+    'http://localhost:5000/comments',
+    editComment /* options */
+  )
+  return {
+    triggerEditComment: trigger,
+    editCommentError: error,
+  }
+}
+
+// LIKE Comment
+async function likeComment(url: string, { arg }: { arg: { commentId: any } }) {
+  const res = await fetch(url, {
+    method: 'POST',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(arg.commentId),
+  })
+  if (!res.ok) {
+    const error: any = new Error('An error occurred while fetching the data.')
+    error.info = await res.json()
+    error.status = res.status
+    throw error
+  }
+  return res.json()
+}
+
+export function useLikeComment() {
+  const { trigger, isMutating, data, error } = useSWRMutation(
+    'http://localhost:5000/comments/like',
+    editComment /* options */
+  )
+  return {
+    triggerLikeComment: trigger,
+    likeCommentError: error,
+  }
 }

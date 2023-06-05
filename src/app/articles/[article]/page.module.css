@@ -176,8 +176,8 @@
 }
 
 .comment_parent {
-   margin-block: 1rem; 
-   padding-inline: var(--gap); 
+  margin-block: 1rem;
+  padding-inline: var(--gap);
 }
 
 .replies {
@@ -186,20 +186,13 @@
 }
 
 .reply {
-  /* background-color: var(--transparent-dark-color); */
   padding-block: 1rem;
-  /* padding-inline: var(--gap); */
   padding-left: 3rem;
+  border-top: 1px solid #333;
 }
-
-/* .reply_input {
-  display: none;
-} */
 
 .btn_container {
   display: flex;
-  /* gap: 1rem; */
-  /* border: 1px solid black; */
 }
 
 .controls {
@@ -265,7 +258,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  /* margin-right: 10px; */
   cursor: pointer;
   padding: 1.5rem;
   border-radius: 50%;

@@ -6,12 +6,11 @@ import {
   RiDeleteBinLine,
   RiMessage3Line,
 } from 'react-icons/ri'
-import React, { useState, useEffect } from 'react'
+import { useState } from 'react'
 import useCurrentUser from '@/lib/user'
-import { postReply } from '@/lib/replies'
+import { usePostReply, useEditReply } from '@/lib/replies'
 import page from '@/app/articles/[article]/page.module.css'
 import Profile from './Profile'
-import useSWRMutation from 'swr/mutation'
 
 function Reply({
   reply,
@@ -22,17 +21,16 @@ function Reply({
   articleId: string
   commentId: string
 }) {
-  const { trigger, isMutating, data, error } = useSWRMutation(
-    'http://localhost:5000/replies',
-    postReply /* options */
-  )
-
   const [replyBody, setReplyBody] = useState('')
+  const [editedReplyBody, setEditedReplyBody] = useState(reply.body)
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  // POST Reply
+  const { triggerPostReply, postReplyError } = usePostReply()
+
+  const handleReplySubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     try {
-      const result = await trigger(
+      const result = await triggerPostReply(
         {
           reply: {
             body: replyBody,
@@ -41,8 +39,28 @@ function Reply({
           },
         } /* options */
       )
-      console.log({ data })
-      console.log({ result })
+    } catch (e) {
+      // error handling
+      console.log(e)
+    }
+  }
+
+  // EDIT Reply
+  const { triggerEditReply, editReplyError } = useEditReply()
+
+  const handleEditSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    try {
+      const result = await triggerEditReply(
+        {
+          editedReply: {
+            body: editedReplyBody,
+            parentArticle: articleId,
+            parentComment: commentId,
+            replyId: reply._id,
+          },
+        } /* options */
+      )
     } catch (e) {
       // error handling
       console.log(e)
@@ -51,18 +69,8 @@ function Reply({
 
   const { user, isLoading, isError } = useCurrentUser()
 
-  const [isVisible, setIsVisible] = useState(false)
-  const [showReplyInputClass, setShowReplyInputClass] = useState('d-none')
-
-  const showReplyInput = () => {
-    if (isVisible) setIsVisible(false)
-    else setIsVisible(true)
-  }
-
-  useEffect(() => {
-    if (isVisible) setShowReplyInputClass('d-blobk')
-    else setShowReplyInputClass('d-none')
-  }, [isVisible])
+  const [replyInputVisible, setReplyInputVisible] = useState(false)
+  const [editReplyInputVisible, setEditReplyInputVisible] = useState(false)
 
   return (
     <div className={page.reply}>
@@ -76,7 +84,10 @@ function Reply({
         <div className={page.btn_container}>
           {user && user._id === reply.user ? (
             <>
-              <button className={page.btn}>
+              <button
+                className={page.btn}
+                onClick={() => setEditReplyInputVisible(!editReplyInputVisible)}
+              >
                 <RiPencilLine />
               </button>
               <button className={page.btn}>
@@ -91,18 +102,38 @@ function Reply({
       <p>{reply.body}</p>
       <div className={page.btn_container}>
         <button className={`${page.btn} ${page.comment_btn}`}>
-          <RiThumbUpLine className={page.icon} /> 176
+          <RiThumbUpLine className={page.icon} /> {reply.likes}
         </button>
-        <button onClick={showReplyInput} className={page.btn}>
+        <button
+          onClick={() => setReplyInputVisible(!replyInputVisible)}
+          className={page.btn}
+        >
           <RiMessage3Line className={page.icon} />
         </button>
       </div>
+      {/* POST Reply */}
       <form
-        onSubmit={handleSubmit}
-        className={`${page.reply_input} ${showReplyInputClass}`}
+        onSubmit={handleReplySubmit}
+        className={`${page.reply_input} ${
+          replyInputVisible ? 'd-block' : 'd-none'
+        }`}
       >
         <textarea
           onChange={e => setReplyBody(e.target.value)}
+          placeholder='Write your reply...'
+        />
+        <button type='submit'>Post</button>
+      </form>
+      {/* EDIT Reply */}
+      <form
+        onSubmit={handleEditSubmit}
+        className={`${page.reply_input} ${
+          editReplyInputVisible ? 'd-block' : 'd-none'
+        }`}
+      >
+        <textarea
+          value={editedReplyBody}
+          onChange={e => setEditedReplyBody(e.target.value)}
           placeholder='Write your reply...'
         />
         <button type='submit'>Post</button>
