@@ -8,7 +8,7 @@ import {
 } from 'react-icons/ri'
 import { useState } from 'react'
 import useCurrentUser from '@/lib/user'
-import { usePostReply, useEditReply } from '@/lib/replies'
+import { usePostReply, useEditReply, useDeleteReply } from '@/lib/replies'
 import page from '@/app/articles/[article]/page.module.css'
 import Profile from './Profile'
 
@@ -23,6 +23,11 @@ function Reply({
 }) {
   const [replyBody, setReplyBody] = useState('')
   const [editedReplyBody, setEditedReplyBody] = useState(reply.body)
+
+  const handleEditBtnClick = () => {
+    setEditedReplyBody(reply.body)
+    setEditReplyInputVisible(!editReplyInputVisible)
+  }
 
   // POST Reply
   const { triggerPostReply, postReplyError } = usePostReply()
@@ -67,6 +72,24 @@ function Reply({
     }
   }
 
+  // DELETE Reply
+  const { triggerDeleteReply, deleteReplyError } = useDeleteReply()
+
+  const handleDeleteSubmit = async () => {
+    try {
+      const result = await triggerDeleteReply(
+        {
+          body: {
+            replyId: reply._id,
+          },
+        } /* options */
+      )
+    } catch (e) {
+      // error handling
+      console.log(e)
+    }
+  }
+
   const { user, isLoading, isError } = useCurrentUser()
 
   const [replyInputVisible, setReplyInputVisible] = useState(false)
@@ -84,13 +107,10 @@ function Reply({
         <div className={page.btn_container}>
           {user && user._id === reply.user ? (
             <>
-              <button
-                className={page.btn}
-                onClick={() => setEditReplyInputVisible(!editReplyInputVisible)}
-              >
+              <button className={page.btn} onClick={handleEditBtnClick}>
                 <RiPencilLine />
               </button>
-              <button className={page.btn}>
+              <button className={page.btn} onClick={handleDeleteSubmit}>
                 <RiDeleteBinLine />
               </button>
             </>

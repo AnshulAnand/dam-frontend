@@ -1,5 +1,3 @@
-import { FC } from 'react'
-import Link from 'next/link'
 import page from './page.module.css'
 import returnDate from '@/utils/returnDate'
 import ProfileEditBtn from '@/components/ProfileEditBtn'
@@ -12,30 +10,15 @@ import {
   RiFileList3Line,
 } from 'react-icons/ri'
 
-interface PageProps {
-  params: { userId: string }
-}
-
-async function getCurrentUser() {
-  const res = await fetch('http://localhost:5000/users/current', { credentials: 'include' })
-  return res.json()
-}
-
 async function getUserByUsername(username: string) {
   const res = await fetch(`http://localhost:5000/users/username/${username}`)
   return res.json()
 }
 
-const Profile: FC<PageProps> = async ({ params }) => {
-  const currentUser = await getCurrentUser()
+const Profile = async ({ params }: { params: { userId: string } }) => {
   const user = await getUserByUsername(params.userId.replace('%40', ''))
-  console.log({ user })
-  console.log({currentUser})
 
-  if (!user) {
-    console.log({ message: 'No user found' })
-    return
-  }
+  if (!user) console.log({ message: 'No user found' })
 
   return (
     <section className={page.section}>
@@ -44,12 +27,12 @@ const Profile: FC<PageProps> = async ({ params }) => {
           <img src={user.image} alt='' />
           <div className={page.user_data}>
             <div className={page.user_name}>
-              <h1>{user.name} (@{user.username})</h1>
+              <h1>
+                {user.name} (@{user.username})
+              </h1>
             </div>
             <div className={page.user_bio}>
-              <p>
-                {user.bio}
-              </p>
+              <p>{user.bio}</p>
             </div>
             <div className={page.user_info}>
               <div>
@@ -71,11 +54,11 @@ const Profile: FC<PageProps> = async ({ params }) => {
                 {user.link}
               </a>
             </div>
-            <ProfileEditBtn user={user} />
+            <ProfileEditBtn visitor={user} />
           </div>
         </main>
         <div className={page.user_articles}>
-          <UserProfileArticles />          
+          <UserProfileArticles />
         </div>
       </div>
     </section>

@@ -83,3 +83,33 @@ export function useEditReply() {
     editReplyError: error,
   }
 }
+
+// Delete Reply
+async function deleteReply(url: string, { arg }: { arg: { body: any } }) {
+  const res = await fetch(url, {
+    method: 'DELETE',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(arg.body),
+  })
+  if (!res.ok) {
+    const error: any = new Error('An error occurred while fetching the data.')
+    error.info = await res.json()
+    error.status = res.status
+    throw error
+  }
+  return res.json()
+}
+
+export function useDeleteReply() {
+  const { trigger, isMutating, data, error } = useSWRMutation(
+    'http://localhost:5000/replies',
+    deleteReply /* options */
+  )
+  return {
+    triggerDeleteReply: trigger,
+    deleteReplyError: error,
+  }
+}

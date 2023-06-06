@@ -159,6 +159,20 @@ body.light-theme {
   color: var(--light-color);
 }
 
+.skeleton {
+  background-color: rgb(199, 199, 199);
+}
+
+.animate-pulse {
+  animation: pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  50% {
+    opacity: 0.5;
+  }
+}
+
 /* Header */
 .header {
   background-color: var(--secondary-background-color);

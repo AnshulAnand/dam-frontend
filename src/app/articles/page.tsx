@@ -2,6 +2,7 @@
 
 import page from './page.module.css'
 import Article from '@/components/Article'
+import ArticleSkeleton from '@/components/skeleton-loading/Article'
 import { useState } from 'react'
 import useSWR from 'swr'
 
@@ -26,7 +27,16 @@ function useArticles(page: number) {
 
 function FetchArticles({ page }: { page: number }) {
   const { data, isLoading, isError } = useArticles(page)
-  if (isLoading) return <h1>loading...</h1>
+  if (isLoading) {
+    return (
+      <>
+        <ArticleSkeleton />
+        <ArticleSkeleton />
+        <ArticleSkeleton />
+        <ArticleSkeleton />
+      </>
+    )
+  }
   if (isError) return <h1>error...</h1>
   return data.results.map((article: any, i: number) => (
     <Article article={article} key={i} />

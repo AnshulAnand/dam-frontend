@@ -11,7 +11,7 @@ import { useState } from 'react'
 import useCurrentUser from '@/lib/user'
 import { useReplies } from '@/lib/replies'
 import { usePostReply } from '@/lib/replies'
-import { useEditComment } from '@/lib/comments'
+import { useEditComment, useDeleteComment } from '@/lib/comments'
 import page from '@/app/articles/[article]/page.module.css'
 import Profile from './Profile'
 import Reply from './Reply'
@@ -61,6 +61,11 @@ const Comment = ({
     )
   }
 
+  const handleEditBtnClick = () => {
+    setCommentBody(comment.body)
+    setEditCommentInputVisible(!editCommentInputVisible)
+  }
+
   // POST Reply
   const { triggerPostReply, postReplyError } = usePostReply()
 
@@ -103,6 +108,21 @@ const Comment = ({
     }
   }
 
+  // DELETE Comment
+  const { triggerDeleteComment, deleteCommentError } = useDeleteComment()
+  const handleDeleteBtnClick = async () => {
+    try {
+      const result = await triggerDeleteComment({
+        body: {
+          commentId: comment._id,
+        },
+      })
+    } catch (e) {
+      // error handling
+      console.log(e)
+    }
+  }
+
   return (
     <div className={page.comment}>
       {/* Parent comment */}
@@ -117,15 +137,10 @@ const Comment = ({
           <div className={page.btn_container}>
             {user && user._id === comment.user ? (
               <>
-                <button
-                  className={page.btn}
-                  onClick={() =>
-                    setEditCommentInputVisible(!editCommentInputVisible)
-                  }
-                >
+                <button className={page.btn} onClick={handleEditBtnClick}>
                   <RiPencilLine />
                 </button>
-                <button className={page.btn}>
+                <button className={page.btn} onClick={handleDeleteBtnClick}>
                   <RiDeleteBinLine />
                 </button>
               </>

@@ -1,42 +1,21 @@
 'use client'
-import useSWR from 'swr'
 import Link from 'next/link'
+import useCurrentUser from '@/lib/user'
 import page from '@/app/[userId]/page.module.css'
 
-const fetcher = async (url: string) => {
-  const res = await fetch(url, { credentials: "include" })
-  if (!res.ok) {
-    const error: any = new Error('An error occurred while fetching the data.')
-    error.info = await res.json()
-    error.status = res.status
-    throw error
-  }
-  return res.json()
-}
+export default function ProfileEditBtn({ visitor }: { visitor: any }) {
+  const { user, isLoading, isError } = useCurrentUser()
+  if (isError) console.log({ isError })
 
-function useCurrentUser() {
-  const { data, error, isLoading } = useSWR(
-    'http://localhost:5000/users/current',
-    fetcher
-  )
-  return { data, isLoading, isError: error }
-}
-
-function ProfileEditBtn({ user }: { user: any }) {
-  const { data, isLoading, isError } = useCurrentUser()
-  if (isError) console.log({isError})
-  console.log(data)
-
-if (!user || !data) {
-	console.log('user or data not found')
-	return
-}
+  if (!visitor || !user) console.log('user not found')
 
   return (
-  	<div>
-  	  {user._id === data._id && (<Link className={page.profile_edit} href='/edit-profile'>Edit Profile</Link>)}  		
-  	</div>
-  	)
+    <div>
+      {visitor && user && visitor._id === user._id && (
+        <Link className={page.profile_edit} href='/edit-profile'>
+          Edit Profile
+        </Link>
+      )}
+    </div>
+  )
 }
-
-export default ProfileEditBtn

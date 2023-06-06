@@ -1,4 +1,5 @@
 'use client'
+import UserArticleSkeleton from './skeleton-loading/UserProfileArticle'
 import page from '@/app/[userId]/page.module.css'
 import { useState } from 'react'
 import Link from 'next/link'
@@ -25,7 +26,14 @@ function useArticles(page: number) {
 
 function FetchArticles({ pageNumber }: { pageNumber: number }) {
   const { data, isLoading, isError } = useArticles(pageNumber)
-  if (isLoading) return <h1>loading...</h1>
+  if (isLoading)
+    return (
+      <>
+        <UserArticleSkeleton />
+        <UserArticleSkeleton />
+        <UserArticleSkeleton />
+      </>
+    )
   if (isError) return <h1>error...</h1>
   return data.results.map((article: any, i: number) => (
     <Link key={i} href={`/articles/${article.url}`} className={page.article}>

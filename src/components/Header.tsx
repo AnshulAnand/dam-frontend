@@ -13,7 +13,6 @@ import { useState, useEffect, useRef } from 'react'
 
 function Header() {
   const { user, isLoading, isError } = useCurrentUser()
-  if (isError) console.log({ isError })
 
   const [lightTheme, setLightTheme] = useState(false)
   useEffect(
