@@ -15,6 +15,7 @@ import { useEditComment, useDeleteComment } from '@/lib/comments'
 import page from '@/app/articles/[article]/page.module.css'
 import Profile from './Profile'
 import Reply from './Reply'
+import CommentLoading from './skeleton-loading/Comment'
 
 function FetchReplies({
   page,
@@ -26,7 +27,14 @@ function FetchReplies({
   commentId: string
 }) {
   const { replies, isLoading, isError } = useReplies(page, articleId, commentId)
-  if (isLoading) return <h1>loading...</h1>
+  if (isLoading)
+    return (
+      <>
+        <CommentLoading />
+        <CommentLoading />
+        <CommentLoading />
+      </>
+    )
   if (isError) return <h1>error...</h1>
   return replies.map((reply: any, i: number) => (
     <Reply reply={reply} articleId={articleId} commentId={commentId} key={i} />

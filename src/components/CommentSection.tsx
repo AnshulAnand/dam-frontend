@@ -12,6 +12,7 @@ import page from '@/app/articles/[article]/page.module.css'
 import { useComments, usePostComment } from '@/lib/comments'
 import { useLikeArticle } from '@/lib/article'
 import Comment from './Comment'
+import CommentLoading from './skeleton-loading/Comment'
 
 function FetchComments({
   page,
@@ -21,7 +22,14 @@ function FetchComments({
   articleId: string
 }) {
   const { comments, isLoading, isError } = useComments(page, articleId)
-  if (isLoading) return <h1>loading...</h1>
+  if (isLoading)
+    return (
+      <>
+        <CommentLoading />
+        <CommentLoading />
+        <CommentLoading />
+      </>
+    )
   if (isError) return <h1>error...</h1>
   return comments.map((comment: any, i: number) => (
     <Comment comment={comment} articleId={articleId} key={i} />

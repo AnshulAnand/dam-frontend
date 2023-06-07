@@ -4,8 +4,9 @@ import Link from 'next/link'
 import page from '@/app/articles/page.module.css'
 import returnDate from '@/utils/returnDate'
 import readingTime from '@/utils/readingTime'
+import { IArticle } from '../../types'
 
-export default function Article({ article }: { article: any }) {
+export default function Article({ article }: { article: IArticle }) {
   return (
     <Link href={`/articles/${article.url}`} className={page.article}>
       <img src={`${article.image}`} alt='' className='article-image' />

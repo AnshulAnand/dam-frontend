@@ -12,7 +12,7 @@ import { usePostReply, useEditReply, useDeleteReply } from '@/lib/replies'
 import page from '@/app/articles/[article]/page.module.css'
 import Profile from './Profile'
 
-function Reply({
+export default function Reply({
   reply,
   articleId,
   commentId,
@@ -161,5 +161,3 @@ function Reply({
     </div>
   )
 }
-
-export default Reply

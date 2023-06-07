@@ -167,7 +167,12 @@
 }
 
 .comments::-webkit-scrollbar {
-  width: 5px;
+  display: none;
+}
+
+.comments {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 .comment {

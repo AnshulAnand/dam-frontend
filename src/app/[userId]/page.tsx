@@ -9,6 +9,7 @@ import {
   RiEyeLine,
   RiFileList3Line,
 } from 'react-icons/ri'
+import { IUser } from '../../../types'
 
 async function getUserByUsername(username: string) {
   const res = await fetch(`http://localhost:5000/users/username/${username}`)
@@ -16,7 +17,7 @@ async function getUserByUsername(username: string) {
 }
 
 const Profile = async ({ params }: { params: { userId: string } }) => {
-  const user = await getUserByUsername(params.userId.replace('%40', ''))
+  const user: IUser = await getUserByUsername(params.userId.replace('%40', ''))
 
   if (!user) console.log({ message: 'No user found' })
 

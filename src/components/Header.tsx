@@ -8,8 +8,9 @@ import {
   RiCloseLine,
 } from 'react-icons/ri'
 import Link from 'next/link'
+import SearchBox from './Search'
 import useCurrentUser from '@/lib/user'
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 
 function Header() {
   const { user, isLoading, isError } = useCurrentUser()
@@ -19,13 +20,9 @@ function Header() {
     () => setLightTheme(localStorage.getItem('damLightTheme') === 'active'),
     []
   )
+  const [searchOpen, setSearchOpen] = useState(false)
   const [sunIconDisplay, setSunIconDisplay] = useState('d-block')
   const [moonIconDisplay, setMoonIconDisplay] = useState('d-none')
-  const searchInput = useRef<HTMLInputElement>(null)
-  const [searchStatus, setSerachStatus] = useState(false)
-  const [searchFormClass, setSearchFormClass] = useState(
-    'search-form-container container'
-  )
   const [toggle, setToggle] = useState(false)
   const [toggleHeaderClass, setToggleHeaderClass] = useState('header')
   const [toggleMenuClass, setToggleMenuClass] = useState(
@@ -48,28 +45,6 @@ function Header() {
     }
   }
 
-  const handleSearchOpen = () => {
-    if (!searchStatus) {
-      setSerachStatus(true)
-      searchInput.current?.focus()
-    } else {
-      setSerachStatus(false)
-    }
-  }
-
-  const handleSearchClose = () => {
-    if (searchStatus) setSerachStatus(false)
-    else setSerachStatus(true)
-  }
-
-  useEffect(() => {
-    const onESC = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setSerachStatus(false)
-    }
-    window.addEventListener('keyup', onESC, false)
-    return () => window.addEventListener('keyup', onESC, false)
-  }, [])
-
   useEffect(() => {
     if (toggle) {
       setToggleHeaderClass('header activated')
@@ -87,12 +62,6 @@ function Header() {
   }, [toggle])
 
   useEffect(() => {
-    if (searchStatus)
-      setSearchFormClass('search-form-container container activated')
-    else setSearchFormClass('search-form-container container')
-  }, [searchStatus])
-
-  useEffect(() => {
     if (lightTheme) {
       document.body.classList.add('light-theme')
       setMoonIconDisplay('d-block')
@@ -103,6 +72,14 @@ function Header() {
       setSunIconDisplay('d-block')
     }
   }, [lightTheme])
+
+  useEffect(() => {
+    const onESC = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setSearchOpen(false)
+    }
+    window.addEventListener('keyup', onESC, false)
+    return () => window.addEventListener('keyup', onESC, false)
+  }, [])
 
   return (
     <>
@@ -189,7 +166,7 @@ function Header() {
             </button>
 
             <button
-              onClick={handleSearchOpen}
+              onClick={() => setSearchOpen(!searchOpen)}
               className='btn place-items-center'
             >
               <RiSearchLine className='icon' />
@@ -229,29 +206,8 @@ function Header() {
         </nav>
       </header>
 
-      <div className={searchFormClass}>
-        <div className='form-container-inner'>
-          <form className='form'>
-            <input
-              ref={searchInput}
-              className='form-input'
-              type='text'
-              placeholder='What are you looking for?'
-            />
-            <button className='btn form-btn' type='submit'>
-              <RiSearchLine className='icon' />
-            </button>
-          </form>
-          <span className='form-note'>Or press ESC to close.</span>
-        </div>
-
-        <button
-          onClick={handleSearchClose}
-          className='btn form-close-btn place-items-center'
-        >
-          <RiCloseLine className='icon' />
-        </button>
-      </div>
+      {/* Search Box */}
+      <SearchBox searchOpen={searchOpen} setSearchOpen={setSearchOpen} />
     </>
   )
 }

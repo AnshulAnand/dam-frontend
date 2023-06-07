@@ -6,6 +6,7 @@ import UserArticles from '@/components/UserArticles'
 import returnDate from '@/utils/returnDate'
 import readingTime from '@/utils/readingTime'
 import { RiEyeLine } from 'react-icons/ri'
+import { IArticle } from '../../../../types'
 
 async function getArticle(article: string) {
   const res = await fetch(`http://localhost:5000/articles/${article}`)
@@ -13,8 +14,7 @@ async function getArticle(article: string) {
 }
 
 const Article = async ({ params }: { params: { article: string } }) => {
-  const article = await getArticle(params.article)
-  console.log(article)
+  const article: IArticle = await getArticle(params.article)
 
   return (
     <section className={`container ${page.section}`}>
