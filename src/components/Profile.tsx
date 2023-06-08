@@ -1,5 +1,6 @@
 'use client'
 
+import ProfileSkeleton from './skeleton-loading/Profile'
 import Link from 'next/link'
 import useSWR from 'swr'
 
@@ -40,10 +41,8 @@ export default function Profile({
 }) {
   const { user, isLoading, isError } = useUser(userId)
 
-  if (isLoading) return <h1>loading...</h1>
+  if (isLoading) return <ProfileSkeleton />
   if (isError) return <h1>error...</h1>
-
-  console.log(user)
 
   return (
     <Link href={`/@${user.username}`} className='profile'>
