@@ -35,6 +35,7 @@ const Article = async ({ params }: { params: { article: string } }) => {
               width={50}
               height={50}
               forArticle={true}
+              commentUserId={null}
             />
             <div className={page.article_info}>
               <span>{returnDate(article)}</span>

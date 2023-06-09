@@ -12,66 +12,28 @@ import SearchBox from './Search'
 import useCurrentUser from '@/lib/user'
 import { useState, useEffect } from 'react'
 
-function Header() {
+export default function Header() {
   const { user, isLoading, isError } = useCurrentUser()
 
-  const [lightTheme, setLightTheme] = useState(false)
-  useEffect(
-    () => setLightTheme(localStorage.getItem('damLightTheme') === 'active'),
-    []
-  )
   const [searchOpen, setSearchOpen] = useState(false)
   const [sunIconDisplay, setSunIconDisplay] = useState('d-block')
   const [moonIconDisplay, setMoonIconDisplay] = useState('d-none')
   const [toggle, setToggle] = useState(false)
-  const [toggleHeaderClass, setToggleHeaderClass] = useState('header')
-  const [toggleMenuClass, setToggleMenuClass] = useState(
-    'btn place-items-center screen-lg-hidden menu-toggle-icon'
-  )
-  const [toggleMenuIconClass, setToggleMenuIconClass] = useState(
-    'btn place-items-center screen-lg-hidden menu-toggle-icon'
-  )
-
-  const handleMenuClick = () => setToggle(!toggle)
 
   const handleThemeClick = () => {
     const theme = localStorage.getItem('damLightTheme')
     if (!theme) {
       localStorage.setItem('damLightTheme', 'active')
-      setLightTheme(true)
-    } else {
-      localStorage.removeItem('damLightTheme')
-      setLightTheme(false)
-    }
-  }
-
-  useEffect(() => {
-    if (toggle) {
-      setToggleHeaderClass('header activated')
-      setToggleMenuClass('menu activated')
-      setToggleMenuIconClass(
-        'btn place-items-center screen-lg-hidden menu-toggle-icon activated'
-      )
-    } else {
-      setToggleHeaderClass('header')
-      setToggleMenuClass('menu')
-      setToggleMenuIconClass(
-        'btn place-items-center screen-lg-hidden menu-toggle-icon'
-      )
-    }
-  }, [toggle])
-
-  useEffect(() => {
-    if (lightTheme) {
       document.body.classList.add('light-theme')
       setMoonIconDisplay('d-block')
       setSunIconDisplay('d-none')
     } else {
+      localStorage.removeItem('damLightTheme')
       document.body.classList.remove('light-theme')
       setMoonIconDisplay('d-none')
       setSunIconDisplay('d-block')
     }
-  }, [lightTheme])
+  }
 
   useEffect(() => {
     const onESC = (e: KeyboardEvent) => {
@@ -83,13 +45,13 @@ function Header() {
 
   return (
     <>
-      <header className={toggleHeaderClass}>
+      <header className={`header ${toggle ? 'activated' : ''}`}>
         <nav className='navbar container'>
           <Link href='/'>
             <h2 className='logo'>DAM</h2>
           </Link>
 
-          <div className={toggleMenuClass}>
+          <div className={`menu ${toggle ? 'activated' : ''}`}>
             <ul className='list'>
               <li className='list-item'>
                 <Link href='/' className='list-link current'>
@@ -172,7 +134,12 @@ function Header() {
               <RiSearchLine className='icon' />
             </button>
 
-            <button onClick={handleMenuClick} className={toggleMenuIconClass}>
+            <button
+              onClick={() => setToggle(!toggle)}
+              className={`btn place-items-center screen-lg-hidden menu-toggle-icon ${
+                toggle ? 'activated' : ''
+              }`}
+            >
               <RiMenu3Line className='icon open-menu-icon' />
               <RiCloseLine className='icon close-menu-icon' />
             </button>
@@ -211,5 +178,3 @@ function Header() {
     </>
   )
 }
-
-export default Header

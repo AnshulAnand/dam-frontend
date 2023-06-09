@@ -103,6 +103,7 @@ export default function Reply({
           width={40}
           height={40}
           forArticle={false}
+          commentUserId={reply._id}
         />
         <div className={page.btn_container}>
           {user && user._id === reply.user ? (

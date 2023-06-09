@@ -1,4 +1,3 @@
-'use client'
 import Link from 'next/link'
 import useCurrentUser from '@/lib/user'
 import page from '@/app/[userId]/page.module.css'

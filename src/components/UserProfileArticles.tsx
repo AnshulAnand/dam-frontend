@@ -1,31 +1,12 @@
 'use client'
 import UserArticleSkeleton from './skeleton-loading/UserProfileArticle'
 import page from '@/app/[userId]/page.module.css'
+import { useUserArticles } from '@/lib/article'
 import { useState } from 'react'
 import Link from 'next/link'
-import useSWR from 'swr'
-
-const fetcher = async (url: string) => {
-  const res = await fetch(url)
-  if (!res.ok) {
-    const error: any = new Error('An error occurred while fetching the data.')
-    error.info = await res.json()
-    error.status = res.status
-    throw error
-  }
-  return res.json()
-}
-
-function useArticles(page: number) {
-  const { data, error, isLoading } = useSWR(
-    `http://localhost:5000/articles?page=${page}&limit=${4}`,
-    fetcher
-  )
-  return { data, isLoading, isError: error }
-}
 
 function FetchArticles({ pageNumber }: { pageNumber: number }) {
-  const { data, isLoading, isError } = useArticles(pageNumber)
+  const { userArticles, isLoading, isError } = useUserArticles(pageNumber)
   if (isLoading)
     return (
       <>
@@ -35,7 +16,7 @@ function FetchArticles({ pageNumber }: { pageNumber: number }) {
       </>
     )
   if (isError) return <h1>error...</h1>
-  return data.results.map((article: any, i: number) => (
+  return userArticles.map((article: any, i: number) => (
     <Link key={i} href={`/articles/${article.url}`} className={page.article}>
       <img src={article.image} alt='' className='article-image' />
       <span className='article-category'>{article.tags[0]}</span>
@@ -51,7 +32,7 @@ function FetchArticles({ pageNumber }: { pageNumber: number }) {
   ))
 }
 
-function UserProfileArticles() {
+export default function UserProfileArticles() {
   const [count, setCount] = useState(1)
 
   let list: any = []
@@ -71,5 +52,3 @@ function UserProfileArticles() {
     </>
   )
 }
-
-export default UserProfileArticles

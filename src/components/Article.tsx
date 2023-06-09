@@ -1,5 +1,3 @@
-'use client'
-
 import Link from 'next/link'
 import page from '@/app/articles/page.module.css'
 import returnDate from '@/utils/returnDate'

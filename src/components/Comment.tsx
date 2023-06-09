@@ -141,6 +141,7 @@ const Comment = ({
             width={40}
             height={40}
             forArticle={false}
+            commentUserId={comment._id}
           />
           <div className={page.btn_container}>
             {user && user._id === comment.user ? (

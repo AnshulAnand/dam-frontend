@@ -17,8 +17,8 @@ function SearchBox({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    push(`/articles/search?searchText=${searchText}`)
     setSearchOpen(false)
+    push(`/articles/search?searchText=${searchText}`)
   }
 
   useEffect(() => searchInput.current?.focus())

@@ -1,45 +1,21 @@
-'use client'
-
 import ProfileSkeleton from './skeleton-loading/Profile'
 import Link from 'next/link'
-import useSWR from 'swr'
-
-const fetcher = async (url: string) => {
-  const res = await fetch(url)
-  if (!res.ok) {
-    const error: any = new Error('An error occurred while fetching the data.')
-    error.info = await res.json()
-    error.status = res.status
-    throw error
-  }
-  return res.json()
-}
-
-function useUser(id: string) {
-  const { data, error, isLoading } = useSWR(
-    `http://localhost:5000/users/id/${id}`,
-    fetcher
-  )
-
-  return {
-    user: data,
-    isLoading,
-    isError: error,
-  }
-}
+import { useUserById } from '@/lib/user'
 
 export default function Profile({
   userId,
   width,
   height,
   forArticle,
+  commentUserId,
 }: {
   userId: string
   width: number
   height: number
   forArticle: boolean
+  commentUserId: string | null
 }) {
-  const { user, isLoading, isError } = useUser(userId)
+  const { user, isLoading, isError } = useUserById(userId)
 
   if (isLoading) return <ProfileSkeleton />
   if (isError) return <h1>error...</h1>
@@ -60,7 +36,20 @@ export default function Profile({
       ) : (
         <div style={{ marginLeft: '50px' }}>
           <small>9th May 2023</small>
-          <small>{user.username}</small>
+          {userId === commentUserId ? (
+            <small
+              style={{
+                paddingInline: '7px',
+                borderRadius: '100px',
+                backgroundColor: 'gold',
+                color: 'black',
+              }}
+            >
+              {user.username}
+            </small>
+          ) : (
+            <small>{user.username}</small>
+          )}
         </div>
       )}
     </Link>

@@ -1,6 +1,27 @@
 'use client'
 
+import useSWR from 'swr'
 import useSWRMutation from 'swr/mutation'
+
+// GET User Articles
+async function fetchUserArticles(url: string) {
+  const res = await fetch(url)
+  if (!res.ok) {
+    const error: any = new Error('An error occurred while fetching the data.')
+    error.info = await res.json()
+    error.status = res.status
+    throw error
+  }
+  return res.json()
+}
+
+export function useUserArticles(page: number) {
+  const { data, error, isLoading } = useSWR(
+    `http://localhost:5000/articles?page=${page}&limit=${4}`,
+    fetchUserArticles
+  )
+  return { userArticles: data, isLoading, isError: error }
+}
 
 // LIKE Article
 async function likeArticle(url: string, { arg }: { arg: { body: any } }) {
