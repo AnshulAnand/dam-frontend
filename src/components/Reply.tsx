@@ -37,7 +37,7 @@ export default function Reply({
     try {
       const result = await triggerPostReply(
         {
-          reply: {
+          body: {
             body: replyBody,
             parentArticle: articleId,
             parentComment: commentId,
@@ -58,7 +58,7 @@ export default function Reply({
     try {
       const result = await triggerEditReply(
         {
-          editedReply: {
+          body: {
             body: editedReplyBody,
             parentArticle: articleId,
             parentComment: commentId,
@@ -103,6 +103,7 @@ export default function Reply({
           width={40}
           height={40}
           forArticle={false}
+          articleUserId={null}
           commentUserId={reply._id}
         />
         <div className={page.btn_container}>

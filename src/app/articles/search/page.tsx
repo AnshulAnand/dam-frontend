@@ -4,27 +4,8 @@ import page from '../page.module.css'
 import Article from '@/components/Article'
 import ArticleSkeleton from '@/components/skeleton-loading/Article'
 import { useState } from 'react'
-import useSWR from 'swr'
 import { IArticle } from '../../../../types'
-
-const fetcher = async (url: string) => {
-  const res = await fetch(url)
-  if (!res.ok) {
-    const error: any = new Error('An error occurred while fetching the data.')
-    error.info = await res.json()
-    error.status = res.status
-    throw error
-  }
-  return res.json()
-}
-
-function useArticles(searchText: string, page: number) {
-  const { data, error, isLoading } = useSWR(
-    `http://localhost:5000/articles/search?category=text&body=${searchText}&page=${page}&limit=${4}`,
-    fetcher
-  )
-  return { data, isLoading, isError: error }
-}
+import { useSearchArticle } from '@/lib/article'
 
 function FetchArticles({
   searchText,
@@ -33,7 +14,7 @@ function FetchArticles({
   searchText: string
   page: number
 }) {
-  const { data, isLoading, isError } = useArticles(searchText, page)
+  const { data, isLoading, isError } = useSearchArticle(searchText, page)
   if (isLoading) {
     return (
       <>
@@ -55,7 +36,6 @@ export default function SearchedArticles({
 }: {
   searchParams: { searchText: string }
 }) {
-  console.log({ searchParams })
   const [count, setCount] = useState(1)
 
   let list: any = []

@@ -1,7 +1,3 @@
-import page from './page.module.css'
-import returnDate from '@/utils/returnDate'
-import ProfileEditBtn from '@/components/ProfileEditBtn'
-import UserProfileArticles from '@/components/UserProfileArticles'
 import {
   RiMapPinUserLine,
   RiLink,
@@ -9,15 +5,18 @@ import {
   RiEyeLine,
   RiFileList3Line,
 } from 'react-icons/ri'
+import { GET } from '@/utils/fetch'
+import returnDate from '@/utils/returnDate'
+import ProfileEditBtn from '@/components/ProfileEditBtn'
+import UserProfileArticles from '@/components/UserProfileArticles'
+import page from './page.module.css'
 import { IUser } from '../../../types'
 
-async function getUserByUsername(username: string) {
-  const res = await fetch(`http://localhost:5000/users/username/${username}`)
-  return res.json()
-}
-
 const Profile = async ({ params }: { params: { userId: string } }) => {
-  const user: IUser = await getUserByUsername(params.userId.replace('%40', ''))
+  const username = params.userId.replace('%40', '')
+  const user: IUser = await GET(
+    `http://localhost:5000/users/username/${username}`
+  )
 
   if (!user) console.log({ message: 'No user found' })
 
@@ -59,7 +58,7 @@ const Profile = async ({ params }: { params: { userId: string } }) => {
           </div>
         </main>
         <div className={page.user_articles}>
-          <UserProfileArticles />
+          <UserProfileArticles visitor={user} />
         </div>
       </div>
     </section>

@@ -1,51 +1,44 @@
 'use client'
 
+import { GET, POST } from '@/utils/fetch'
 import useSWR from 'swr'
 import useSWRMutation from 'swr/mutation'
 
-// GET User Articles
-async function fetchUserArticles(url: string) {
-  const res = await fetch(url)
-  if (!res.ok) {
-    const error: any = new Error('An error occurred while fetching the data.')
-    error.info = await res.json()
-    error.status = res.status
-    throw error
-  }
-  return res.json()
-}
-
-export function useUserArticles(page: number) {
+// GET articles
+export function useArticles(page: number) {
   const { data, error, isLoading } = useSWR(
     `http://localhost:5000/articles?page=${page}&limit=${4}`,
-    fetchUserArticles
+    GET
+  )
+  return { data, isLoading, isError: error }
+}
+
+// GET User Articles
+export function useUserArticles(userId: string, page: number) {
+  const { data, error, isLoading } = useSWR(
+    `http://localhost:5000/articles/user/${userId}?page=${page}&limit=${4}`,
+    GET
   )
   return { userArticles: data, isLoading, isError: error }
 }
 
-// LIKE Article
-async function likeArticle(url: string, { arg }: { arg: { body: any } }) {
-  const res = await fetch(url, {
-    method: 'POST',
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(arg.body),
-  })
-  if (!res.ok) {
-    const error: any = new Error('An error occurred while fetching the data.')
-    error.info = await res.json()
-    error.status = res.status
-    throw error
+// POST Article
+export function usePostArticle() {
+  const { trigger, isMutating, data, error } = useSWRMutation(
+    'http://localhost:5000/articles',
+    POST /* options */
+  )
+  return {
+    triggerPostArticle: trigger,
+    postArticleError: error,
   }
-  return res.json()
 }
 
+// LIKE Article
 export function useLikeArticle() {
   const { trigger, isMutating, data, error } = useSWRMutation(
     'http://localhost:5000/articles/like',
-    likeArticle /* options */
+    POST /* options */
   )
   return {
     triggerLikeArticle: trigger,
@@ -54,31 +47,41 @@ export function useLikeArticle() {
 }
 
 //  SEARCH Article
-async function searchArticle(url: string, { arg }: { arg: { body: any } }) {
-  const res = await fetch(url, {
-    method: 'POST',
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(arg.body),
-  })
-  if (!res.ok) {
-    const error: any = new Error('An error occurred while fetching the data.')
-    error.info = await res.json()
-    error.status = res.status
-    throw error
+export function useSearchArticle(searchText: string, page: number) {
+  const { data, error, isLoading } = useSWR(
+    `http://localhost:5000/articles/search?category=text&body=${searchText}&page=${page}&limit=${4}`,
+    GET
+  )
+
+  return {
+    data,
+    isLoading,
+    isError: error,
   }
-  return res.json()
 }
 
-export function useSearchArticle(searchText: string, page: number) {
+//  GET Articles by tag
+export function useTagArticle(tag: string, page: number) {
+  const { data, error, isLoading } = useSWR(
+    `http://localhost:5000/articles/search?category=tags&body=${tag}&page=${page}&limit=${4}`,
+    GET
+  )
+
+  return {
+    data,
+    isLoading,
+    isError: error,
+  }
+}
+
+// SUBSCRIBE newsletter
+export function useSubscribe() {
   const { trigger, isMutating, data, error } = useSWRMutation(
-    `http://localhost:5000/articles/search?category=text&body=${searchText}&page=${page}&limit=${4}`,
-    searchArticle /* options */
+    'http://localhost:5000/newsletter',
+    POST /* options */
   )
   return {
-    triggerSearchArticle: trigger,
-    searchArticleError: error,
+    triggerSubscribe: trigger,
+    subscribeError: error,
   }
 }

@@ -1,31 +1,12 @@
 'use client'
 
+import { useTagArticle } from '@/lib/article'
 import page from './page.module.css'
 import Article from '@/components/Article'
 import { useState } from 'react'
-import useSWR from 'swr'
-
-const fetcher = async (url: string) => {
-  const res = await fetch(url)
-  if (!res.ok) {
-    const error: any = new Error('An error occurred while fetching the data.')
-    error.info = await res.json()
-    error.status = res.status
-    throw error
-  }
-  return res.json()
-}
-
-function useArticles(tag: string, page: number) {
-  const { data, error, isLoading } = useSWR(
-    `http://localhost:5000/articles/search?category=tags&body=${tag}&page=${page}&limit=${4}`,
-    fetcher
-  )
-  return { data, isLoading, isError: error }
-}
 
 function FetchArticles({ page, tag }: { tag: string; page: number }) {
-  const { data, isLoading, isError } = useArticles(tag, page)
+  const { data, isLoading, isError } = useTagArticle(tag, page)
   if (isLoading) return <h1>loading...</h1>
   if (isError) return <h1>{isError.info.message}</h1>
   return data.map((article: any, i: number) => (

@@ -1,3 +1,5 @@
+'use client'
+
 import ProfileSkeleton from './skeleton-loading/Profile'
 import Link from 'next/link'
 import { useUserById } from '@/lib/user'
@@ -8,12 +10,14 @@ export default function Profile({
   height,
   forArticle,
   commentUserId,
+  articleUserId,
 }: {
   userId: string
   width: number
   height: number
   forArticle: boolean
   commentUserId: string | null
+  articleUserId: string | null
 }) {
   const { user, isLoading, isError } = useUserById(userId)
 
@@ -36,7 +40,7 @@ export default function Profile({
       ) : (
         <div style={{ marginLeft: '50px' }}>
           <small>9th May 2023</small>
-          {userId === commentUserId ? (
+          {articleUserId === commentUserId ? (
             <small
               style={{
                 paddingInline: '7px',

@@ -1,16 +1,13 @@
-import { RiArrowRightSLine, RiMailSendLine } from 'react-icons/ri'
+import { RiArrowRightSLine } from 'react-icons/ri'
 import Link from 'next/link'
 import Tag from '@/components/Tag'
+import Newsletter from '@/components/Newsletter'
 import returnDate from '@/utils/returnDate'
 import readingTime from '@/utils/readingTime'
-
-async function getArticles() {
-  const res = await fetch(`http://localhost:5000/articles?page=1&limit=3`)
-  return res.json()
-}
+import { GET } from '@/utils/fetch'
 
 export default async function Home() {
-  const articles = await getArticles()
+  const articles = await GET(`http://localhost:5000/articles?page=1&limit=3`)
 
   const article1 = articles.results[0]
   const article2 = articles.results[1]
@@ -36,11 +33,7 @@ export default async function Home() {
               href={`/articles/${article1.url}`}
               className='article featured-article featured-article-1'
             >
-              <img
-                src={article1.image}
-                alt=''
-                className='article-image'
-              />
+              <img src={article1.image} alt='' className='article-image' />
               <span className='article-category'>{article1.tags[0]}</span>
               <div className='article-data-container'>
                 <div className='article-data'>
@@ -55,11 +48,7 @@ export default async function Home() {
               href={`/articles/${article2.url}`}
               className='article featured-article featured-article-2'
             >
-              <img
-                src={article2.image}
-                alt=''
-                className='article-image'
-              />
+              <img src={article2.image} alt='' className='article-image' />
               <span className='article-category'>{article2.tags[0]}</span>
               <div className='article-data-container'>
                 <div className='article-data'>
@@ -74,11 +63,7 @@ export default async function Home() {
               href={`/articles/${article3.url}`}
               className='article featured-article featured-article-3'
             >
-              <img
-                src={article3.image}
-                alt=''
-                className='article-image'
-              />
+              <img src={article3.image} alt='' className='article-image' />
               <span className='article-category'>{article3.tags[0]}</span>
               <div className='article-data-container'>
                 <div className='article-data'>
@@ -97,7 +82,10 @@ export default async function Home() {
           </div>
         </div>
         <div className='see-more-container'>
-          <Link href='/articles' className='btn see-more-btn place-items-center'>
+          <Link
+            href='/articles'
+            className='btn see-more-btn place-items-center'
+          >
             See more <RiArrowRightSLine className='icon' />
           </Link>
         </div>
@@ -261,7 +249,10 @@ export default async function Home() {
             </Link>
           </div>
           <div className='see-more-container'>
-            <Link href='/official-posts' className='btn see-more-btn place-items-center'>
+            <Link
+              href='/official-posts'
+              className='btn see-more-btn place-items-center'
+            >
               See more <RiArrowRightSLine className='icon' />
             </Link>
           </div>
@@ -291,27 +282,7 @@ export default async function Home() {
           <h2 className='title section-title' data-name='Newsletter'>
             Newsletter
           </h2>
-
-          <div className='form-container-inner'>
-            <h6 className='title newsletter-title'>
-              Subscribe to DAM Newsletter
-            </h6>
-            <p className='newsletter-description'>
-              Get handpicked artciles, written by the community, every weekend
-              in an e-mail
-            </p>
-
-            <form action='' className='form'>
-              <input
-                className='form-input'
-                type='text'
-                placeholder='Enter your email address'
-              />
-              <button className='btn form-btn' type='submit'>
-                <RiMailSendLine className='icon' />
-              </button>
-            </form>
-          </div>
+          <Newsletter />
         </div>
       </section>
     </>

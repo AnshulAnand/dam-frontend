@@ -1,48 +1,64 @@
 'use client'
 
 import useSWR from 'swr'
+import useSWRMutation from 'swr/mutation'
+import { GET, PATCH, POST } from '@/utils/fetch'
 
-// GET current user
-async function fetcher(url: string) {
-  const res = await fetch(url, { credentials: 'include' })
-  if (!res.ok) {
-    const error: any = new Error('An error occurred while fetching the data.')
-    error.info = await res.json()
-    error.status = res.status
-    throw error
+// LOGIN user
+export function useLoginUser() {
+  const { trigger, isMutating, data, error } = useSWRMutation(
+    'http://localhost:5000/users/login',
+    POST /* options */
+  )
+  return {
+    triggerLoginUser: trigger,
+    loginUserError: error,
   }
-  return res.json()
 }
 
+// REGISTER user
+export function useRegisterUser() {
+  const { trigger, isMutating, data, error } = useSWRMutation(
+    'http://localhost:5000/users/register',
+    POST /* options */
+  )
+  return {
+    triggerRegisterUser: trigger,
+    registerUserError: error,
+  }
+}
+
+// GET current user
 export default function useCurrentUser() {
   const { data, error, isLoading } = useSWR(
     'http://localhost:5000/users/current',
-    fetcher
+    GET
   )
   return { user: data, isLoading, isError: error }
 }
 
 // GET user by id
-async function fetchUserById(url: string) {
-  const res = await fetch(url)
-  if (!res.ok) {
-    const error: any = new Error('An error occurred while fetching the data.')
-    error.info = await res.json()
-    error.status = res.status
-    throw error
-  }
-  return res.json()
-}
-
 export function useUserById(id: string) {
   const { data, error, isLoading } = useSWR(
     `http://localhost:5000/users/id/${id}`,
-    fetchUserById
+    GET
   )
 
   return {
     user: data,
     isLoading,
     isError: error,
+  }
+}
+
+// UPDATE user
+export function useUpdateUser() {
+  const { trigger, isMutating, data, error } = useSWRMutation(
+    'http://localhost:5000/user',
+    PATCH /* options */
+  )
+  return {
+    triggerUpdateUser: trigger,
+    updateUserError: error,
   }
 }

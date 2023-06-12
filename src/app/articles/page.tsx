@@ -2,29 +2,10 @@
 
 import page from './page.module.css'
 import Article from '@/components/Article'
+import { useArticles } from '@/lib/article'
 import ArticleSkeleton from '@/components/skeleton-loading/Article'
 import { useState } from 'react'
-import useSWR from 'swr'
 import { IArticle } from '../../../types'
-
-const fetcher = async (url: string) => {
-  const res = await fetch(url)
-  if (!res.ok) {
-    const error: any = new Error('An error occurred while fetching the data.')
-    error.info = await res.json()
-    error.status = res.status
-    throw error
-  }
-  return res.json()
-}
-
-function useArticles(page: number) {
-  const { data, error, isLoading } = useSWR(
-    `http://localhost:5000/articles?page=${page}&limit=${4}`,
-    fetcher
-  )
-  return { data, isLoading, isError: error }
-}
 
 function FetchArticles({ page }: { page: number }) {
   const { data, isLoading, isError } = useArticles(page)

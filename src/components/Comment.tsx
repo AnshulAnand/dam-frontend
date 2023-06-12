@@ -44,9 +44,11 @@ function FetchReplies({
 const Comment = ({
   comment,
   articleId,
+  articleUserId,
 }: {
   comment: any
   articleId: string
+  articleUserId: string
 }) => {
   const [repliesVisible, setRepliesVisible] = useState(false)
   const [replyInputVisible, setReplyInputVisible] = useState(false)
@@ -82,7 +84,7 @@ const Comment = ({
     try {
       const result = await triggerPostReply(
         {
-          reply: {
+          body: {
             body: replyBody,
             parentArticle: articleId,
             parentComment: comment._id,
@@ -103,7 +105,7 @@ const Comment = ({
     try {
       const result = await triggerEditComment(
         {
-          editedComment: {
+          body: {
             body: commentBody,
             parentArticle: articleId,
             commentId: comment._id,
@@ -141,7 +143,8 @@ const Comment = ({
             width={40}
             height={40}
             forArticle={false}
-            commentUserId={comment._id}
+            commentUserId={comment.user}
+            articleUserId={articleUserId}
           />
           <div className={page.btn_container}>
             {user && user._id === comment.user ? (

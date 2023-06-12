@@ -1,74 +1,49 @@
 'use client'
 
 import { useState } from 'react'
-import useSWRMutation from 'swr/mutation'
 import page from './page.module.css'
-import { IUser, IUserInput } from '../../../types'
+import useCurrentUser, { useUpdateUser } from '@/lib/user'
 
-async function getCurrentUser() {
-  const res = await fetch('http://localhost:5000/users/current', {
-    credentials: 'include',
-  })
-  return res.json()
-}
+function EditProfile() {
+  const { user, isLoading, isError } = useCurrentUser()
 
-async function updateProfile(url: string, { arg }: { arg: { user: any } }) {
-  return fetch(url, {
-    method: 'PATCH',
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(arg.user),
-  }).then(res => res.json())
-}
-
-export default async function EditProfile() {
-  const [user, setUser] = useState<IUserInput>({
-    name: '',
-    username: '',
-    country: '',
-    bio: '',
-    link: '',
-    image: '',
+  const [profile, setProfile] = useState({
+    name: user?.name,
+    username: user?.username,
+    country: user?.country,
+    bio: user?.bio,
+    link: user?.link,
+    image: user?.image,
   })
 
-  const currentUser: IUser = await getCurrentUser()
-
-  const { trigger, isMutating, data, error } = useSWRMutation(
-    'http://localhost:5000/users',
-    updateProfile /* options */
-  )
-
-  if (error) console.log(error)
+  const { triggerUpdateUser, updateUserError } = useUpdateUser()
 
   const handleChange = (e: any) => {
     const name = e.target.name
     const value = e.target.value
-    setUser(user => ({ ...user, [name]: value }))
+    setProfile(prev => ({ ...prev, [name]: value }))
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     try {
-      const result = await trigger({ user } /* options */)
-      console.log({ data })
-      console.log({ result })
+      const result = await triggerUpdateUser({ body: profile })
     } catch (e) {
       // error handling
       console.log(e)
     }
   }
+
   return (
     <section className={page.section}>
-      <img src='' />
+      {/* <img src={user.image} /> */}
       <form onSubmit={handleSubmit} className={page.form}>
         <label htmlFor='image'>Profile Image</label>
         <input
           type='text'
           id='image'
           name='image'
-          value={user.image || ''}
+          value={profile.image || ''}
           onChange={handleChange}
           placeholder='Image URL'
         />
@@ -77,7 +52,7 @@ export default async function EditProfile() {
           type='text'
           id='name'
           name='name'
-          value={user.name || ''}
+          value={profile.name || ''}
           onChange={handleChange}
           placeholder='Your name'
         />
@@ -86,7 +61,7 @@ export default async function EditProfile() {
           type='text'
           id='username'
           name='username'
-          value={user.username || ''}
+          value={profile.username || ''}
           onChange={handleChange}
           placeholder='Your username'
         />
@@ -94,7 +69,7 @@ export default async function EditProfile() {
         <textarea
           id='bio'
           name='bio'
-          value={user.bio}
+          value={profile.bio}
           onChange={handleChange}
           placeholder='Write your bio...'
         />
@@ -103,7 +78,7 @@ export default async function EditProfile() {
           type='text'
           id='country'
           name='country'
-          value={user.country || ''}
+          value={profile.country || ''}
           onChange={handleChange}
           placeholder='Your residing country'
         />
@@ -112,14 +87,16 @@ export default async function EditProfile() {
           type='text'
           id='link'
           name='link'
-          value={user.link || ''}
+          value={profile.link || ''}
           onChange={handleChange}
           placeholder='Your website link'
         />
-        <button className={page.submit_btn} type='submit' disabled={isMutating}>
+        <button className={page.submit_btn} type='submit'>
           Update Profile
         </button>
       </form>
     </section>
   )
 }
+
+export default EditProfile

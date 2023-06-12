@@ -9,17 +9,20 @@ import {
 } from 'react-icons/ri'
 import { useState } from 'react'
 import page from '@/app/articles/[article]/page.module.css'
-import { useComments, usePostComment } from '@/lib/comments'
+import { useComments, useUserComments, usePostComment } from '@/lib/comments'
 import { useLikeArticle } from '@/lib/article'
 import Comment from './Comment'
 import CommentLoading from './skeleton-loading/Comment'
+import Share from './Share'
 
 function FetchComments({
   page,
   articleId,
+  articleUserId,
 }: {
   page: number
   articleId: string
+  articleUserId: string
 }) {
   const { comments, isLoading, isError } = useComments(page, articleId)
   if (isLoading)
@@ -31,8 +34,36 @@ function FetchComments({
       </>
     )
   if (isError) return <h1>error...</h1>
-  return comments.map((comment: any, i: number) => (
-    <Comment comment={comment} articleId={articleId} key={i} />
+  return comments.map((comment: any, i: number) => {
+    articleUserId === comment.user ? (
+      <Comment
+        comment={comment}
+        articleId={articleId}
+        articleUserId={articleUserId}
+        key={i}
+      />
+    ) : null
+  })
+}
+
+function FetchUserComments(articleId: string, articleUserId: string) {
+  const { userComments, isLoading, isError } = useUserComments(articleId)
+  if (isLoading)
+    return (
+      <>
+        <CommentLoading />
+        <CommentLoading />
+        <CommentLoading />
+      </>
+    )
+  if (isError) return <h1>error...</h1>
+  return userComments.map((comment: any, i: number) => (
+    <Comment
+      comment={comment}
+      articleId={articleId}
+      articleUserId={articleUserId}
+      key={i}
+    />
   ))
 }
 
@@ -42,7 +73,13 @@ function CommentSection({ article }: { article: any }) {
 
   let list: any = []
   for (let i = 0; i < count; i++) {
-    list.push(<FetchComments page={i + 1} articleId={article._id} />)
+    list.push(
+      <FetchComments
+        page={i + 1}
+        articleId={article._id}
+        articleUserId={article.user}
+      />
+    )
   }
 
   const [commentsVisible, setCommentsVisible] = useState(false)
@@ -54,7 +91,7 @@ function CommentSection({ article }: { article: any }) {
     try {
       const result = await triggerPostComment(
         {
-          comment: { body: commentBody, parentArticle: article._id },
+          body: { body: commentBody, parentArticle: article._id },
         } /* options */
       )
     } catch (e) {
@@ -95,6 +132,7 @@ function CommentSection({ article }: { article: any }) {
           <button type='submit'>Post</button>
         </form>
         {/* Comment container */}
+        {FetchUserComments(article._id, article.user)}
         {list}
         <button
           onClick={() => setCount(count + 1)}
@@ -113,7 +151,7 @@ function CommentSection({ article }: { article: any }) {
         </button>
         <button>
           <RiShareForwardLine />
-          Share
+          Share <Share shareUrl={article.url} />
         </button>
         <button>
           <RiPencilLine /> Edit

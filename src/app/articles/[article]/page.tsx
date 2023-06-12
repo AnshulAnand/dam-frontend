@@ -3,18 +3,19 @@ import page from './page.module.css'
 import Profile from '@/components/Profile'
 import CommentSection from '@/components/CommentSection'
 import UserArticles from '@/components/UserArticles'
+import NotFound from '@/components/not-found'
 import returnDate from '@/utils/returnDate'
 import readingTime from '@/utils/readingTime'
+import { GET } from '@/utils/fetch'
 import { RiEyeLine } from 'react-icons/ri'
 import { IArticle } from '../../../../types'
 
-async function getArticle(article: string) {
-  const res = await fetch(`http://localhost:5000/articles/${article}`)
-  return res.json()
-}
-
 const Article = async ({ params }: { params: { article: string } }) => {
-  const article: IArticle = await getArticle(params.article)
+  const article: IArticle = await GET(
+    `http://localhost:5000/articles/${params.article}`
+  )
+  console.log({ article })
+  if (!article) return <NotFound />
 
   return (
     <section className={`container ${page.section}`}>
@@ -35,6 +36,7 @@ const Article = async ({ params }: { params: { article: string } }) => {
               width={50}
               height={50}
               forArticle={true}
+              articleUserId={null}
               commentUserId={null}
             />
             <div className={page.article_info}>

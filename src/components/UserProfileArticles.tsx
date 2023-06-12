@@ -1,12 +1,23 @@
 'use client'
+
 import UserArticleSkeleton from './skeleton-loading/UserProfileArticle'
 import page from '@/app/[userId]/page.module.css'
 import { useUserArticles } from '@/lib/article'
 import { useState } from 'react'
 import Link from 'next/link'
 
-function FetchArticles({ pageNumber }: { pageNumber: number }) {
-  const { userArticles, isLoading, isError } = useUserArticles(pageNumber)
+function FetchArticles({
+  userId,
+  pageNumber,
+}: {
+  pageNumber: number
+  userId: string
+}) {
+  const { userArticles, isLoading, isError } = useUserArticles(
+    userId,
+    pageNumber
+  )
+  console.log({ userArticles })
   if (isLoading)
     return (
       <>
@@ -32,17 +43,17 @@ function FetchArticles({ pageNumber }: { pageNumber: number }) {
   ))
 }
 
-export default function UserProfileArticles() {
+export default function UserProfileArticles({ visitor }: { visitor: any }) {
   const [count, setCount] = useState(1)
 
   let list: any = []
   for (let i = 0; i < count; i++) {
-    list.push(<FetchArticles pageNumber={i + 1} />)
+    list.push(<FetchArticles userId={visitor._id} pageNumber={i + 1} />)
   }
 
   return (
     <>
-      <>{list}</>
+      {list}
       <button
         onClick={() => setCount(count + 1)}
         className={page.btn_load_more}
