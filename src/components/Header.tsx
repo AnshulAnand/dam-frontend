@@ -11,6 +11,7 @@ import Link from 'next/link'
 import SearchBox from './Search'
 import useCurrentUser from '@/lib/user'
 import { useState, useEffect } from 'react'
+import { GET } from '@/utils/fetch'
 
 export default function Header() {
   const { user, isLoading, isError } = useCurrentUser()
@@ -33,6 +34,11 @@ export default function Header() {
       setMoonIconDisplay('d-none')
       setSunIconDisplay('d-block')
     }
+  }
+
+  const handleLogout = async () => {
+    const res = await GET(`http://localhost:5000/users/logout`)
+    console.log(await res.json())
   }
 
   useEffect(() => {
@@ -88,7 +94,24 @@ export default function Header() {
                   Contact
                 </Link>
               </li>
-              {user === undefined ? (
+              {user ? (
+                <>
+                  <li className='list-item screen-lg-hidden'>
+                    <button
+                      style={{ cursor: 'pointer' }}
+                      className='list-link'
+                      onClick={handleLogout}
+                    >
+                      Logout
+                    </button>
+                  </li>
+                  <li className='list-item screen-lg-hidden'>
+                    <Link href={`/@${user.username}`} className='list-link'>
+                      Profile
+                    </Link>
+                  </li>
+                </>
+              ) : (
                 <>
                   <li className='list-item screen-lg-hidden'>
                     <Link href='/sign-in' className='list-link'>
@@ -98,19 +121,6 @@ export default function Header() {
                   <li className='list-item screen-lg-hidden'>
                     <Link href='/sign-up' className='list-link'>
                       Sign up
-                    </Link>
-                  </li>
-                </>
-              ) : (
-                <>
-                  <li className='list-item screen-lg-hidden'>
-                    <Link href='/logout' className='list-link'>
-                      Logout
-                    </Link>
-                  </li>
-                  <li className='list-item screen-lg-hidden'>
-                    <Link href={`/@${user.username}`} className='list-link'>
-                      Profile
                     </Link>
                   </li>
                 </>
@@ -144,7 +154,23 @@ export default function Header() {
               <RiCloseLine className='icon close-menu-icon' />
             </button>
 
-            {user === undefined ? (
+            {user ? (
+              <>
+                <button
+                  style={{ cursor: 'pointer' }}
+                  onClick={handleLogout}
+                  className='list-link screen-sm-hidden'
+                >
+                  Logout
+                </button>
+                <Link
+                  href={`/@${user.username}`}
+                  className='btn sign-up-btn fancy-border screen-sm-hidden'
+                >
+                  <span>Profile</span>
+                </Link>
+              </>
+            ) : (
               <>
                 <Link href='/sign-in' className='list-link screen-sm-hidden'>
                   Sign in
@@ -154,18 +180,6 @@ export default function Header() {
                   className='btn sign-up-btn fancy-border screen-sm-hidden'
                 >
                   <span>Sign up</span>
-                </Link>
-              </>
-            ) : (
-              <>
-                <Link href='logout' className='list-link screen-sm-hidden'>
-                  Logout
-                </Link>
-                <Link
-                  href={`/@${user.username}`}
-                  className='btn sign-up-btn fancy-border screen-sm-hidden'
-                >
-                  <span>Profile</span>
                 </Link>
               </>
             )}

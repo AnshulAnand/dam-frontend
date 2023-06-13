@@ -28,6 +28,15 @@ export function useRegisterUser() {
   }
 }
 
+// LOGOUT user
+export function useLogoutUser() {
+  const { data, error, isLoading } = useSWR(
+    'http://localhost:5000/users/logout',
+    GET
+  )
+  return { data, isLoading, isError: error }
+}
+
 // GET current user
 export default function useCurrentUser() {
   const { data, error, isLoading } = useSWR(

@@ -114,24 +114,6 @@ body.light-theme {
   display: none;
 }
 
-/* .comments {
-  position: fixed;
-  top: 0;
-  right: 0;
-  background-color: var(--secondary-background-color);
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  height: 100vh;
-  width: 400px;
-  overflow-y: auto;
-  z-index: 1000;
-  transform: translateX(400px);
-  transition: transform 0.3s ease-in-out;
-}
-
-.comments.visible {
-  transform: translateX(0px);
-} */
-
 .visible {
   transform: translateX(0px) !important;
 }
@@ -159,6 +141,51 @@ body.light-theme {
   color: var(--light-color);
 }
 
+/* modal */
+.modal {
+  inset: 0;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background-color: var(--secondary-background-color);
+  width: 300px;
+  border-radius: 1rem;
+  animation: modal-animate 0.4s;
+}
+
+.modal-container .close-btn {
+  cursor: pointer;
+  padding: 1rem 1.5rem;
+  border-radius: 100px;
+}
+
+.modal-container .close-btn:hover {
+  background-color: var(--primary-background-color);
+}
+
+@keyframes modal-animate {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* skeleton */
 .skeleton {
   background-color: rgb(199, 199, 199);
 }
@@ -204,6 +231,13 @@ body.light-theme {
   50% {
     opacity: 0.5;
   }
+}
+
+.logout-btn {
+  padding: 1rem 1.5rem;
+  background-color: var(--primary-background-color);
+  cursor: pointer;
+  border-radius: 100px;
 }
 
 /* Header */

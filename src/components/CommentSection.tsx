@@ -13,6 +13,7 @@ import { useComments, useUserComments, usePostComment } from '@/lib/comments'
 import { useLikeArticle } from '@/lib/article'
 import Comment from './Comment'
 import CommentLoading from './skeleton-loading/Comment'
+import Modal from './Modal'
 import Share from './Share'
 
 function FetchComments({
@@ -68,6 +69,7 @@ function FetchUserComments(articleId: string, articleUserId: string) {
 }
 
 function CommentSection({ article }: { article: any }) {
+  const [showModal, setShowModal] = useState(false)
   const [count, setCount] = useState(1)
   const [commentBody, setCommentBody] = useState('')
 
@@ -149,14 +151,18 @@ function CommentSection({ article }: { article: any }) {
         <button onClick={() => setCommentsVisible(!commentsVisible)}>
           <RiChat1Line />9
         </button>
-        <button>
+        <button onClick={() => setShowModal(true)}>
           <RiShareForwardLine />
-          Share <Share shareUrl={article.url} />
+          Share
         </button>
         <button>
           <RiPencilLine /> Edit
         </button>
       </div>
+      {/* Modal */}
+      <Modal showModal={showModal} onCloseModal={setShowModal}>
+        <Share shareUrl={article.url} />
+      </Modal>
     </>
   )
 }
