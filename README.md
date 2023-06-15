@@ -1,34 +1,38 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# DAM Frontend
 
-## Getting Started
+This repository contains the frontend code for the DAM. [See backend](https://github.com/AnshulAnand/dam-backend).
 
-First, run the development server:
+## Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+- User authentication: Users can create an account, log in, and manage their assets.
+- Articles: Users can write, edit and update articles using a rich text editor.
+- Comments: Users can comment on articles and can reply to comments and replies.
+- Search functionality: Search for articles based on keywords and tags.
+- Responsive design: The frontend is designed to work seamlessly across different devices and screen sizes.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Technologies Used
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- React: A JavaScript library for building user interfaces.
+- Next: A popular open-source framework for building React applications. It is built on top of React and provides additional features and optimizations for building production-ready web applications.
+- SWR: A React hook library that enables efficient data fetching and caching in client-side applications.
+- CSS Modules: A CSS organization technique that scopes styles to specific components.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Installation
 
-## Learn More
+1. Clone the repository: `git clone https://github.com/AnshulAnand/dam-frontend.git`
+2. Navigate to the project directory: `cd dam-frontend`
+3. Install dependencies: `npm install`
+4. Update the configuration file with the backend API endpoint.
+5. Start the development server: `npm run dev`
 
-To learn more about Next.js, take a look at the following resources:
+Make sure you have Node.js and npm (Node Package Manager) installed on your system before running the application.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Contributing
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+Contributions are welcome! If you find any issues or have any suggestions for improvement, feel free to open an issue or submit a pull request.
 
-## Deploy on Vercel
+Please follow the project's code style and guidelines when contributing.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## License
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+This project is licensed under the [MIT License](LICENSE).
