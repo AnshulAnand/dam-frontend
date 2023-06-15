@@ -8,7 +8,12 @@ import {
 } from 'react-icons/ri'
 import { useState } from 'react'
 import useCurrentUser from '@/lib/user'
-import { usePostReply, useEditReply, useDeleteReply } from '@/lib/replies'
+import {
+  usePostReply,
+  useEditReply,
+  useDeleteReply,
+  useLikeReply,
+} from '@/lib/replies'
 import page from '@/app/articles/[article]/page.module.css'
 import Profile from './Profile'
 
@@ -23,6 +28,8 @@ export default function Reply({
 }) {
   const [replyBody, setReplyBody] = useState('')
   const [editedReplyBody, setEditedReplyBody] = useState(reply.body)
+  const [replyInputVisible, setReplyInputVisible] = useState(false)
+  const [editReplyInputVisible, setEditReplyInputVisible] = useState(false)
 
   const handleEditBtnClick = () => {
     setEditedReplyBody(reply.body)
@@ -44,6 +51,8 @@ export default function Reply({
           },
         } /* options */
       )
+      setReplyBody('')
+      setReplyInputVisible(false)
     } catch (e) {
       // error handling
       console.log(e)
@@ -66,6 +75,7 @@ export default function Reply({
           },
         } /* options */
       )
+      setEditReplyInputVisible(false)
     } catch (e) {
       // error handling
       console.log(e)
@@ -90,10 +100,22 @@ export default function Reply({
     }
   }
 
-  const { user, isLoading, isError } = useCurrentUser()
+  // LIKE Reply
+  const { triggerLikeReply, likeReplyError } = useLikeReply()
+  const handleLike = async () => {
+    try {
+      const result = await triggerLikeReply({
+        body: {
+          replyId: reply._id,
+          parentComment: commentId,
+        },
+      })
+    } catch (e) {
+      console.log(e)
+    }
+  }
 
-  const [replyInputVisible, setReplyInputVisible] = useState(false)
-  const [editReplyInputVisible, setEditReplyInputVisible] = useState(false)
+  const { user, isLoading, isError } = useCurrentUser()
 
   return (
     <div className={page.reply}>
@@ -123,7 +145,10 @@ export default function Reply({
       </div>
       <p>{reply.body}</p>
       <div className={page.btn_container}>
-        <button className={`${page.btn} ${page.comment_btn}`}>
+        <button
+          className={`${page.btn} ${page.comment_btn}`}
+          onClick={handleLike}
+        >
           <RiThumbUpLine className={page.icon} /> {reply.likes}
         </button>
         <button
@@ -141,6 +166,7 @@ export default function Reply({
         }`}
       >
         <textarea
+          value={replyBody}
           onChange={e => setReplyBody(e.target.value)}
           placeholder='Write your reply...'
         />

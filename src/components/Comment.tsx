@@ -11,7 +11,11 @@ import { useState } from 'react'
 import useCurrentUser from '@/lib/user'
 import { useReplies } from '@/lib/replies'
 import { usePostReply } from '@/lib/replies'
-import { useEditComment, useDeleteComment } from '@/lib/comments'
+import {
+  useEditComment,
+  useDeleteComment,
+  useLikeComment,
+} from '@/lib/comments'
 import page from '@/app/articles/[article]/page.module.css'
 import Profile from './Profile'
 import Reply from './Reply'
@@ -133,6 +137,21 @@ const Comment = ({
     }
   }
 
+  // LIKE Comment
+  const { triggerLikeComment, likeCommentError } = useLikeComment()
+  const handleLike = async () => {
+    try {
+      const result = await triggerLikeComment({
+        body: {
+          parentArticle: articleId,
+          commentId: comment._id,
+        },
+      })
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
   return (
     <div className={page.comment}>
       {/* Parent comment */}
@@ -164,7 +183,10 @@ const Comment = ({
         <p>{comment.body}</p>
       </div>
       <div className={page.btn_container}>
-        <button className={`${page.btn} ${page.comment_btn}`}>
+        <button
+          className={`${page.btn} ${page.comment_btn}`}
+          onClick={handleLike}
+        >
           <RiThumbUpLine className={page.icon} /> {comment.likes}
         </button>
         <button
@@ -188,6 +210,7 @@ const Comment = ({
         }`}
       >
         <textarea
+          value={replyBody}
           onChange={e => setReplyBody(e.target.value)}
           placeholder='Write your reply...'
         />

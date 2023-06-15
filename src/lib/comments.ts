@@ -7,7 +7,9 @@ import useSWRMutation from 'swr/mutation'
 // GET Comments
 export function useComments(page: number, articleId: string) {
   const { data, error, isLoading } = useSWR(
-    `http://localhost:5000/comments?page=${page}&limit=${4}&articleId=${articleId}`,
+    `${
+      process.env.NEXT_PUBLIC_API_URL
+    }/comments?page=${page}&limit=${4}&articleId=${articleId}`,
     GET
   )
   return { comments: data, isLoading, isError: error }
@@ -16,7 +18,7 @@ export function useComments(page: number, articleId: string) {
 // GET user Comments
 export function useUserComments(articleId: string) {
   const { data, error, isLoading } = useSWR(
-    `http://localhost:5000/comments/${articleId}`,
+    `${process.env.NEXT_PUBLIC_API_URL}/comments/${articleId}`,
     GET
   )
   return { userComments: data, isLoading, isError: error }
@@ -25,7 +27,7 @@ export function useUserComments(articleId: string) {
 // POST Comment
 export function usePostComment() {
   const { trigger, isMutating, data, error } = useSWRMutation(
-    'http://localhost:5000/comments',
+    `${process.env.NEXT_PUBLIC_API_URL}/comments`,
     POST /* options */
   )
   return {
@@ -37,7 +39,7 @@ export function usePostComment() {
 // EDIT Comment
 export function useEditComment() {
   const { trigger, isMutating, data, error } = useSWRMutation(
-    'http://localhost:5000/comments',
+    `${process.env.NEXT_PUBLIC_API_URL}/comments`,
     PATCH /* options */
   )
   return {
@@ -49,7 +51,7 @@ export function useEditComment() {
 // DELETE Comment
 export function useDeleteComment() {
   const { trigger, isMutating, data, error } = useSWRMutation(
-    'http://localhost:5000/comments',
+    `${process.env.NEXT_PUBLIC_API_URL}/comments`,
     DELETE /* options */
   )
   return {
@@ -61,7 +63,7 @@ export function useDeleteComment() {
 // LIKE Comment
 export function useLikeComment() {
   const { trigger, isMutating, data, error } = useSWRMutation(
-    'http://localhost:5000/comments/like',
+    `${process.env.NEXT_PUBLIC_API_URL}/comments/like`,
     POST /* options */
   )
   return {

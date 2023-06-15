@@ -96,6 +96,7 @@ function CommentSection({ article }: { article: any }) {
           body: { body: commentBody, parentArticle: article._id },
         } /* options */
       )
+      setCommentBody('')
     } catch (e) {
       // error handling
       console.log(e)
@@ -128,6 +129,7 @@ function CommentSection({ article }: { article: any }) {
         </div>
         <form onSubmit={handleSubmit} className={`${page.comments_input}`}>
           <textarea
+            value={commentBody}
             onChange={e => setCommentBody(e.target.value)}
             placeholder='Write your comment...'
           />

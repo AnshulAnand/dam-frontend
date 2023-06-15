@@ -15,7 +15,7 @@ import { IUser } from '../../../types'
 const Profile = async ({ params }: { params: { userId: string } }) => {
   const username = params.userId.replace('%40', '')
   const user: IUser = await GET(
-    `http://localhost:5000/users/username/${username}`
+    `${process.env.NEXT_PUBLIC_API_URL}/users/username/${username}`
   )
 
   if (!user) console.log({ message: 'No user found' })

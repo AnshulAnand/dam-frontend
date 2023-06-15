@@ -7,7 +7,9 @@ import { GET, POST, PATCH, DELETE } from '@/utils/fetch'
 // GET Comments
 export function useReplies(page: number, articleId: string, commentId: string) {
   const { data, error, isLoading } = useSWR(
-    `http://localhost:5000/replies?page=${page}&limit=${4}&articleId=${articleId}&commentId=${commentId}`,
+    `${
+      process.env.NEXT_PUBLIC_API_URL
+    }/replies?page=${page}&limit=${4}&articleId=${articleId}&commentId=${commentId}`,
     GET
   )
   return { replies: data, isLoading, isError: error }
@@ -16,7 +18,7 @@ export function useReplies(page: number, articleId: string, commentId: string) {
 // POST Reply
 export function usePostReply() {
   const { trigger, isMutating, data, error } = useSWRMutation(
-    'http://localhost:5000/replies',
+    `${process.env.NEXT_PUBLIC_API_URL}/replies`,
     POST /* options */
   )
 
@@ -29,7 +31,7 @@ export function usePostReply() {
 // EDIT Reply
 export function useEditReply() {
   const { trigger, isMutating, data, error } = useSWRMutation(
-    'http://localhost:5000/replies',
+    `${process.env.NEXT_PUBLIC_API_URL}/replies`,
     PATCH /* options */
   )
   return {
@@ -41,11 +43,23 @@ export function useEditReply() {
 // Delete Reply
 export function useDeleteReply() {
   const { trigger, isMutating, data, error } = useSWRMutation(
-    'http://localhost:5000/replies',
+    `${process.env.NEXT_PUBLIC_API_URL}/replies`,
     DELETE /* options */
   )
   return {
     triggerDeleteReply: trigger,
     deleteReplyError: error,
+  }
+}
+
+// LIKE Reply
+export function useLikeReply() {
+  const { trigger, isMutating, data, error } = useSWRMutation(
+    `${process.env.NEXT_PUBLIC_API_URL}/reply/like`,
+    POST /* options */
+  )
+  return {
+    triggerLikeReply: trigger,
+    likeReplyError: error,
   }
 }

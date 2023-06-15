@@ -3,7 +3,7 @@ import page from './page.module.css'
 import Profile from '@/components/Profile'
 import CommentSection from '@/components/CommentSection'
 import UserArticles from '@/components/UserArticles'
-import NotFound from '@/components/not-found'
+import NotFound from '@/components/NotFound'
 import returnDate from '@/utils/returnDate'
 import readingTime from '@/utils/readingTime'
 import { GET } from '@/utils/fetch'
@@ -12,7 +12,7 @@ import { IArticle } from '../../../../types'
 
 const Article = async ({ params }: { params: { article: string } }) => {
   const article: IArticle = await GET(
-    `http://localhost:5000/articles/${params.article}`
+    `${process.env.NEXT_PUBLIC_API_URL}/articles/${params.article}`
   )
   console.log({ article })
   if (!article) return <NotFound />

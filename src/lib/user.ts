@@ -7,7 +7,7 @@ import { GET, PATCH, POST } from '@/utils/fetch'
 // LOGIN user
 export function useLoginUser() {
   const { trigger, isMutating, data, error } = useSWRMutation(
-    'http://localhost:5000/users/login',
+    `${process.env.NEXT_PUBLIC_API_URL}/users/login`,
     POST /* options */
   )
   return {
@@ -19,7 +19,7 @@ export function useLoginUser() {
 // REGISTER user
 export function useRegisterUser() {
   const { trigger, isMutating, data, error } = useSWRMutation(
-    'http://localhost:5000/users/register',
+    `${process.env.NEXT_PUBLIC_API_URL}/users/register`,
     POST /* options */
   )
   return {
@@ -31,7 +31,7 @@ export function useRegisterUser() {
 // LOGOUT user
 export function useLogoutUser() {
   const { data, error, isLoading } = useSWR(
-    'http://localhost:5000/users/logout',
+    `${process.env.NEXT_PUBLIC_API_URL}/users/logout`,
     GET
   )
   return { data, isLoading, isError: error }
@@ -40,7 +40,7 @@ export function useLogoutUser() {
 // GET current user
 export default function useCurrentUser() {
   const { data, error, isLoading } = useSWR(
-    'http://localhost:5000/users/current',
+    `${process.env.NEXT_PUBLIC_API_URL}/users/current`,
     GET
   )
   return { user: data, isLoading, isError: error }
@@ -49,7 +49,7 @@ export default function useCurrentUser() {
 // GET user by id
 export function useUserById(id: string) {
   const { data, error, isLoading } = useSWR(
-    `http://localhost:5000/users/id/${id}`,
+    `${process.env.NEXT_PUBLIC_API_URL}/users/id/${id}`,
     GET
   )
 
@@ -63,7 +63,7 @@ export function useUserById(id: string) {
 // UPDATE user
 export function useUpdateUser() {
   const { trigger, isMutating, data, error } = useSWRMutation(
-    'http://localhost:5000/user',
+    `${process.env.NEXT_PUBLIC_API_URL}/user`,
     PATCH /* options */
   )
   return {
