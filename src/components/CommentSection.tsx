@@ -8,6 +8,7 @@ import {
   RiCloseLine,
 } from 'react-icons/ri'
 import { useState } from 'react'
+import { toast } from 'react-hot-toast'
 import page from '@/app/articles/[article]/page.module.css'
 import { useComments, useUserComments, usePostComment } from '@/lib/comments'
 import { useLikeArticle } from '@/lib/article'
@@ -101,9 +102,11 @@ export default function CommentSection({ article }: { article: any }) {
       )
       setCommentBody('')
       mutate(`${process.env.NEXT_PUBLIC_API_URL}/comments/${article._id}`)
+      toast.success('Comments posted')
     } catch (e) {
       // error handling
       console.log(e)
+      toast.error('Could not post comment')
     }
   }
 
@@ -116,9 +119,11 @@ export default function CommentSection({ article }: { article: any }) {
           body: { articleId: article._id },
         } /* options */
       )
+      toast.success('Comment liked')
     } catch (e) {
       // error handling
       console.log(e)
+      toast.error('Could not like comment')
     }
   }
 

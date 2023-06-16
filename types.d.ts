@@ -32,6 +32,7 @@ export interface IArticle {
   image: string
   views: number
   likes: number
+  comments: number
   edited: boolean
   createdAt: string
   updatedAt: string

@@ -7,20 +7,21 @@ import {
   RiChat1Line,
   RiMessage3Line,
 } from 'react-icons/ri'
-import { useState } from 'react'
-import useCurrentUser from '@/lib/user'
-import { useReplies } from '@/lib/replies'
-import { usePostReply } from '@/lib/replies'
 import {
   useEditComment,
   useDeleteComment,
   useLikeComment,
 } from '@/lib/comments'
+import useCurrentUser from '@/lib/user'
+import { useReplies } from '@/lib/replies'
+import { usePostReply } from '@/lib/replies'
 import page from '@/app/articles/[article]/page.module.css'
 import Profile from './Profile'
 import Reply from './Reply'
 import CommentLoading from './skeleton-loading/Comment'
+import { useState } from 'react'
 import { useSWRConfig } from 'swr'
+import { toast } from 'react-hot-toast'
 
 function FetchReplies({
   page,
@@ -107,9 +108,11 @@ export default function Comment({
           comment._id
         }`
       )
+      toast.success('Reply posted')
     } catch (e) {
       // error handling
       console.log(e)
+      toast.error('Could not post reply')
     }
   }
 
@@ -128,9 +131,11 @@ export default function Comment({
           },
         } /* options */
       )
+      toast.success('Comment edited')
     } catch (e) {
       // error handling
       console.log(e)
+      toast.error('Could not edit comment')
     }
   }
 
@@ -143,9 +148,11 @@ export default function Comment({
           commentId: comment._id,
         },
       })
+      toast.success('Comment deleted')
     } catch (e) {
       // error handling
       console.log(e)
+      toast.error('Could not delete comment')
     }
   }
 
@@ -159,8 +166,10 @@ export default function Comment({
           commentId: comment._id,
         },
       })
+      toast.success('Liked comment')
     } catch (e) {
       console.log(e)
+      toast.error('Could not like comment')
     }
   }
 

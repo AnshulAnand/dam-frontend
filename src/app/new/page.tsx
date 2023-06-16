@@ -8,6 +8,7 @@ import draftToHtml from 'draftjs-to-html'
 import DOMPurify from 'dompurify'
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
 import { usePostArticle } from '@/lib/article'
+import { toast } from 'react-hot-toast'
 
 const Editor = dynamic(
   () => import('react-draft-wysiwyg').then(mod => mod.Editor),
@@ -17,14 +18,22 @@ const Editor = dynamic(
 const New = () => {
   const { triggerPostArticle, postArticleError } = usePostArticle()
 
-  const [title, setTitle] = useState('')
-  const [tag1, setTag1] = useState('')
-  const [tag2, setTag2] = useState('')
-  const [tag3, setTag3] = useState('')
-  const [tag4, setTag4] = useState('')
-  const [tag5, setTag5] = useState('')
-  const [tag6, setTag6] = useState('')
-  const [description, setDescription] = useState('')
+  const [article, setArticle] = useState({
+    title: '',
+    description: '',
+    tag1: '',
+    tag2: '',
+    tag3: '',
+    tag4: '',
+    tag5: '',
+    tag6: '',
+  })
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const name = e.target.name
+    const value = e.target.value
+    setArticle(article => ({ ...article, [name]: value }))
+  }
 
   const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty()
@@ -45,15 +54,24 @@ const New = () => {
     try {
       const result = await triggerPostArticle({
         body: {
-          title,
+          title: article.title,
           body: convertedContent,
-          description,
-          tags: [tag1, tag2, tag3, tag4, tag5, tag6],
+          description: article.description,
+          tags: [
+            article.tag1,
+            article.tag2,
+            article.tag3,
+            article.tag4,
+            article.tag5,
+            article.tag6,
+          ],
         },
       })
+      toast.success('Article posted')
     } catch (e) {
       // error handling
       console.log(e)
+      toast.error('Could not post article')
     }
   }
 
@@ -64,8 +82,11 @@ const New = () => {
           <div className={page.title}>
             <input
               type='text'
+              id='title'
+              name='title'
+              value={article.title || ''}
+              onChange={handleChange}
               placeholder='Title'
-              onChange={e => setTitle(e.target.value)}
             />
           </div>
           {/*<RichTextEditor />*/}
@@ -92,43 +113,64 @@ const New = () => {
             <div>
               <input
                 type='text'
-                placeholder='Tag'
-                onChange={e => setTag1(e.target.value)}
+                id='tag1'
+                name='tag1'
+                value={article.tag1 || ''}
+                onChange={handleChange}
+                placeholder='tag'
               />
               <input
                 type='text'
-                placeholder='Tag'
-                onChange={e => setTag2(e.target.value)}
+                id='tag2'
+                name='tag2'
+                value={article.tag2 || ''}
+                onChange={handleChange}
+                placeholder='tag'
               />
               <input
                 type='text'
-                placeholder='Tag'
-                onChange={e => setTag3(e.target.value)}
+                id='tag3'
+                name='tag3'
+                value={article.tag3 || ''}
+                onChange={handleChange}
+                placeholder='tag'
               />
             </div>
             <div>
               <input
                 type='text'
-                placeholder='Tag'
-                onChange={e => setTag4(e.target.value)}
+                id='tag4'
+                name='tag4'
+                value={article.tag4 || ''}
+                onChange={handleChange}
+                placeholder='tag'
               />
               <input
                 type='text'
-                placeholder='Tag'
-                onChange={e => setTag5(e.target.value)}
+                id='tag5'
+                name='tag5'
+                value={article.tag5 || ''}
+                onChange={handleChange}
+                placeholder='tag'
               />
               <input
                 type='text'
-                placeholder='Tag'
-                onChange={e => setTag6(e.target.value)}
+                id='tag6'
+                name='tag6'
+                value={article.tag6 || ''}
+                onChange={handleChange}
+                placeholder='tag'
               />
             </div>
           </div>
           <div className={page.description}>
             <input
               type='text'
+              id='description'
+              name='description'
+              value={article.description || ''}
               placeholder='Description (optional)'
-              onChange={e => setDescription(e.target.value)}
+              onChange={handleChange}
             />
           </div>
           <div className={page.btn_container}>

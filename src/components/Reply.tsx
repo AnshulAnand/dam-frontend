@@ -16,6 +16,7 @@ import {
 } from '@/lib/replies'
 import page from '@/app/articles/[article]/page.module.css'
 import Profile from './Profile'
+import { toast } from 'react-hot-toast'
 
 export default function Reply({
   reply,
@@ -53,9 +54,11 @@ export default function Reply({
       )
       setReplyBody('')
       setReplyInputVisible(false)
+      toast.success('Reply posted')
     } catch (e) {
       // error handling
       console.log(e)
+      toast.error('Could not post reply')
     }
   }
 
@@ -76,9 +79,11 @@ export default function Reply({
         } /* options */
       )
       setEditReplyInputVisible(false)
+      toast.success('Reply edited')
     } catch (e) {
       // error handling
       console.log(e)
+      toast.error('Could not edit reply')
     }
   }
 
@@ -94,9 +99,11 @@ export default function Reply({
           },
         } /* options */
       )
+      toast.success('Reply deleted')
     } catch (e) {
       // error handling
       console.log(e)
+      toast.error('Could not delete reply')
     }
   }
 
@@ -110,8 +117,10 @@ export default function Reply({
           parentComment: commentId,
         },
       })
+      toast.success('Reply liked')
     } catch (e) {
       console.log(e)
+      toast.error('Could not like reply')
     }
   }
 
