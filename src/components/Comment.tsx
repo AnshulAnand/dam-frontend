@@ -20,6 +20,7 @@ import page from '@/app/articles/[article]/page.module.css'
 import Profile from './Profile'
 import Reply from './Reply'
 import CommentLoading from './skeleton-loading/Comment'
+import { useSWRConfig } from 'swr'
 
 function FetchReplies({
   page,
@@ -45,7 +46,7 @@ function FetchReplies({
   ))
 }
 
-const Comment = ({
+export default function Comment({
   comment,
   articleId,
   articleUserId,
@@ -53,7 +54,9 @@ const Comment = ({
   comment: any
   articleId: string
   articleUserId: string
-}) => {
+}) {
+  const { mutate } = useSWRConfig()
+
   const [repliesVisible, setRepliesVisible] = useState(false)
   const [replyInputVisible, setReplyInputVisible] = useState(false)
   const [editCommentInputVisible, setEditCommentInputVisible] = useState(false)
@@ -94,6 +97,15 @@ const Comment = ({
             parentComment: comment._id,
           },
         } /* options */
+      )
+      setReplyBody('')
+      setReplyInputVisible(false)
+      mutate(
+        `${
+          process.env.NEXT_PUBLIC_API_URL
+        }/replies?page=${count}&limit=${4}&articleId=${articleId}&commentId=${
+          comment._id
+        }`
       )
     } catch (e) {
       // error handling
@@ -245,4 +257,3 @@ const Comment = ({
     </div>
   )
 }
-export default Comment

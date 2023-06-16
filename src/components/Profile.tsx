@@ -35,7 +35,7 @@ export default function Profile({
       {forArticle ? (
         <div style={{ marginLeft: '60px' }}>
           <p>{user.name}</p>
-          <small>{user.username}</small>
+          <small>@{user.username}</small>
         </div>
       ) : (
         <div style={{ marginLeft: '50px' }}>
@@ -49,10 +49,10 @@ export default function Profile({
                 color: 'black',
               }}
             >
-              {user.username}
+              @{user.username}
             </small>
           ) : (
-            <small>{user.username}</small>
+            <small>@{user.username}</small>
           )}
         </div>
       )}

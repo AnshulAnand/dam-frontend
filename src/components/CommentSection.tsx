@@ -15,6 +15,7 @@ import Comment from './Comment'
 import CommentLoading from './skeleton-loading/Comment'
 import Modal from './Modal'
 import Share from './Share'
+import { useSWRConfig } from 'swr'
 
 function FetchComments({
   page,
@@ -68,7 +69,9 @@ function FetchUserComments(articleId: string, articleUserId: string) {
   ))
 }
 
-function CommentSection({ article }: { article: any }) {
+export default function CommentSection({ article }: { article: any }) {
+  const { mutate } = useSWRConfig()
+
   const [showModal, setShowModal] = useState(false)
   const [count, setCount] = useState(1)
   const [commentBody, setCommentBody] = useState('')
@@ -97,6 +100,7 @@ function CommentSection({ article }: { article: any }) {
         } /* options */
       )
       setCommentBody('')
+      mutate(`${process.env.NEXT_PUBLIC_API_URL}/comments/${article._id}`)
     } catch (e) {
       // error handling
       console.log(e)
@@ -168,5 +172,3 @@ function CommentSection({ article }: { article: any }) {
     </>
   )
 }
-
-export default CommentSection
