@@ -15,7 +15,7 @@ const Editor = dynamic(
   { ssr: false }
 )
 
-const New = () => {
+export default function New() {
   const { triggerPostArticle, postArticleError } = usePostArticle()
 
   const [article, setArticle] = useState({
@@ -182,5 +182,3 @@ const New = () => {
     </section>
   )
 }
-
-export default New

@@ -6,14 +6,14 @@ import {
   RiDeleteBinLine,
   RiMessage3Line,
 } from 'react-icons/ri'
-import { useState } from 'react'
-import useCurrentUser from '@/lib/user'
 import {
   usePostReply,
   useEditReply,
   useDeleteReply,
   useLikeReply,
 } from '@/lib/replies'
+import { useState } from 'react'
+import useCurrentUser from '@/lib/user'
 import page from '@/app/articles/[article]/page.module.css'
 import Profile from './Profile'
 import { toast } from 'react-hot-toast'

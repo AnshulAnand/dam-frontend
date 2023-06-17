@@ -7,8 +7,7 @@ import {
   RiChat1Line,
   RiCloseLine,
 } from 'react-icons/ri'
-import { useState } from 'react'
-import { toast } from 'react-hot-toast'
+import { Dispatch, SetStateAction, useState } from 'react'
 import page from '@/app/articles/[article]/page.module.css'
 import { useComments, useUserComments, usePostComment } from '@/lib/comments'
 import { useLikeArticle } from '@/lib/article'
@@ -17,15 +16,18 @@ import CommentLoading from './skeleton-loading/Comment'
 import Modal from './Modal'
 import Share from './Share'
 import { useSWRConfig } from 'swr'
+import toast from 'react-hot-toast'
 
 function FetchComments({
   page,
   articleId,
   articleUserId,
+  setNext,
 }: {
   page: number
   articleId: string
   articleUserId: string
+  setNext: Dispatch<SetStateAction<boolean>>
 }) {
   const { comments, isLoading, isError } = useComments(page, articleId)
   if (isLoading)
@@ -37,6 +39,7 @@ function FetchComments({
       </>
     )
   if (isError) return <h1>error...</h1>
+  if (comments.length < 10) setNext(false)
   return comments.map((comment: any, i: number) => {
     articleUserId === comment.user ? (
       <Comment
@@ -73,17 +76,19 @@ function FetchUserComments(articleId: string, articleUserId: string) {
 export default function CommentSection({ article }: { article: any }) {
   const { mutate } = useSWRConfig()
 
+  const [next, setNext] = useState(true)
   const [showModal, setShowModal] = useState(false)
   const [count, setCount] = useState(1)
   const [commentBody, setCommentBody] = useState('')
 
-  let list: any = []
+  let list: Array<any> = []
   for (let i = 0; i < count; i++) {
     list.push(
       <FetchComments
         page={i + 1}
         articleId={article._id}
         articleUserId={article.user}
+        setNext={setNext}
       />
     )
   }
@@ -102,7 +107,7 @@ export default function CommentSection({ article }: { article: any }) {
       )
       setCommentBody('')
       mutate(`${process.env.NEXT_PUBLIC_API_URL}/comments/${article._id}`)
-      toast.success('Comments posted')
+      toast.success('Comment Posted')
     } catch (e) {
       // error handling
       console.log(e)
@@ -147,12 +152,14 @@ export default function CommentSection({ article }: { article: any }) {
         {/* Comment container */}
         {FetchUserComments(article._id, article.user)}
         {list}
-        <button
-          onClick={() => setCount(count + 1)}
-          className={page.btn_load_more}
-        >
-          Load More
-        </button>
+        {next ? (
+          <button
+            onClick={() => setCount(count + 1)}
+            className={page.btn_load_more}
+          >
+            Load More
+          </button>
+        ) : null}
       </div>
       {/* Controls */}
       <div className={page.controls}>
@@ -160,7 +167,7 @@ export default function CommentSection({ article }: { article: any }) {
           <RiThumbUpLine /> {article.likes}
         </button>
         <button onClick={() => setCommentsVisible(!commentsVisible)}>
-          <RiChat1Line />9
+          <RiChat1Line /> {article.comments}
         </button>
         <button onClick={() => setShowModal(true)}>
           <RiShareForwardLine />

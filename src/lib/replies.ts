@@ -9,7 +9,7 @@ export function useReplies(page: number, articleId: string, commentId: string) {
   const { data, error, isLoading } = useSWR(
     `${
       process.env.NEXT_PUBLIC_API_URL
-    }/replies?page=${page}&limit=${4}&articleId=${articleId}&commentId=${commentId}`,
+    }/replies?page=${page}&limit=${10}&articleId=${articleId}&commentId=${commentId}`,
     GET
   )
   return { replies: data, isLoading, isError: error }

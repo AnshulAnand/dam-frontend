@@ -1,6 +1,3 @@
-const loading = () => {
-  return (
-    <div>loading</div>
-  )
+export default function loading() {
+  return <div>loading</div>
 }
-export default loading

@@ -4,10 +4,16 @@ import page from './page.module.css'
 import Article from '@/components/Article'
 import { useArticles } from '@/lib/article'
 import ArticleSkeleton from '@/components/skeleton-loading/Article'
-import { useState } from 'react'
+import { Dispatch, SetStateAction, useState } from 'react'
 import { IArticle } from '../../../types'
 
-function FetchArticles({ page }: { page: number }) {
+function FetchArticles({
+  page,
+  setNext,
+}: {
+  page: number
+  setNext: Dispatch<SetStateAction<boolean>>
+}) {
   const { data, isLoading, isError } = useArticles(page)
   if (isLoading) {
     return (
@@ -20,17 +26,19 @@ function FetchArticles({ page }: { page: number }) {
     )
   }
   if (isError) return <h1>error...</h1>
+  if (data.results.length < 4) setNext(false)
   return data.results.map((article: IArticle, i: number) => (
     <Article article={article} key={i} />
   ))
 }
 
-const Articles = () => {
+export default function Articles() {
   const [count, setCount] = useState(1)
+  const [next, setNext] = useState(true)
 
-  let list: any = []
+  let list: Array<any> = []
   for (let i = 0; i < count; i++) {
-    list.push(<FetchArticles page={i + 1} />)
+    list.push(<FetchArticles page={i + 1} setNext={setNext} />)
   }
 
   return (
@@ -39,14 +47,14 @@ const Articles = () => {
         <main className={page.main}>{list}</main>
         <div className={page.ads}></div>
       </div>
-      <button
-        onClick={() => setCount(count + 1)}
-        className={page.btn_load_more}
-      >
-        Load More
-      </button>
+      {next ? (
+        <button
+          onClick={() => setCount(count + 1)}
+          className={page.btn_load_more}
+        >
+          Load More
+        </button>
+      ) : null}
     </section>
   )
 }
-
-export default Articles

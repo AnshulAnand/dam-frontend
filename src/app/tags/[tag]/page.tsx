@@ -3,12 +3,21 @@
 import { useTagArticle } from '@/lib/article'
 import page from './page.module.css'
 import Article from '@/components/Article'
-import { useState } from 'react'
+import { Dispatch, SetStateAction, useState } from 'react'
 
-function FetchArticles({ page, tag }: { tag: string; page: number }) {
+function FetchArticles({
+  page,
+  tag,
+  setNext,
+}: {
+  tag: string
+  page: number
+  setNext: Dispatch<SetStateAction<boolean>>
+}) {
   const { data, isLoading, isError } = useTagArticle(tag, page)
   if (isLoading) return <h1>loading...</h1>
   if (isError) return <h1>{isError.info.message}</h1>
+  if (data.length < 4) setNext(false)
   return data.map((article: any, i: number) => (
     <Article article={article} key={i} />
   ))
@@ -16,10 +25,11 @@ function FetchArticles({ page, tag }: { tag: string; page: number }) {
 
 const Articles = ({ params }: { params: { tag: string } }) => {
   const [count, setCount] = useState(1)
+  const [next, setNext] = useState(true)
 
-  let list: any = []
+  let list: Array<any> = []
   for (let i = 0; i < count; i++) {
-    list.push(<FetchArticles tag={params.tag} page={i + 1} />)
+    list.push(<FetchArticles tag={params.tag} page={i + 1} setNext={setNext} />)
   }
 
   return (
@@ -28,12 +38,14 @@ const Articles = ({ params }: { params: { tag: string } }) => {
         <main className={page.main}>{list}</main>
         <div className={page.ads}></div>
       </div>
-      <button
-        onClick={() => setCount(count + 1)}
-        className={page.btn_load_more}
-      >
-        Load More
-      </button>
+      {next ? (
+        <button
+          onClick={() => setCount(count + 1)}
+          className={page.btn_load_more}
+        >
+          Load More
+        </button>
+      ) : null}
     </section>
   )
 }

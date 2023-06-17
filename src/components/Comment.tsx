@@ -19,7 +19,7 @@ import page from '@/app/articles/[article]/page.module.css'
 import Profile from './Profile'
 import Reply from './Reply'
 import CommentLoading from './skeleton-loading/Comment'
-import { useState } from 'react'
+import { Dispatch, SetStateAction, useState } from 'react'
 import { useSWRConfig } from 'swr'
 import { toast } from 'react-hot-toast'
 
@@ -27,10 +27,12 @@ function FetchReplies({
   page,
   articleId,
   commentId,
+  setNext,
 }: {
   page: number
   articleId: string
   commentId: string
+  setNext: Dispatch<SetStateAction<boolean>>
 }) {
   const { replies, isLoading, isError } = useReplies(page, articleId, commentId)
   if (isLoading)
@@ -42,6 +44,7 @@ function FetchReplies({
       </>
     )
   if (isError) return <h1>error...</h1>
+  if (replies.length < 10) setNext(false)
   return replies.map((reply: any, i: number) => (
     <Reply reply={reply} articleId={articleId} commentId={commentId} key={i} />
   ))
@@ -58,6 +61,7 @@ export default function Comment({
 }) {
   const { mutate } = useSWRConfig()
 
+  const [next, setNext] = useState(true)
   const [repliesVisible, setRepliesVisible] = useState(false)
   const [replyInputVisible, setReplyInputVisible] = useState(false)
   const [editCommentInputVisible, setEditCommentInputVisible] = useState(false)
@@ -68,13 +72,14 @@ export default function Comment({
 
   const [count, setCount] = useState(1)
 
-  let list: any = []
+  let list: Array<any> = []
   for (let i = 0; i < count; i++) {
     list.push(
       <FetchReplies
         page={i + 1}
         articleId={articleId}
         commentId={comment._id}
+        setNext={setNext}
       />
     )
   }
@@ -256,12 +261,14 @@ export default function Comment({
         className={`${page.replies} ${repliesVisible ? 'd-block' : 'd-none'}`}
       >
         {list}
-        <button
-          onClick={() => setCount(count + 1)}
-          className={page.btn_load_more}
-        >
-          Load More
-        </button>
+        {next ? (
+          <button
+            onClick={() => setCount(count + 1)}
+            className={page.btn_load_more}
+          >
+            Load More
+          </button>
+        ) : null}
       </div>
     </div>
   )

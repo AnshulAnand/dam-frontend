@@ -26,7 +26,7 @@ const Article = async ({ params }: { params: { article: string } }) => {
           <div className={page.article_tags}>
             {article.tags.map((tag: string, i: number) => (
               <Link key={i} href={`/tags/${tag}`}>
-                #{tag}
+                {tag !== '' ? `#${tag}` : null}
               </Link>
             ))}
           </div>
