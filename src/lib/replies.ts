@@ -3,8 +3,9 @@
 import useSWR from 'swr'
 import useSWRMutation from 'swr/mutation'
 import { GET, POST, PATCH, DELETE } from '@/utils/fetch'
+import { IReply } from '../../types'
 
-// GET Comments
+// GET Replies
 export function useReplies(page: number, articleId: string, commentId: string) {
   const { data, error, isLoading } = useSWR(
     `${
@@ -12,7 +13,11 @@ export function useReplies(page: number, articleId: string, commentId: string) {
     }/replies?page=${page}&limit=${10}&articleId=${articleId}&commentId=${commentId}`,
     GET
   )
-  return { replies: data, isLoading, isError: error }
+  return {
+    replies: data as Array<IReply>,
+    isLoading,
+    isError: error,
+  }
 }
 
 // POST Reply

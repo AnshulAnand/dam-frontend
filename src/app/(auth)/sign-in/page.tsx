@@ -4,11 +4,8 @@ import Link from 'next/link'
 import { useState } from 'react'
 import { RiGoogleLine } from 'react-icons/ri'
 import { useLoginUser } from '@/lib/user'
-import { useRouter } from 'next/navigation'
 
 export default function SignIn() {
-  const router = useRouter()
-
   const { triggerLoginUser, loginUserError } = useLoginUser()
 
   const [user, setUser] = useState({
@@ -27,7 +24,6 @@ export default function SignIn() {
     e.preventDefault()
     try {
       const result = await triggerLoginUser({ body: user } /* options */)
-      router.replace('/')
     } catch (e) {
       // error handling
       console.log(e)

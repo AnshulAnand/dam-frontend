@@ -3,6 +3,7 @@
 import useSWR from 'swr'
 import useSWRMutation from 'swr/mutation'
 import { GET, PATCH, POST } from '@/utils/fetch'
+import { IUser } from '../../types'
 
 // LOGIN user
 export function useLoginUser() {
@@ -43,7 +44,11 @@ export default function useCurrentUser() {
     `${process.env.NEXT_PUBLIC_API_URL}/users/current`,
     GET
   )
-  return { user: data, isLoading, isError: error }
+  return {
+    user: data as IUser,
+    isLoading,
+    isError: error,
+  }
 }
 
 // GET user by id
@@ -54,7 +59,7 @@ export function useUserById(id: string) {
   )
 
   return {
-    user: data,
+    user: data as IUser,
     isLoading,
     isError: error,
   }

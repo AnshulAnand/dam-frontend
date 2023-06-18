@@ -3,6 +3,7 @@
 import { DELETE, GET, PATCH, POST } from '@/utils/fetch'
 import useSWR from 'swr'
 import useSWRMutation from 'swr/mutation'
+import { IComment } from '../../types'
 
 // GET Comments
 export function useComments(page: number, articleId: string) {
@@ -12,7 +13,11 @@ export function useComments(page: number, articleId: string) {
     }/comments?page=${page}&limit=${10}&articleId=${articleId}`,
     GET
   )
-  return { comments: data, isLoading, isError: error }
+  return {
+    comments: data as Array<IComment>,
+    isLoading,
+    isError: error,
+  }
 }
 
 // GET user Comments
@@ -21,7 +26,11 @@ export function useUserComments(articleId: string) {
     `${process.env.NEXT_PUBLIC_API_URL}/comments/${articleId}`,
     GET
   )
-  return { userComments: data, isLoading, isError: error }
+  return {
+    userComments: data as Array<IComment>,
+    isLoading,
+    isError: error,
+  }
 }
 
 // POST Comment

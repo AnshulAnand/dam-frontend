@@ -19,14 +19,14 @@ import useCurrentUser from '@/lib/user'
 import page from '@/app/articles/[article]/page.module.css'
 import Profile from './Profile'
 import { toast } from 'react-hot-toast'
-import { mutate } from 'swr'
+import { IReply } from '../../types'
 
 export default function Reply({
   reply,
   articleId,
   commentId,
 }: {
-  reply: any
+  reply: IReply
   articleId: string
   commentId: string
 }) {

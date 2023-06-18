@@ -3,6 +3,7 @@
 import { GET, POST } from '@/utils/fetch'
 import useSWR from 'swr'
 import useSWRMutation from 'swr/mutation'
+import { IArticle } from '../../types'
 
 // GET articles
 export function useArticles(page: number) {
@@ -10,7 +11,11 @@ export function useArticles(page: number) {
     `${process.env.NEXT_PUBLIC_API_URL}/articles?page=${page}&limit=${4}`,
     GET
   )
-  return { data, isLoading, isError: error }
+  return {
+    data: Array<IArticle>,
+    isLoading,
+    isError: error,
+  }
 }
 
 // GET User Articles
@@ -21,7 +26,11 @@ export function useUserArticles(userId: string, page: number) {
     }/articles/user/${userId}?page=${page}&limit=${4}`,
     GET
   )
-  return { userArticles: data, isLoading, isError: error }
+  return {
+    userArticles: data as Array<IArticle>,
+    isLoading,
+    isError: error,
+  }
 }
 
 // POST Article
@@ -58,7 +67,7 @@ export function useSearchArticle(searchText: string, page: number) {
   )
 
   return {
-    data,
+    data: Array<IArticle>,
     isLoading,
     isError: error,
   }
@@ -74,7 +83,7 @@ export function useTagArticle(tag: string, page: number) {
   )
 
   return {
-    data,
+    data: Array<IArticle>,
     isLoading,
     isError: error,
   }

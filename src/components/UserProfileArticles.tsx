@@ -12,7 +12,7 @@ function FetchArticles({
 }: {
   pageNumber: number
   userId: string
-}) {
+}): any {
   const { userArticles, isLoading, isError } = useUserArticles(
     userId,
     pageNumber

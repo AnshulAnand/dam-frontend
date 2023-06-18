@@ -3,6 +3,7 @@
 import ProfileSkeleton from './skeleton-loading/Profile'
 import Link from 'next/link'
 import { useUserById } from '@/lib/user'
+import { IUser } from '../../types'
 
 export default function Profile({
   userId,

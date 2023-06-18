@@ -23,6 +23,7 @@ import CommentLoading from './skeleton-loading/Comment'
 import { Dispatch, SetStateAction, useState } from 'react'
 import { useSWRConfig } from 'swr'
 import { toast } from 'react-hot-toast'
+import { IComment } from '../../types'
 
 function FetchReplies({
   page,
@@ -34,7 +35,7 @@ function FetchReplies({
   articleId: string
   commentId: string
   setNext: Dispatch<SetStateAction<boolean>>
-}) {
+}): any {
   const { replies, isLoading, isError } = useReplies(page, articleId, commentId)
   if (isLoading)
     return (
@@ -56,7 +57,7 @@ export default function Comment({
   articleId,
   articleUserId,
 }: {
-  comment: any
+  comment: IComment
   articleId: string
   articleUserId: string
 }) {

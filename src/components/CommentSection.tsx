@@ -18,6 +18,7 @@ import Modal from './Modal'
 import Share from './Share'
 import { useSWRConfig } from 'swr'
 import toast from 'react-hot-toast'
+import { IArticle } from '../../types'
 
 function FetchComments({
   page,
@@ -29,7 +30,7 @@ function FetchComments({
   articleId: string
   articleUserId: string
   setNext: Dispatch<SetStateAction<boolean>>
-}) {
+}): any {
   const { comments, isLoading, isError } = useComments(page, articleId)
   if (isLoading)
     return (
@@ -74,7 +75,7 @@ function FetchUserComments(articleId: string, articleUserId: string) {
   ))
 }
 
-export default function CommentSection({ article }: { article: any }) {
+export default function CommentSection({ article }: { article: IArticle }) {
   const { mutate } = useSWRConfig()
   const { data, isError, isLoading } = useCheckArticleLike(article._id)
 

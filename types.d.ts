@@ -7,18 +7,9 @@ export interface IUser {
   link: string
   image: string
   views: number
-  createdAt: string
-  updatedAt: string
+  createdAt: Date
+  updatedAt: Date
   __v: number
-}
-
-export interface IUserInput {
-  name: string
-  username: string
-  country: string
-  bio: string
-  link: string
-  image: string
 }
 
 export interface IArticle {
@@ -34,7 +25,33 @@ export interface IArticle {
   likes: number
   comments: number
   edited: boolean
-  createdAt: string
-  updatedAt: string
+  createdAt: Date
+  updatedAt: Date
+  __v: number
+}
+
+export interface IComment {
+  _id: string
+  user: string
+  parentArticle: string
+  body: string
+  likes: number
+  replies: number
+  edited: boolean
+  createdAt: Date
+  updatedAt: Date
+  __v: number
+}
+
+export interface IReply {
+  _id: string
+  user: string
+  parentArticle: string
+  parentComment: string
+  body: string
+  likes: number
+  edited: boolean
+  createdAt: Date
+  updatedAt: Date
   __v: number
 }
