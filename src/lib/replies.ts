@@ -55,11 +55,25 @@ export function useDeleteReply() {
 // LIKE Reply
 export function useLikeReply() {
   const { trigger, isMutating, data, error } = useSWRMutation(
-    `${process.env.NEXT_PUBLIC_API_URL}/reply/like`,
+    `${process.env.NEXT_PUBLIC_API_URL}/replies/like`,
     POST /* options */
   )
   return {
     triggerLikeReply: trigger,
     likeReplyError: error,
+  }
+}
+
+// CHECK whether user has already liked
+export function useCheckReplyLike(replyId: string) {
+  const { data, error, isLoading } = useSWR(
+    `${process.env.NEXT_PUBLIC_API_URL}/replies/check-like/${replyId}`,
+    GET
+  )
+
+  return {
+    data,
+    isLoading,
+    isError: error,
   }
 }

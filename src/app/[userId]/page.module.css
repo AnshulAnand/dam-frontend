@@ -28,8 +28,6 @@
   position: absolute;
   top: 0;
   object-fit: cover;
-  width: 200px;
-  height: 200px;
   border-radius: 1rem;
 }
 

@@ -71,3 +71,17 @@ export function useLikeComment() {
     likeCommentError: error,
   }
 }
+
+// CHECK whether user has already liked
+export function useCheckCommentLike(commentId: string) {
+  const { data, error, isLoading } = useSWR(
+    `${process.env.NEXT_PUBLIC_API_URL}/comments/check-like/${commentId}`,
+    GET
+  )
+
+  return {
+    data,
+    isLoading,
+    isError: error,
+  }
+}

@@ -2,6 +2,7 @@
 
 import {
   RiThumbUpLine,
+  RiThumbUpFill,
   RiPencilLine,
   RiDeleteBinLine,
   RiChat1Line,
@@ -13,8 +14,8 @@ import {
   useLikeComment,
 } from '@/lib/comments'
 import useCurrentUser from '@/lib/user'
-import { useReplies } from '@/lib/replies'
-import { usePostReply } from '@/lib/replies'
+import { useCheckCommentLike } from '@/lib/comments'
+import { useReplies, usePostReply } from '@/lib/replies'
 import page from '@/app/articles/[article]/page.module.css'
 import Profile from './Profile'
 import Reply from './Reply'
@@ -60,17 +61,18 @@ export default function Comment({
   articleUserId: string
 }) {
   const { mutate } = useSWRConfig()
+  const { user, isLoading, isError } = useCurrentUser()
+  const { data } = useCheckCommentLike(comment._id)
 
+  const [count, setCount] = useState(1)
   const [next, setNext] = useState(true)
   const [repliesVisible, setRepliesVisible] = useState(false)
   const [replyInputVisible, setReplyInputVisible] = useState(false)
   const [editCommentInputVisible, setEditCommentInputVisible] = useState(false)
   const [replyBody, setReplyBody] = useState('')
   const [commentBody, setCommentBody] = useState(comment.body)
-
-  const { user, isLoading, isError } = useCurrentUser()
-
-  const [count, setCount] = useState(1)
+  const [commentLikes, setCommentLikes] = useState(comment.likes)
+  const [hasLiked, setHasLiked] = useState(data && data.like ? true : false)
 
   let list: Array<any> = []
   for (let i = 0; i < count; i++) {
@@ -171,7 +173,9 @@ export default function Comment({
           commentId: comment._id,
         },
       })
-      toast.success('Liked comment')
+      setCommentLikes(commentLikes + 1)
+      setHasLiked(true)
+      toast.success('Comment upvoted')
     } catch (e) {
       console.log(e)
       toast.error('Could not like comment')
@@ -212,14 +216,20 @@ export default function Comment({
         <button
           className={`${page.btn} ${page.comment_btn}`}
           onClick={handleLike}
+          disabled={hasLiked}
         >
-          <RiThumbUpLine className={page.icon} /> {comment.likes}
+          {data && data.liked ? (
+            <RiThumbUpFill className={page.icon} />
+          ) : (
+            <RiThumbUpLine className={page.icon} />
+          )}
+          {commentLikes}
         </button>
         <button
           className={`${page.btn} ${page.comment_btn}`}
           onClick={() => setRepliesVisible(!repliesVisible)}
         >
-          <RiChat1Line className={page.icon} /> 198
+          <RiChat1Line className={page.icon} /> {comment.replies}
         </button>
         <button
           onClick={() => setReplyInputVisible(!replyInputVisible)}

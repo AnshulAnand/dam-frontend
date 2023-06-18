@@ -6,12 +6,27 @@ import UserArticles from '@/components/UserArticles'
 import NotFound from '@/components/NotFound'
 import returnDate from '@/utils/returnDate'
 import readingTime from '@/utils/readingTime'
-import { GET } from '@/utils/fetch'
 import { RiEyeLine } from 'react-icons/ri'
 import { IArticle } from '../../../../types'
 
+// GET fetch api request
+export async function fetchArticle(url: string) {
+  try {
+    const res = await fetch(url, { next: { tags: ['article'] } })
+    if (!res.ok) {
+      const error: any = new Error('An error occurred while fetching the data')
+      error.message = await res.json()
+      error.status = res.status
+      throw error
+    }
+    return res.json()
+  } catch (e) {
+    throw new Error('Failed to fetch data')
+  }
+}
+
 const Article = async ({ params }: { params: { article: string } }) => {
-  const article: IArticle = await GET(
+  const article: IArticle = await fetchArticle(
     `${process.env.NEXT_PUBLIC_API_URL}/articles/${params.article}`
   )
   console.log({ article })

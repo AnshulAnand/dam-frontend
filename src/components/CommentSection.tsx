@@ -3,6 +3,7 @@
 import {
   RiShareForwardLine,
   RiThumbUpLine,
+  RiThumbUpFill,
   RiPencilLine,
   RiChat1Line,
   RiCloseLine,
@@ -10,7 +11,7 @@ import {
 import { Dispatch, SetStateAction, useState } from 'react'
 import page from '@/app/articles/[article]/page.module.css'
 import { useComments, useUserComments, usePostComment } from '@/lib/comments'
-import { useLikeArticle } from '@/lib/article'
+import { useLikeArticle, useCheckArticleLike } from '@/lib/article'
 import Comment from './Comment'
 import CommentLoading from './skeleton-loading/Comment'
 import Modal from './Modal'
@@ -75,11 +76,15 @@ function FetchUserComments(articleId: string, articleUserId: string) {
 
 export default function CommentSection({ article }: { article: any }) {
   const { mutate } = useSWRConfig()
+  const { data, isError, isLoading } = useCheckArticleLike(article._id)
 
+  const [count, setCount] = useState(1)
   const [next, setNext] = useState(true)
   const [showModal, setShowModal] = useState(false)
-  const [count, setCount] = useState(1)
   const [commentBody, setCommentBody] = useState('')
+  const [commentsVisible, setCommentsVisible] = useState(false)
+  const [articleLikes, setArticleLikes] = useState(article.likes)
+  const [hasLiked, setHasLiked] = useState(data && data.like ? true : false)
 
   let list: Array<any> = []
   for (let i = 0; i < count; i++) {
@@ -92,8 +97,6 @@ export default function CommentSection({ article }: { article: any }) {
       />
     )
   }
-
-  const [commentsVisible, setCommentsVisible] = useState(false)
 
   const { triggerPostComment, postCommentError } = usePostComment()
 
@@ -124,11 +127,13 @@ export default function CommentSection({ article }: { article: any }) {
           body: { articleId: article._id },
         } /* options */
       )
-      toast.success('Comment liked')
+      setArticleLikes(articleLikes + 1)
+      setHasLiked(true)
+      toast.success('Article upvoted')
     } catch (e) {
       // error handling
       console.log(e)
-      toast.error('Could not like comment')
+      toast.error('Could not like article')
     }
   }
 
@@ -163,8 +168,9 @@ export default function CommentSection({ article }: { article: any }) {
       </div>
       {/* Controls */}
       <div className={page.controls}>
-        <button onClick={handleLike}>
-          <RiThumbUpLine /> {article.likes}
+        <button onClick={handleLike} disabled={hasLiked}>
+          {data && data.liked ? <RiThumbUpFill /> : <RiThumbUpLine />}
+          {articleLikes}
         </button>
         <button onClick={() => setCommentsVisible(!commentsVisible)}>
           <RiChat1Line /> {article.comments}

@@ -24,7 +24,7 @@ const Profile = async ({ params }: { params: { userId: string } }) => {
     <section className={page.section}>
       <div className={page.container}>
         <main className={page.main}>
-          <img src={user.image} alt='' />
+          <img src={user.image} alt={user.username} width={200} height={200} />
           <div className={page.user_data}>
             <div className={page.user_name}>
               <h1>

@@ -91,3 +91,17 @@ export function useSubscribe() {
     subscribeError: error,
   }
 }
+
+// CHECK whether user has already liked
+export function useCheckArticleLike(articleId: string) {
+  const { data, error, isLoading } = useSWR(
+    `${process.env.NEXT_PUBLIC_API_URL}/articles/check-like/${articleId}`,
+    GET
+  )
+
+  return {
+    data,
+    isLoading,
+    isError: error,
+  }
+}

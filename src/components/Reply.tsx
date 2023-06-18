@@ -2,6 +2,7 @@
 
 import {
   RiThumbUpLine,
+  RiThumbUpFill,
   RiPencilLine,
   RiDeleteBinLine,
   RiMessage3Line,
@@ -11,12 +12,14 @@ import {
   useEditReply,
   useDeleteReply,
   useLikeReply,
+  useCheckReplyLike,
 } from '@/lib/replies'
 import { useState } from 'react'
 import useCurrentUser from '@/lib/user'
 import page from '@/app/articles/[article]/page.module.css'
 import Profile from './Profile'
 import { toast } from 'react-hot-toast'
+import { mutate } from 'swr'
 
 export default function Reply({
   reply,
@@ -27,10 +30,15 @@ export default function Reply({
   articleId: string
   commentId: string
 }) {
+  const { user, isLoading, isError } = useCurrentUser()
+  const { data } = useCheckReplyLike(reply._id)
+
   const [replyBody, setReplyBody] = useState('')
   const [editedReplyBody, setEditedReplyBody] = useState(reply.body)
   const [replyInputVisible, setReplyInputVisible] = useState(false)
   const [editReplyInputVisible, setEditReplyInputVisible] = useState(false)
+  const [replyLikes, setReplyLikes] = useState(reply.likes)
+  const [hasLiked, setHasLiked] = useState(data && data.like ? true : false)
 
   const handleEditBtnClick = () => {
     setEditedReplyBody(reply.body)
@@ -117,14 +125,14 @@ export default function Reply({
           parentComment: commentId,
         },
       })
-      toast.success('Reply liked')
+      setReplyLikes(replyLikes + 1)
+      setHasLiked(true)
+      toast.success('Reply upvoted')
     } catch (e) {
       console.log(e)
       toast.error('Could not like reply')
     }
   }
-
-  const { user, isLoading, isError } = useCurrentUser()
 
   return (
     <div className={page.reply}>
@@ -157,8 +165,14 @@ export default function Reply({
         <button
           className={`${page.btn} ${page.comment_btn}`}
           onClick={handleLike}
+          disabled={hasLiked}
         >
-          <RiThumbUpLine className={page.icon} /> {reply.likes}
+          {data && data.like ? (
+            <RiThumbUpFill className={page.icon} />
+          ) : (
+            <RiThumbUpLine className={page.icon} />
+          )}
+          {replyLikes}
         </button>
         <button
           onClick={() => setReplyInputVisible(!replyInputVisible)}
