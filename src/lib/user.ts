@@ -45,7 +45,7 @@ export default function useCurrentUser() {
     GET
   )
   return {
-    user: data as IUser,
+    currentUser: data as IUser,
     isLoading,
     isError: error,
   }

@@ -30,7 +30,7 @@ export default function Reply({
   articleId: string
   commentId: string
 }) {
-  const { user, isLoading, isError } = useCurrentUser()
+  const { currentUser, isLoading, isError } = useCurrentUser()
   const { data } = useCheckReplyLike(reply._id)
 
   const [replyBody, setReplyBody] = useState('')
@@ -38,7 +38,7 @@ export default function Reply({
   const [replyInputVisible, setReplyInputVisible] = useState(false)
   const [editReplyInputVisible, setEditReplyInputVisible] = useState(false)
   const [replyLikes, setReplyLikes] = useState(reply.likes)
-  const [hasLiked, setHasLiked] = useState(data && data.like ? true : false)
+  const [hasLiked, setHasLiked] = useState(data && data.liked ? true : false)
 
   const handleEditBtnClick = () => {
     setEditedReplyBody(reply.body)
@@ -146,7 +146,7 @@ export default function Reply({
           commentUserId={reply._id}
         />
         <div className={page.btn_container}>
-          {user && user._id === reply.user ? (
+          {currentUser && currentUser._id === reply.user ? (
             <>
               <button className={page.btn} onClick={handleEditBtnClick}>
                 <RiPencilLine />

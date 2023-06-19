@@ -29,6 +29,7 @@
   top: 0;
   object-fit: cover;
   border-radius: 1rem;
+  background: url('/images/about_goku.png');
 }
 
 .user_data {
@@ -83,12 +84,14 @@
 }
 
 .user_articles {
+  position: relative;
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
   gap: 2rem;
+  padding-bottom: 70px;
 }
 
 .article {
@@ -112,12 +115,14 @@
 }
 
 .btn_load_more {
+  position: absolute;
   width: 150px;
   cursor: pointer;
   padding: 1rem 1.5rem;
   margin-top: 2rem;
   border-radius: 100px;
   margin-inline: auto;
+  bottom: 0;
 }
 
 .btn_load_more:hover {

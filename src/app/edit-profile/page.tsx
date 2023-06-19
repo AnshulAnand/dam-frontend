@@ -2,18 +2,21 @@
 
 import { useState } from 'react'
 import page from './page.module.css'
+import { useRouter } from 'next/navigation'
+import { toast } from 'react-hot-toast'
 import useCurrentUser, { useUpdateUser } from '@/lib/user'
 
-function EditProfile() {
-  const { user, isLoading, isError } = useCurrentUser()
+export default function EditProfile() {
+  const { push } = useRouter()
+  const { currentUser, isLoading, isError } = useCurrentUser()
 
   const [profile, setProfile] = useState({
-    name: user?.name,
-    username: user?.username,
-    country: user?.country,
-    bio: user?.bio,
-    link: user?.link,
-    image: user?.image,
+    name: currentUser?.name,
+    username: currentUser?.username,
+    country: currentUser?.country,
+    bio: currentUser?.bio,
+    link: currentUser?.link,
+    image: currentUser?.image,
   })
 
   const { triggerUpdateUser, updateUserError } = useUpdateUser()
@@ -28,9 +31,12 @@ function EditProfile() {
     e.preventDefault()
     try {
       const result = await triggerUpdateUser({ body: profile })
+      toast.success('Profile updated')
+      push(`/@${result.username}`)
     } catch (e) {
       // error handling
       console.log(e)
+      toast.error('Could not update profile')
     }
   }
 
@@ -98,5 +104,3 @@ function EditProfile() {
     </section>
   )
 }
-
-export default EditProfile

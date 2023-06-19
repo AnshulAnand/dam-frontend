@@ -85,7 +85,7 @@ export default function CommentSection({ article }: { article: IArticle }) {
   const [commentBody, setCommentBody] = useState('')
   const [commentsVisible, setCommentsVisible] = useState(false)
   const [articleLikes, setArticleLikes] = useState(article.likes)
-  const [hasLiked, setHasLiked] = useState(data && data.like ? true : false)
+  const [hasLiked, setHasLiked] = useState(data && data.liked ? true : false)
 
   let list: Array<any> = []
   for (let i = 0; i < count; i++) {

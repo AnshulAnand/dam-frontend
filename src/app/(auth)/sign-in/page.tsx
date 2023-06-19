@@ -3,11 +3,16 @@
 import Link from 'next/link'
 import { useState } from 'react'
 import { RiGoogleLine } from 'react-icons/ri'
-import { useLoginUser } from '@/lib/user'
+import useCurrentUser, { useLoginUser } from '@/lib/user'
 
 export default function SignIn() {
-  const { triggerLoginUser, loginUserError } = useLoginUser()
+  const { currentUser } = useCurrentUser()
 
+  if (currentUser) {
+    location.assign(window.location.origin)
+  }
+
+  const { triggerLoginUser, loginUserError } = useLoginUser()
   const [user, setUser] = useState({
     username: '',
     email: '',
@@ -24,6 +29,7 @@ export default function SignIn() {
     e.preventDefault()
     try {
       const result = await triggerLoginUser({ body: user } /* options */)
+      location.assign(window.location.origin)
     } catch (e) {
       // error handling
       console.log(e)
@@ -71,7 +77,8 @@ export default function SignIn() {
         <RiGoogleLine className='icon' style={{ color: 'red' }} />
       </a>
       <div className='login-link'>
-        Do not have an account? <Link href='/sign-up'>Create account here</Link>
+        Do not have an account?
+        <Link href='/sign-up'>Create account here</Link>
       </div>
     </main>
   )

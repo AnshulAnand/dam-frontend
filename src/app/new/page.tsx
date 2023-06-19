@@ -9,6 +9,7 @@ import DOMPurify from 'dompurify'
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
 import { usePostArticle } from '@/lib/article'
 import { toast } from 'react-hot-toast'
+import { useRouter } from 'next/navigation'
 
 const Editor = dynamic(
   () => import('react-draft-wysiwyg').then(mod => mod.Editor),
@@ -16,10 +17,10 @@ const Editor = dynamic(
 )
 
 export default function New() {
-  const { triggerPostArticle, postArticleError } = usePostArticle()
-
+  const { push } = useRouter()
   const [article, setArticle] = useState({
     title: '',
+    image: '',
     description: '',
     tag1: '',
     tag2: '',
@@ -49,6 +50,9 @@ export default function New() {
 
   console.log(convertedContent)
 
+  // Submit article
+  const { triggerPostArticle, postArticleError } = usePostArticle()
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     try {
@@ -68,6 +72,7 @@ export default function New() {
         },
       })
       toast.success('Article posted')
+      push(`/articles/${result.url}`)
     } catch (e) {
       // error handling
       console.log(e)
@@ -79,7 +84,7 @@ export default function New() {
     <section className={`container ${page.section}`}>
       <main className={page.main}>
         <form onSubmit={handleSubmit}>
-          <div className={page.title}>
+          <div className={page.header}>
             <input
               type='text'
               id='title'
@@ -87,6 +92,16 @@ export default function New() {
               value={article.title || ''}
               onChange={handleChange}
               placeholder='Title'
+              required
+            />
+            <input
+              type='text'
+              id='image'
+              name='image'
+              value={article.image || ''}
+              onChange={handleChange}
+              placeholder='Cover image for the article'
+              required
             />
           </div>
           {/*<RichTextEditor />*/}

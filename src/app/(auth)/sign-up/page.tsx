@@ -1,11 +1,17 @@
 'use client'
 
-import { useRegisterUser } from '@/lib/user'
+import useCurrentUser, { useRegisterUser } from '@/lib/user'
 import Link from 'next/link'
 import { RiGoogleLine } from 'react-icons/ri'
 import { useState } from 'react'
 
 export default function SignUp() {
+  const { currentUser } = useCurrentUser()
+
+  if (currentUser) {
+    location.assign(window.location.origin)
+  }
+
   const { triggerRegisterUser, registerUserError } = useRegisterUser()
 
   const [user, setUser] = useState({
@@ -25,6 +31,7 @@ export default function SignUp() {
     e.preventDefault()
     try {
       const result = await triggerRegisterUser({ body: user } /* options */)
+      location.assign(window.location.origin)
     } catch (e) {
       // error handling
       console.log(e)

@@ -38,22 +38,27 @@ const Profile = async ({ params }: { params: { userId: string } }) => {
               <div>
                 <RiCake2Line className='icon' /> {returnDate(user)}
               </div>
+              {user.country !== '' && (
+                <div>
+                  <RiMapPinUserLine className='icon' /> {user.country}
+                </div>
+              )}
               <div>
-                <RiMapPinUserLine className='icon' /> {user.country}
-              </div>
-              <div>
-                <RiEyeLine className='icon' /> 23M content views
+                <RiEyeLine className='icon' />
+                {user.views} content views
               </div>
               <div>
                 <RiFileList3Line className='icon' /> 176 articles
               </div>
             </div>
-            <div className={page.user_link}>
-              <RiLink className='icon' />
-              <a href={user.link} target='_blank'>
-                {user.link}
-              </a>
-            </div>
+            {user.link !== '' && (
+              <div className={page.user_link}>
+                <RiLink className='icon' />
+                <a href={user.link} target='_blank'>
+                  {user.link}
+                </a>
+              </div>
+            )}
             <ProfileEditBtn visitor={user} />
           </div>
         </main>

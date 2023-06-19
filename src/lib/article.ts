@@ -12,7 +12,7 @@ export function useArticles(page: number) {
     GET
   )
   return {
-    data: Array<IArticle>,
+    data: data as Array<IArticle>,
     isLoading,
     isError: error,
   }
@@ -67,7 +67,7 @@ export function useSearchArticle(searchText: string, page: number) {
   )
 
   return {
-    data: Array<IArticle>,
+    data: data as Array<IArticle>,
     isLoading,
     isError: error,
   }
@@ -83,7 +83,7 @@ export function useTagArticle(tag: string, page: number) {
   )
 
   return {
-    data: Array<IArticle>,
+    data: data as Array<IArticle>,
     isLoading,
     isError: error,
   }

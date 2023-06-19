@@ -14,7 +14,7 @@ import { useState, useEffect } from 'react'
 import { GET } from '@/utils/fetch'
 
 export default function Header() {
-  const { user, isLoading, isError } = useCurrentUser()
+  const { currentUser, isLoading, isError } = useCurrentUser()
 
   const [searchOpen, setSearchOpen] = useState(false)
   const [sunIconDisplay, setSunIconDisplay] = useState('d-block')
@@ -94,7 +94,7 @@ export default function Header() {
                   Contact
                 </Link>
               </li>
-              {user ? (
+              {currentUser ? (
                 <>
                   <li className='list-item screen-lg-hidden'>
                     <button
@@ -106,7 +106,10 @@ export default function Header() {
                     </button>
                   </li>
                   <li className='list-item screen-lg-hidden'>
-                    <Link href={`/@${user.username}`} className='list-link'>
+                    <Link
+                      href={`/@${currentUser.username}`}
+                      className='list-link'
+                    >
                       Profile
                     </Link>
                   </li>
@@ -154,7 +157,7 @@ export default function Header() {
               <RiCloseLine className='icon close-menu-icon' />
             </button>
 
-            {user ? (
+            {currentUser ? (
               <>
                 <button
                   style={{ cursor: 'pointer' }}
@@ -164,7 +167,7 @@ export default function Header() {
                   Logout
                 </button>
                 <Link
-                  href={`/@${user.username}`}
+                  href={`/@${currentUser.username}`}
                   className='btn sign-up-btn fancy-border screen-sm-hidden'
                 >
                   <span>Profile</span>

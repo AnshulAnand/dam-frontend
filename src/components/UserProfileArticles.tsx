@@ -3,15 +3,17 @@
 import UserArticleSkeleton from './skeleton-loading/UserProfileArticle'
 import page from '@/app/[userId]/page.module.css'
 import { useUserArticles } from '@/lib/article'
-import { useState } from 'react'
+import { Dispatch, SetStateAction, useState } from 'react'
 import Link from 'next/link'
 
 function FetchArticles({
   userId,
   pageNumber,
+  setNext,
 }: {
   pageNumber: number
   userId: string
+  setNext: Dispatch<SetStateAction<boolean>>
 }): any {
   const { userArticles, isLoading, isError } = useUserArticles(
     userId,
@@ -27,6 +29,7 @@ function FetchArticles({
       </>
     )
   if (isError) return <h1>error...</h1>
+  if (userArticles.length < 4) setNext(false)
   return userArticles.map((article: any, i: number) => (
     <Link key={i} href={`/articles/${article.url}`} className={page.article}>
       <img src={article.image} alt='' className='article-image' />
@@ -44,22 +47,31 @@ function FetchArticles({
 }
 
 export default function UserProfileArticles({ visitor }: { visitor: any }) {
+  const [next, setNext] = useState(true)
   const [count, setCount] = useState(1)
 
   let list: any = []
   for (let i = 0; i < count; i++) {
-    list.push(<FetchArticles userId={visitor._id} pageNumber={i + 1} />)
+    list.push(
+      <FetchArticles
+        userId={visitor._id}
+        pageNumber={i + 1}
+        setNext={setNext}
+      />
+    )
   }
 
   return (
     <>
       {list}
-      <button
-        onClick={() => setCount(count + 1)}
-        className={page.btn_load_more}
-      >
-        Load More
-      </button>
+      {next ? (
+        <button
+          onClick={() => setCount(count + 1)}
+          className={page.btn_load_more}
+        >
+          Load More
+        </button>
+      ) : null}
     </>
   )
 }

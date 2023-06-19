@@ -13,7 +13,7 @@ function FetchArticles({
 }: {
   page: number
   setNext: Dispatch<SetStateAction<boolean>>
-}) {
+}): any {
   const { data, isLoading, isError } = useArticles(page)
   if (isLoading) {
     return (
@@ -25,9 +25,10 @@ function FetchArticles({
       </>
     )
   }
+  console.log({ data })
   if (isError) return <h1>error...</h1>
-  if (data.results.length < 4) setNext(false)
-  return data.results.map((article: IArticle, i: number) => (
+  if (data.length < 4) setNext(false)
+  return data.map((article: IArticle, i: number) => (
     <Article article={article} key={i} />
   ))
 }

@@ -5,14 +5,14 @@ import useCurrentUser from '@/lib/user'
 import page from '@/app/[userId]/page.module.css'
 
 export default function ProfileEditBtn({ visitor }: { visitor: any }) {
-  const { user, isLoading, isError } = useCurrentUser()
+  const { currentUser, isLoading, isError } = useCurrentUser()
   if (isError) console.log({ isError })
 
-  if (!visitor || !user) console.log('user not found')
+  if (!visitor || !currentUser) console.log('user not found')
 
   return (
     <div>
-      {visitor && user && visitor._id === user._id && (
+      {visitor && currentUser && visitor._id === currentUser._id && (
         <Link className={page.profile_edit} href='/edit-profile'>
           Edit Profile
         </Link>

@@ -62,7 +62,7 @@ export default function Comment({
   articleUserId: string
 }) {
   const { mutate } = useSWRConfig()
-  const { user, isLoading, isError } = useCurrentUser()
+  const { currentUser, isLoading, isError } = useCurrentUser()
   const { data } = useCheckCommentLike(comment._id)
 
   const [count, setCount] = useState(1)
@@ -73,7 +73,7 @@ export default function Comment({
   const [replyBody, setReplyBody] = useState('')
   const [commentBody, setCommentBody] = useState(comment.body)
   const [commentLikes, setCommentLikes] = useState(comment.likes)
-  const [hasLiked, setHasLiked] = useState(data && data.like ? true : false)
+  const [hasLiked, setHasLiked] = useState(data && data.liked ? true : false)
 
   let list: Array<any> = []
   for (let i = 0; i < count; i++) {
@@ -197,7 +197,7 @@ export default function Comment({
             articleUserId={articleUserId}
           />
           <div className={page.btn_container}>
-            {user && user._id === comment.user ? (
+            {currentUser && currentUser._id === comment.user ? (
               <>
                 <button className={page.btn} onClick={handleEditBtnClick}>
                   <RiPencilLine />
