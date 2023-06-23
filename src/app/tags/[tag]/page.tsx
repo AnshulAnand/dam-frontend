@@ -13,7 +13,7 @@ function FetchArticles({
   tag: string
   page: number
   setNext: Dispatch<SetStateAction<boolean>>
-}) {
+}): any {
   const { data, isLoading, isError } = useTagArticle(tag, page)
   if (isLoading) return <h1>loading...</h1>
   if (isError) return <h1>{isError.info.message}</h1>

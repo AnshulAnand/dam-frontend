@@ -3,7 +3,7 @@
 import useSWR from 'swr'
 import useSWRMutation from 'swr/mutation'
 import { GET, POST, PATCH, DELETE } from '@/utils/fetch'
-import { IReply } from '../../types'
+import { IReply } from '@/types'
 
 // GET Replies
 export function useReplies(page: number, articleId: string, commentId: string) {
@@ -30,6 +30,7 @@ export function usePostReply() {
   return {
     triggerPostReply: trigger,
     postReplyError: error,
+    isPostReplyMutating: isMutating,
   }
 }
 
@@ -42,6 +43,7 @@ export function useEditReply() {
   return {
     triggerEditReply: trigger,
     editReplyError: error,
+    isEditReplyMutating: isMutating,
   }
 }
 
@@ -54,6 +56,7 @@ export function useDeleteReply() {
   return {
     triggerDeleteReply: trigger,
     deleteReplyError: error,
+    isDeleteReplyMutating: isMutating,
   }
 }
 
@@ -66,6 +69,7 @@ export function useLikeReply() {
   return {
     triggerLikeReply: trigger,
     likeReplyError: error,
+    isLikeReplyMutating: isMutating,
   }
 }
 

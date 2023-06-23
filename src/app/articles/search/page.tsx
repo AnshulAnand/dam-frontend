@@ -4,7 +4,7 @@ import page from '../page.module.css'
 import Article from '@/components/Article'
 import ArticleSkeleton from '@/components/skeleton-loading/Article'
 import { Dispatch, SetStateAction, useState } from 'react'
-import { IArticle } from '../../../../types'
+import { IArticle } from '../../../types'
 import { useSearchArticle } from '@/lib/article'
 
 function FetchArticles({
@@ -15,7 +15,7 @@ function FetchArticles({
   searchText: string
   page: number
   setNext: Dispatch<SetStateAction<boolean>>
-}) {
+}): any {
   const { data, isLoading, isError } = useSearchArticle(searchText, page)
   if (isLoading) {
     return (

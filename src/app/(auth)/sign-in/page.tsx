@@ -4,6 +4,8 @@ import Link from 'next/link'
 import { useState } from 'react'
 import { RiGoogleLine } from 'react-icons/ri'
 import useCurrentUser, { useLoginUser } from '@/lib/user'
+import getGoogleOAuthURL from '@/utils/getGoogleUrl'
+import { toast } from 'react-hot-toast'
 
 export default function SignIn() {
   const { currentUser } = useCurrentUser()
@@ -12,7 +14,9 @@ export default function SignIn() {
     location.assign(window.location.origin)
   }
 
-  const { triggerLoginUser, loginUserError } = useLoginUser()
+  const { triggerLoginUser, loginUserError, isLoginUserMutating } =
+    useLoginUser()
+
   const [user, setUser] = useState({
     username: '',
     email: '',
@@ -33,6 +37,7 @@ export default function SignIn() {
     } catch (e) {
       // error handling
       console.log(e)
+      toast.error('Could not sign in')
     }
   }
 
@@ -48,6 +53,7 @@ export default function SignIn() {
           name='username'
           value={user.username || ''}
           onChange={handleChange}
+          required
         />
         <label htmlFor='email'>Email</label>
         <input
@@ -56,6 +62,7 @@ export default function SignIn() {
           name='email'
           value={user.email || ''}
           onChange={handleChange}
+          required
         />
         <label htmlFor='password'>Password</label>
         <input
@@ -64,15 +71,18 @@ export default function SignIn() {
           name='password'
           value={user.password || ''}
           onChange={handleChange}
+          required
         />
-        <button type='submit'>Log in</button>
+        <button type='submit' disabled={isLoginUserMutating}>
+          Log in
+        </button>
       </form>
       <div className='separator'>
         <div className='lines'></div>
         <span>Or</span>
         <div className='lines'></div>
       </div>
-      <a href='/' className='google'>
+      <a href={getGoogleOAuthURL()} className='google'>
         Sign-up with
         <RiGoogleLine className='icon' style={{ color: 'red' }} />
       </a>

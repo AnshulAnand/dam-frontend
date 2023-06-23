@@ -3,7 +3,7 @@
 import useSWR from 'swr'
 import useSWRMutation from 'swr/mutation'
 import { GET, PATCH, POST } from '@/utils/fetch'
-import { IUser } from '../../types'
+import { IUser } from '@/types'
 
 // LOGIN user
 export function useLoginUser() {
@@ -14,6 +14,7 @@ export function useLoginUser() {
   return {
     triggerLoginUser: trigger,
     loginUserError: error,
+    isLoginUserMutating: isMutating,
   }
 }
 
@@ -26,6 +27,7 @@ export function useRegisterUser() {
   return {
     triggerRegisterUser: trigger,
     registerUserError: error,
+    isRegisterUserMutating: isMutating,
   }
 }
 
@@ -35,7 +37,11 @@ export function useLogoutUser() {
     `${process.env.NEXT_PUBLIC_API_URL}/users/logout`,
     GET
   )
-  return { data, isLoading, isError: error }
+  return {
+    data,
+    isLoading,
+    isError: error,
+  }
 }
 
 // GET current user
@@ -65,14 +71,29 @@ export function useUserById(id: string) {
   }
 }
 
+// GET user by username
+export function useUserByUsername(username: string) {
+  const { data, error, isLoading } = useSWR(
+    `${process.env.NEXT_PUBLIC_API_URL}/users/username/${username}`,
+    GET
+  )
+
+  return {
+    user: data as IUser,
+    isLoading,
+    isError: error,
+  }
+}
+
 // UPDATE user
 export function useUpdateUser() {
   const { trigger, isMutating, data, error } = useSWRMutation(
-    `${process.env.NEXT_PUBLIC_API_URL}/user`,
+    `${process.env.NEXT_PUBLIC_API_URL}/users`,
     PATCH /* options */
   )
   return {
     triggerUpdateUser: trigger,
     updateUserError: error,
+    isUpdateUserMutating: isMutating,
   }
 }

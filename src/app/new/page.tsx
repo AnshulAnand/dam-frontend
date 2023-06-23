@@ -61,6 +61,7 @@ export default function New() {
           title: article.title,
           body: convertedContent,
           description: article.description,
+          image: article.image,
           tags: [
             article.tag1,
             article.tag2,
@@ -72,7 +73,7 @@ export default function New() {
         },
       })
       toast.success('Article posted')
-      push(`/articles/${result.url}`)
+      push(`/articles/${result.message.url}`)
     } catch (e) {
       // error handling
       console.log(e)
@@ -103,6 +104,7 @@ export default function New() {
               placeholder='Cover image for the article'
               required
             />
+            {article.image === '' ? null : <img src={article.image} alt='' />}
           </div>
           {/*<RichTextEditor />*/}
           <Editor

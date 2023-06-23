@@ -7,6 +7,7 @@ export interface IUser {
   link: string
   image: string
   views: number
+  articles: number
   createdAt: Date
   updatedAt: Date
   __v: number

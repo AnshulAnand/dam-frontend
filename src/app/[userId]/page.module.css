@@ -2,11 +2,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
 }
 
 .container {
   margin-top: 10rem;
-  /* max-width: 1300px; */
   width: min(1300px, 100%);
   position: relative;
   padding-top: 7rem;
@@ -46,6 +46,7 @@
 .user_name > h1 {
   cursor: pointer;
   text-align: center;
+  word-break: break-all;
 }
 
 .user_bio {
@@ -74,9 +75,11 @@
 }
 
 .user_link a {
+  text-overflow: ellipsis;
   text-decoration: underline;
   color: rgb(89, 133, 255);
   font-weight: 700;
+  word-break: break-all;
 }
 
 .profile_edit:hover {

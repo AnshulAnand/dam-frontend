@@ -2,7 +2,7 @@ import Link from 'next/link'
 import page from '@/app/articles/page.module.css'
 import returnDate from '@/utils/returnDate'
 import readingTime from '@/utils/readingTime'
-import { IArticle } from '../../types'
+import { IArticle } from '@/types'
 
 export default function Article({ article }: { article: IArticle }) {
   return (

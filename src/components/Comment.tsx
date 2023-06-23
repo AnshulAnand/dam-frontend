@@ -23,7 +23,7 @@ import CommentLoading from './skeleton-loading/Comment'
 import { Dispatch, SetStateAction, useState } from 'react'
 import { useSWRConfig } from 'swr'
 import { toast } from 'react-hot-toast'
-import { IComment } from '../../types'
+import { IComment } from '@/types'
 
 function FetchReplies({
   page,
@@ -93,7 +93,8 @@ export default function Comment({
   }
 
   // POST Reply
-  const { triggerPostReply, postReplyError } = usePostReply()
+  const { triggerPostReply, postReplyError, isPostReplyMutating } =
+    usePostReply()
 
   const handleReplySubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -125,7 +126,8 @@ export default function Comment({
   }
 
   // EDIT Comment
-  const { triggerEditComment, editCommentError } = useEditComment()
+  const { triggerEditComment, editCommentError, isEditCommentMutating } =
+    useEditComment()
 
   const handleEditSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -251,7 +253,9 @@ export default function Comment({
           onChange={e => setReplyBody(e.target.value)}
           placeholder='Write your reply...'
         />
-        <button type='submit'>Post</button>
+        <button type='submit' disabled={isPostReplyMutating}>
+          Post
+        </button>
       </form>
       {/* Edit comment form */}
       <form
@@ -265,7 +269,9 @@ export default function Comment({
           onChange={e => setCommentBody(e.target.value)}
           placeholder='Write your reply...'
         />
-        <button type='submit'>Post</button>
+        <button type='submit' disabled={isEditCommentMutating}>
+          Post
+        </button>
       </form>
       {/* Child comments */}
       <div

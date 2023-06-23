@@ -5,13 +5,12 @@ import Newsletter from '@/components/Newsletter'
 import returnDate from '@/utils/returnDate'
 import readingTime from '@/utils/readingTime'
 import { GET } from '@/utils/fetch'
+import { IArticle } from '@/types'
 
 export default async function Home() {
-  const articles = await GET(`http://localhost:5000/articles?page=1&limit=3`)
-
-  const article1 = articles.results[0]
-  const article2 = articles.results[1]
-  const article3 = articles.results[2]
+  const data: Array<IArticle> = await GET(
+    `${process.env.NEXT_PUBLIC_API_URL}/articles?page=${8}&limit=${4}`
+  )
 
   const tags = ['bleach', 'db', 'jojo', 'naruto', 'onepiece', 'opm']
 
@@ -30,57 +29,83 @@ export default async function Home() {
               </span>
             </div>
             <Link
-              href={`/articles/${article1.url}`}
+              href={`/articles/${data[0].url}`}
               className='article featured-article featured-article-1'
             >
-              <img src={article1.image} alt='' className='article-image' />
-              <span className='article-category'>{article1.tags[0]}</span>
+              <img src={data[0].image} alt='' className='article-image' />
+              <span className='article-category'>{data[0].tags[0]}</span>
               <div className='article-data-container'>
                 <div className='article-data'>
-                  <span>{returnDate(article1)}</span>
+                  <span>{returnDate(data[0])}</span>
                   <span className='article-data-spacer'></span>
-                  <span>{readingTime(article1)} Min read</span>
+                  <span>{readingTime(data[0])} Min read</span>
                 </div>
-                <h3 className='title article-title'>{article1.title}</h3>
+                <h3 className='title article-title'>{data[0].title}</h3>
               </div>
             </Link>
             <Link
-              href={`/articles/${article2.url}`}
+              href={`/articles/${data[1].url}`}
               className='article featured-article featured-article-2'
             >
-              <img src={article2.image} alt='' className='article-image' />
-              <span className='article-category'>{article2.tags[0]}</span>
+              <img src={data[1].image} alt='' className='article-image' />
+              <span className='article-category'>{data[1].tags[0]}</span>
               <div className='article-data-container'>
                 <div className='article-data'>
-                  <span>{returnDate(article2)}</span>
+                  <span>{returnDate(data[1])}</span>
                   <span className='article-data-spacer'></span>
-                  <span>{readingTime(article2)} Min read</span>
+                  <span>{readingTime(data[1])} Min read</span>
                 </div>
-                <h3 className='title article-title'>{article2.title}</h3>
+                <h3 className='title article-title'>{data[1].title}</h3>
               </div>
             </Link>
             <Link
-              href={`/articles/${article3.url}`}
+              href={`/articles/${data[2].url}`}
               className='article featured-article featured-article-3'
             >
-              <img src={article3.image} alt='' className='article-image' />
-              <span className='article-category'>{article3.tags[0]}</span>
+              <img src={data[2].image} alt='' className='article-image' />
+              <span className='article-category'>{data[2].tags[0]}</span>
               <div className='article-data-container'>
                 <div className='article-data'>
-                  <span>{returnDate(article3)}</span>
+                  <span>{returnDate(data[2])}</span>
                   <span className='article-data-spacer'></span>
-                  <span>{readingTime(article3)} Min read</span>
+                  <span>{readingTime(data[2])} Min read</span>
                 </div>
-                <h3 className='title article-title'>{article3.title}</h3>
+                <h3 className='title article-title'>{data[2].title}</h3>
               </div>
             </Link>
           </div>
 
           {/* Side bar */}
-          <div className='sidebar'>
-            <h3 className='title featured-content-title'>Advertisement</h3>
+          <div className='sidebar d-grid'>
+            <h3 className='title featured-content-title'>Trending Articles</h3>
+            {data &&
+              data.slice(3, 8).map((article, i) => (
+                <Link
+                  href={article.url}
+                  className='trending-news-box'
+                  key={article._id}
+                >
+                  <div className='trending-news-img-box'>
+                    <span className='trending-number place-items-center'>
+                      0{i + 1}
+                    </span>
+                    <img src={article.image} alt='' className='article-image' />
+                  </div>
+
+                  <div className='trending-news-data'>
+                    <div className='article-data'>
+                      <span>{returnDate(article)}</span>
+                      <span className='article-data-spacer'></span>
+                      <span>{readingTime(article)}</span>
+                    </div>
+
+                    <h3 className='title article-title'>{article.title}</h3>
+                  </div>
+                </Link>
+              ))}
           </div>
         </div>
+
         <div className='see-more-container'>
           <Link
             href='/articles'

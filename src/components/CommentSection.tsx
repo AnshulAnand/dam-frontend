@@ -18,7 +18,7 @@ import Modal from './Modal'
 import Share from './Share'
 import { useSWRConfig } from 'swr'
 import toast from 'react-hot-toast'
-import { IArticle } from '../../types'
+import { IArticle } from '@/types'
 
 function FetchComments({
   page,
@@ -99,7 +99,8 @@ export default function CommentSection({ article }: { article: IArticle }) {
     )
   }
 
-  const { triggerPostComment, postCommentError } = usePostComment()
+  const { triggerPostComment, postCommentError, isPostCommentMutating } =
+    usePostComment()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -153,7 +154,9 @@ export default function CommentSection({ article }: { article: IArticle }) {
             onChange={e => setCommentBody(e.target.value)}
             placeholder='Write your comment...'
           />
-          <button type='submit'>Post</button>
+          <button type='submit' disabled={isPostCommentMutating}>
+            Post
+          </button>
         </form>
         {/* Comment container */}
         {FetchUserComments(article._id, article.user)}
@@ -180,9 +183,9 @@ export default function CommentSection({ article }: { article: IArticle }) {
           <RiShareForwardLine />
           Share
         </button>
-        <button>
+        {/* <button>
           <RiPencilLine /> Edit
-        </button>
+        </button> */}
       </div>
       {/* Modal */}
       <Modal showModal={showModal} onCloseModal={setShowModal}>

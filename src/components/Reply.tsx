@@ -19,7 +19,7 @@ import useCurrentUser from '@/lib/user'
 import page from '@/app/articles/[article]/page.module.css'
 import Profile from './Profile'
 import { toast } from 'react-hot-toast'
-import { IReply } from '../../types'
+import { IReply } from '@/types'
 
 export default function Reply({
   reply,
@@ -46,7 +46,8 @@ export default function Reply({
   }
 
   // POST Reply
-  const { triggerPostReply, postReplyError } = usePostReply()
+  const { triggerPostReply, postReplyError, isPostReplyMutating } =
+    usePostReply()
 
   const handleReplySubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -71,7 +72,8 @@ export default function Reply({
   }
 
   // EDIT Reply
-  const { triggerEditReply, editReplyError } = useEditReply()
+  const { triggerEditReply, editReplyError, isEditReplyMutating } =
+    useEditReply()
 
   const handleEditSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -193,7 +195,9 @@ export default function Reply({
           onChange={e => setReplyBody(e.target.value)}
           placeholder='Write your reply...'
         />
-        <button type='submit'>Post</button>
+        <button type='submit' disabled={isPostReplyMutating}>
+          Post
+        </button>
       </form>
       {/* EDIT Reply */}
       <form
@@ -207,7 +211,9 @@ export default function Reply({
           onChange={e => setEditedReplyBody(e.target.value)}
           placeholder='Write your reply...'
         />
-        <button type='submit'>Post</button>
+        <button type='submit' disabled={isEditReplyMutating}>
+          Post
+        </button>
       </form>
     </div>
   )

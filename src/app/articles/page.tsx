@@ -5,7 +5,7 @@ import Article from '@/components/Article'
 import { useArticles } from '@/lib/article'
 import ArticleSkeleton from '@/components/skeleton-loading/Article'
 import { Dispatch, SetStateAction, useState } from 'react'
-import { IArticle } from '../../../types'
+import { IArticle } from '../../types'
 
 function FetchArticles({
   page,

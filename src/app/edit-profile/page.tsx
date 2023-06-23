@@ -4,10 +4,12 @@ import { useState } from 'react'
 import page from './page.module.css'
 import { useRouter } from 'next/navigation'
 import { toast } from 'react-hot-toast'
+import { useSWRConfig } from 'swr'
 import useCurrentUser, { useUpdateUser } from '@/lib/user'
 
 export default function EditProfile() {
   const { push } = useRouter()
+  const { mutate } = useSWRConfig()
   const { currentUser, isLoading, isError } = useCurrentUser()
 
   const [profile, setProfile] = useState({
@@ -19,7 +21,8 @@ export default function EditProfile() {
     image: currentUser?.image,
   })
 
-  const { triggerUpdateUser, updateUserError } = useUpdateUser()
+  const { triggerUpdateUser, updateUserError, isUpdateUserMutating } =
+    useUpdateUser()
 
   const handleChange = (e: any) => {
     const name = e.target.name
@@ -32,7 +35,8 @@ export default function EditProfile() {
     try {
       const result = await triggerUpdateUser({ body: profile })
       toast.success('Profile updated')
-      push(`/@${result.username}`)
+      mutate(`${process.env.NEXT_PUBLIC_API_URL}/${result.message.username}`)
+      push(`/@${result.message.username}`)
     } catch (e) {
       // error handling
       console.log(e)
@@ -61,6 +65,7 @@ export default function EditProfile() {
           value={profile.name || ''}
           onChange={handleChange}
           placeholder='Your name'
+          required
         />
         <label htmlFor='username'>Username</label>
         <input
@@ -70,6 +75,7 @@ export default function EditProfile() {
           value={profile.username || ''}
           onChange={handleChange}
           placeholder='Your username'
+          required
         />
         <label htmlFor='bio'>Bio</label>
         <textarea
@@ -97,7 +103,11 @@ export default function EditProfile() {
           onChange={handleChange}
           placeholder='Your website link'
         />
-        <button className={page.submit_btn} type='submit'>
+        <button
+          className={page.submit_btn}
+          type='submit'
+          disabled={isUpdateUserMutating}
+        >
           Update Profile
         </button>
       </form>

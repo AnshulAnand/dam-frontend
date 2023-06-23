@@ -1,9 +1,11 @@
 'use client'
 
-import useCurrentUser, { useRegisterUser } from '@/lib/user'
 import Link from 'next/link'
-import { RiGoogleLine } from 'react-icons/ri'
 import { useState } from 'react'
+import { RiGoogleLine } from 'react-icons/ri'
+import useCurrentUser, { useRegisterUser } from '@/lib/user'
+import getGoogleOAuthURL from '@/utils/getGoogleUrl'
+import { toast } from 'react-hot-toast'
 
 export default function SignUp() {
   const { currentUser } = useCurrentUser()
@@ -12,7 +14,8 @@ export default function SignUp() {
     location.assign(window.location.origin)
   }
 
-  const { triggerRegisterUser, registerUserError } = useRegisterUser()
+  const { triggerRegisterUser, registerUserError, isRegisterUserMutating } =
+    useRegisterUser()
 
   const [user, setUser] = useState({
     name: '',
@@ -35,6 +38,7 @@ export default function SignUp() {
     } catch (e) {
       // error handling
       console.log(e)
+      toast.error('Could not sign up')
     }
   }
 
@@ -50,6 +54,7 @@ export default function SignUp() {
           name='name'
           value={user.name || ''}
           onChange={handleChange}
+          required
         />
         <label htmlFor='username'>Username</label>
         <input
@@ -58,6 +63,7 @@ export default function SignUp() {
           name='username'
           value={user.username || ''}
           onChange={handleChange}
+          required
         />
         <label htmlFor='email'>Email</label>
         <input
@@ -66,6 +72,7 @@ export default function SignUp() {
           name='email'
           value={user.email || ''}
           onChange={handleChange}
+          required
         />
         <label htmlFor='password'>Password</label>
         <input
@@ -74,15 +81,18 @@ export default function SignUp() {
           name='password'
           value={user.password || ''}
           onChange={handleChange}
+          required
         />
-        <button type='submit'>Create Account</button>
+        <button type='submit' disabled={isRegisterUserMutating}>
+          Create Account
+        </button>
       </form>
       <div className='separator'>
         <div className='lines'></div>
         <span>Or</span>
         <div className='lines'></div>
       </div>
-      <a href='/' className='google'>
+      <a href={getGoogleOAuthURL()} className='google'>
         Sign-up with
         <RiGoogleLine className='icon' style={{ color: 'red' }} />
       </a>

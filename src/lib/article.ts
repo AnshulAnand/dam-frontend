@@ -1,9 +1,9 @@
 'use client'
 
-import { GET, POST } from '@/utils/fetch'
 import useSWR from 'swr'
 import useSWRMutation from 'swr/mutation'
-import { IArticle } from '../../types'
+import { GET, POST } from '@/utils/fetch'
+import { IArticle } from '@/types'
 
 // GET articles
 export function useArticles(page: number) {
@@ -42,6 +42,7 @@ export function usePostArticle() {
   return {
     triggerPostArticle: trigger,
     postArticleError: error,
+    isPostArticleMutating: isMutating,
   }
 }
 
@@ -54,6 +55,7 @@ export function useLikeArticle() {
   return {
     triggerLikeArticle: trigger,
     likeArticleError: error,
+    isLikeArticleMutating: isMutating,
   }
 }
 
@@ -98,6 +100,7 @@ export function useSubscribe() {
   return {
     triggerSubscribe: trigger,
     subscribeError: error,
+    isSubscribeMutating: isMutating,
   }
 }
 

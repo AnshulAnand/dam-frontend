@@ -60,37 +60,65 @@ export default function Header() {
           <div className={`menu ${toggle ? 'activated' : ''}`}>
             <ul className='list'>
               <li className='list-item'>
-                <Link href='/' className='list-link current'>
+                <Link
+                  href='/'
+                  className='list-link current'
+                  onClick={() => setToggle(false)}
+                >
                   Home
                 </Link>
               </li>
               <li className='list-item'>
-                <Link href='/articles' className='list-link'>
+                <Link
+                  href='/articles'
+                  className='list-link'
+                  onClick={() => setToggle(false)}
+                >
                   Articles
                 </Link>
               </li>
               <li className='list-item'>
-                <Link href='/official-posts' className='list-link'>
+                <Link
+                  href='/official-posts'
+                  className='list-link'
+                  onClick={() => setToggle(false)}
+                >
                   Official Posts
                 </Link>
               </li>
               <li className='list-item'>
-                <Link href='/tags' className='list-link'>
+                <Link
+                  href='/tags'
+                  className='list-link'
+                  onClick={() => setToggle(false)}
+                >
                   Tags
                 </Link>
               </li>
               <li className='list-item'>
-                <Link href='/new' className='list-link'>
+                <Link
+                  href='/new'
+                  className='list-link'
+                  onClick={() => setToggle(false)}
+                >
                   Write
                 </Link>
               </li>
               <li className='list-item'>
-                <Link href='/about' className='list-link'>
+                <Link
+                  href='/about'
+                  className='list-link'
+                  onClick={() => setToggle(false)}
+                >
                   About
                 </Link>
               </li>
               <li className='list-item'>
-                <Link href='/contact' className='list-link'>
+                <Link
+                  href='/contact'
+                  className='list-link'
+                  onClick={() => setToggle(false)}
+                >
                   Contact
                 </Link>
               </li>
@@ -109,6 +137,7 @@ export default function Header() {
                     <Link
                       href={`/@${currentUser.username}`}
                       className='list-link'
+                      onClick={() => setToggle(false)}
                     >
                       Profile
                     </Link>
@@ -117,12 +146,20 @@ export default function Header() {
               ) : (
                 <>
                   <li className='list-item screen-lg-hidden'>
-                    <Link href='/sign-in' className='list-link'>
+                    <Link
+                      href='/sign-in'
+                      className='list-link'
+                      onClick={() => setToggle(false)}
+                    >
                       Sign in
                     </Link>
                   </li>
                   <li className='list-item screen-lg-hidden'>
-                    <Link href='/sign-up' className='list-link'>
+                    <Link
+                      href='/sign-up'
+                      className='list-link'
+                      onClick={() => setToggle(false)}
+                    >
                       Sign up
                     </Link>
                   </li>
@@ -169,18 +206,24 @@ export default function Header() {
                 <Link
                   href={`/@${currentUser.username}`}
                   className='btn sign-up-btn fancy-border screen-sm-hidden'
+                  onClick={() => setToggle(false)}
                 >
                   <span>Profile</span>
                 </Link>
               </>
             ) : (
               <>
-                <Link href='/sign-in' className='list-link screen-sm-hidden'>
+                <Link
+                  href='/sign-in'
+                  className='list-link screen-sm-hidden'
+                  onClick={() => setToggle(false)}
+                >
                   Sign in
                 </Link>
                 <Link
                   href='/sign-up'
                   className='btn sign-up-btn fancy-border screen-sm-hidden'
+                  onClick={() => setToggle(false)}
                 >
                   <span>Sign up</span>
                 </Link>

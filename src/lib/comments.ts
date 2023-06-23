@@ -1,9 +1,9 @@
 'use client'
 
-import { DELETE, GET, PATCH, POST } from '@/utils/fetch'
 import useSWR from 'swr'
 import useSWRMutation from 'swr/mutation'
-import { IComment } from '../../types'
+import { DELETE, GET, PATCH, POST } from '@/utils/fetch'
+import { IComment } from '@/types'
 
 // GET Comments
 export function useComments(page: number, articleId: string) {
@@ -42,6 +42,7 @@ export function usePostComment() {
   return {
     triggerPostComment: trigger,
     postCommentError: error,
+    isPostCommentMutating: isMutating,
   }
 }
 
@@ -54,6 +55,7 @@ export function useEditComment() {
   return {
     triggerEditComment: trigger,
     editCommentError: error,
+    isEditCommentMutating: isMutating,
   }
 }
 
@@ -66,6 +68,7 @@ export function useDeleteComment() {
   return {
     triggerDeleteComment: trigger,
     deleteCommentError: error,
+    isDeleteCommentMutating: isMutating,
   }
 }
 
@@ -78,6 +81,7 @@ export function useLikeComment() {
   return {
     triggerLikeComment: trigger,
     likeCommentError: error,
+    isLikeCommentMutating: isMutating,
   }
 }
 

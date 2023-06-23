@@ -1,6 +1,6 @@
 import Link from 'next/link'
 
-const Tag = ({ tag }: { tag: string }) => {
+export default function Tag({ tag }: { tag: string }) {
   return (
     <Link href={`/tags/${tag}`} className='article'>
       <span className='tag-name'>#{tag}</span>
@@ -12,5 +12,3 @@ const Tag = ({ tag }: { tag: string }) => {
     </Link>
   )
 }
-
-export default Tag
