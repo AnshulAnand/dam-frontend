@@ -110,6 +110,7 @@ export default function New() {
           <Editor
             editorState={editorState}
             onEditorStateChange={setEditorState}
+            stripPastedStyles={true}
             wrapperClassName={page.wrapper_class}
             editorClassName={page.editor_class}
             toolbarClassName={page.toolbar_class}

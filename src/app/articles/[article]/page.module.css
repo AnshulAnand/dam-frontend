@@ -69,9 +69,25 @@
   gap: var(--gap);
 }
 
-.article_body * {
+/* .article_body * {
   background-color: inherit !important;
   color: inherit !important;
+} */
+
+.article_body h1,
+.article_body h2 {
+  padding: 15px;
+}
+
+.article_body h3,
+.article_body h4,
+.article_body h5,
+.article_body h6 {
+  padding: 12px;
+}
+
+.article_body p {
+  padding: 10px;
 }
 
 .article_views {

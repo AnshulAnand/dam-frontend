@@ -1,3 +1,5 @@
+'use client'
+
 import Link from 'next/link'
 import page from '@/app/articles/[article]/page.module.css'
 import { useUserById } from '@/lib/user'
@@ -9,7 +11,11 @@ import { IArticle } from '@/types'
 export default function UserArticles({ article }: { article: IArticle }) {
   const { user } = useUserById(article.user)
 
+  console.log({ user })
+
   const { data, isLoading, isError } = useArticles(4)
+
+  if (!data || isLoading || isError) return null
 
   return (
     <div className={page.user_articles}>

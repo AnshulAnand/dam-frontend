@@ -64,6 +64,8 @@ export function useUserById(id: string) {
     GET
   )
 
+  console.log({ data })
+
   return {
     user: data as IUser,
     isLoading,

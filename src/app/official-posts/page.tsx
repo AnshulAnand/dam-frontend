@@ -1,41 +1,83 @@
-import Link from 'next/link'
+'use client'
 
-const OfficialPosts = () => {
+import OfficialPostsSkeleton from '@/components/skeleton-loading/OfficialPosts'
+import { useUserArticles } from '@/lib/article'
+import { useUserByUsername } from '@/lib/user'
+import { IArticle } from '@/types'
+import readingTime from '@/utils/readingTime'
+import returnDate from '@/utils/returnDate'
+import Link from 'next/link'
+import { Dispatch, SetStateAction, useState } from 'react'
+
+function FetchArticles({
+  page,
+  setNext,
+}: {
+  page: number
+  setNext: Dispatch<SetStateAction<boolean>>
+}): any {
+  const { user } = useUserByUsername('dam')
+
+  const { userArticles, isError, isLoading } = useUserArticles(user._id, page)
+
+  if (isLoading) return <OfficialPostsSkeleton />
+
+  if (!userArticles || isError) {
+    console.log({ isError })
+    throw new Error('Failed to fetch data')
+  }
+
+  if (isError) return <h1>error...</h1>
+  if (userArticles.length < page) setNext(false)
+
+  return userArticles.map((article: IArticle) => (
+    <Link href={article.url} className='article d-grid' key={article._id}>
+      <div className='older-posts-article-image-wrapper'>
+        <img src={article.image} alt='' className='article-image' />
+      </div>
+      <div className='article-data-container'>
+        <div className='article-data'>
+          <span>{returnDate(article)}</span>
+          <span className='article-data-spacer'></span>
+          <span>{readingTime(article)}</span>
+        </div>
+        <h3 className='title article-title'>{article.title}</h3>
+        <p className='article-description'>{article.description}</p>
+      </div>
+    </Link>
+  ))
+}
+
+export default function Page() {
+  const [count, setCount] = useState(1)
+  const [next, setNext] = useState(true)
+
+  let list: Array<any> = []
+  for (let i = 0; i < count; i++) {
+    list.push(<FetchArticles page={i + 1} setNext={setNext} />)
+  }
+
   return (
     <section style={{ marginTop: '5rem' }} className='older-posts section'>
       <div className='container'>
         <h2 className='title section-title' data-name='Official posts'>
           Official posts
         </h2>
-        <div className='older-posts-grid-wrapper d-grid'>
-          <Link href='#' className='article d-grid'>
-            <div className='older-posts-article-image-wrapper'>
-              <img
-                src='/images/older_posts/older_posts_1.jpg'
-                alt=''
-                className='article-image'
-              />
-            </div>
-
-            <div className='article-data-container'>
-              <div className='article-data'>
-                <span>5 May 2023</span>
-                <span className='article-data-spacer'></span>
-                <span>3 Min read</span>
-              </div>
-
-              <h3 className='title article-title'>Sample article title</h3>
-              <p className='article-description'>
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                Similique a tempore sapiente corporis, eaque fuga placeat odit
-                voluptatibus.
-              </p>
-            </div>
-          </Link>
-        </div>
+        <div className='older-posts-grid-wrapper d-grid'>{list}</div>
+      </div>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        {next ? (
+          <button onClick={() => setCount(count + 1)} className='load-more-btn'>
+            Load More
+          </button>
+        ) : null}
       </div>
     </section>
   )
 }
-
-export default OfficialPosts

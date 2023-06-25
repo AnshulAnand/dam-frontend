@@ -27,9 +27,9 @@
   padding: 1rem;
 }
 
-.editor_class * {
+/* .editor_class * {
   background-color: var(--secondary-background-color) !important;
-}
+} */
 
 .tags {
   width: 100%;

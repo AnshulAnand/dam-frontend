@@ -240,6 +240,19 @@ body.light-theme {
   border-radius: 100px;
 }
 
+.load-more-btn {
+  width: 150px;
+  cursor: pointer;
+  padding: 1rem 1.5rem;
+  margin-top: 2rem;
+  border-radius: 100px;
+  margin-inline: auto;
+}
+
+.load-more-btn:hover {
+  background-color: var(--secondary-background-color);
+}
+
 /* Header */
 .header {
   background-color: var(--secondary-background-color);
