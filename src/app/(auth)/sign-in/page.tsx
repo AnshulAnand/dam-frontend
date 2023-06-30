@@ -90,6 +90,10 @@ export default function SignIn() {
         Do not have an account?
         <Link href='/sign-up'>Create account here</Link>
       </div>
+      <div className='forgot-password'>
+        Forgot password?
+        <Link href='/sign-in/forgot-password'>Change here</Link>
+      </div>
     </main>
   )
 }

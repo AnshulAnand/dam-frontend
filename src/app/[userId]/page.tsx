@@ -14,13 +14,21 @@ import User from '@/components/skeleton-loading/User'
 import { useUserByUsername } from '@/lib/user'
 import page from './page.module.css'
 
-const Profile = async ({ params }: { params: { userId: string } }) => {
+export default function Profile({ params }: { params: { userId: string } }) {
   const username = params.userId.replace('%40', '')
+
+  console.log({ username })
 
   const { user, isLoading, isError } = useUserByUsername(username)
 
+  console.log({ user })
+
   if (isLoading) return <User />
-  if (isError) console.log({ isError })
+
+  if (!user || isError) {
+    console.log({ isError })
+    throw new Error('User not found')
+  }
 
   return (
     <section className={page.section}>
@@ -70,5 +78,3 @@ const Profile = async ({ params }: { params: { userId: string } }) => {
     </section>
   )
 }
-
-export default Profile

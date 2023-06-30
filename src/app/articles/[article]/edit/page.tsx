@@ -1,80 +1,108 @@
 'use client'
 
-import page from './page.module.css'
+import page from '@/app/new/page.module.css'
 import dynamic from 'next/dynamic'
 import { useState, useEffect } from 'react'
-import { EditorState, convertToRaw } from 'draft-js'
+import {
+  EditorState,
+  ContentState,
+  convertToRaw,
+  convertFromHTML,
+} from 'draft-js'
+// import htmlToDraft from 'html-to-draftjs'
 import draftToHtml from 'draftjs-to-html'
 import DOMPurify from 'dompurify'
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
-import { usePostArticle } from '@/lib/article'
+import { useEditArticle } from '@/lib/article'
 import { toast } from 'react-hot-toast'
-import { useRouter } from 'next/navigation'
 import { IArticle } from '@/types'
+import { GET } from '@/utils/fetch'
+
+const htmlToDraft =
+  typeof window === 'object' && require('html-to-draftjs').default
 
 const Editor = dynamic(
   () => import('react-draft-wysiwyg').then(mod => mod.Editor),
   { ssr: false }
 )
 
-export default function New() {
-  const { push } = useRouter()
-  const [article, setArticle] = useState({
-    title: '',
-    image: '',
-    description: '',
-    tag1: '',
-    tag2: '',
-    tag3: '',
-    tag4: '',
-    tag5: '',
-    tag6: '',
+export default async function EditArticle({ params }: { params: any }) {
+  console.log({ params })
+
+  const article: IArticle = await GET(
+    `${process.env.NEXT_PUBLIC_API_URL}/articles/${params.article}`
+  )
+
+  console.log({ articleBody: article.body })
+  console.log({ type: typeof article.body })
+
+  const [editedArticle, setEditedArticle] = useState({
+    title: article.title,
+    image: article.image,
+    description: article.description,
+    tag1: article.tags[0],
+    tag2: article.tags[1],
+    tag3: article.tags[2],
+    tag4: article.tags[3],
+    tag5: article.tags[4],
+    tag6: article.tags[5],
   })
+
+  const [convertedContent, setConvertedContent] = useState<null | string>(null)
+
+  const [editorState, setEditorState] = useState(EditorState.createEmpty())
+
+  useEffect(() => {
+    const blocksFromHtml = htmlToDraft(article.body)
+    const { contentBlocks, entityMap } = blocksFromHtml
+    const contentState = ContentState.createFromBlockArray(
+      contentBlocks,
+      entityMap
+    )
+    const state = EditorState.createWithContent(contentState)
+    setEditorState(state)
+  }, [article.body])
+
+  console.log({ editorState })
+
+  // useEffect(() => {
+  //   const rawContentState = convertToRaw(editorState.getCurrentContent())
+  //   const markup = DOMPurify.sanitize(draftToHtml(rawContentState))
+  //   setConvertedContent(markup)
+  // }, [editorState])
+
+  console.log(convertedContent)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const name = e.target.name
     const value = e.target.value
-    setArticle(article => ({ ...article, [name]: value }))
+    setEditedArticle(prev => ({ ...prev, [name]: value }))
   }
 
-  const [editorState, setEditorState] = useState(() =>
-    EditorState.createEmpty()
-  )
-
-  const [convertedContent, setConvertedContent] = useState<null | string>(null)
-
-  useEffect(() => {
-    const rawContentState = convertToRaw(editorState.getCurrentContent())
-    const markup = DOMPurify.sanitize(draftToHtml(rawContentState))
-    setConvertedContent(markup)
-  }, [editorState])
-
-  console.log(convertedContent)
-
   // Submit article
-  const { triggerPostArticle, postArticleError } = usePostArticle()
+  const { triggerEditArticle, editArticleError, isEditArticleMutating } =
+    useEditArticle()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     try {
-      const result: IArticle = await triggerPostArticle({
+      const result: IArticle = await triggerEditArticle({
         body: {
-          title: article.title,
+          title: editedArticle.title,
           body: convertedContent,
-          description: article.description,
-          image: article.image,
+          description: editedArticle.description,
+          image: editedArticle.image,
           tags: [
-            article.tag1,
-            article.tag2,
-            article.tag3,
-            article.tag4,
-            article.tag5,
-            article.tag6,
+            editedArticle.tag1,
+            editedArticle.tag2,
+            editedArticle.tag3,
+            editedArticle.tag4,
+            editedArticle.tag5,
+            editedArticle.tag6,
           ],
         },
       })
-      toast.success('Article posted')
-      push(`/articles/${result.url}`)
+      location.assign(`${window.location.origin}/articles/${result.url}`)
     } catch (e) {
       // error handling
       console.log(e)
@@ -134,7 +162,7 @@ export default function New() {
                 type='text'
                 id='tag1'
                 name='tag1'
-                value={article.tag1 || ''}
+                value={editedArticle.tag1 || ''}
                 onChange={handleChange}
                 placeholder='tag'
               />
@@ -142,7 +170,7 @@ export default function New() {
                 type='text'
                 id='tag2'
                 name='tag2'
-                value={article.tag2 || ''}
+                value={editedArticle.tag2 || ''}
                 onChange={handleChange}
                 placeholder='tag'
               />
@@ -150,7 +178,7 @@ export default function New() {
                 type='text'
                 id='tag3'
                 name='tag3'
-                value={article.tag3 || ''}
+                value={editedArticle.tag3 || ''}
                 onChange={handleChange}
                 placeholder='tag'
               />
@@ -160,7 +188,7 @@ export default function New() {
                 type='text'
                 id='tag4'
                 name='tag4'
-                value={article.tag4 || ''}
+                value={editedArticle.tag4 || ''}
                 onChange={handleChange}
                 placeholder='tag'
               />
@@ -168,7 +196,7 @@ export default function New() {
                 type='text'
                 id='tag5'
                 name='tag5'
-                value={article.tag5 || ''}
+                value={editedArticle.tag5 || ''}
                 onChange={handleChange}
                 placeholder='tag'
               />
@@ -176,7 +204,7 @@ export default function New() {
                 type='text'
                 id='tag6'
                 name='tag6'
-                value={article.tag6 || ''}
+                value={editedArticle.tag6 || ''}
                 onChange={handleChange}
                 placeholder='tag'
               />

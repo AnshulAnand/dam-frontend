@@ -23,7 +23,7 @@ import CommentLoading from './skeleton-loading/Comment'
 import { Dispatch, SetStateAction, useState } from 'react'
 import { useSWRConfig } from 'swr'
 import { toast } from 'react-hot-toast'
-import { IComment } from '@/types'
+import { IComment, IReply } from '@/types'
 
 function FetchReplies({
   page,
@@ -47,8 +47,13 @@ function FetchReplies({
     )
   if (isError) return <h1>error...</h1>
   if (replies.length < 10) setNext(false)
-  return replies.map((reply: any, i: number) => (
-    <Reply reply={reply} articleId={articleId} commentId={commentId} key={i} />
+  return replies.map((reply: IReply) => (
+    <Reply
+      reply={reply}
+      articleId={articleId}
+      commentId={commentId}
+      key={reply._id}
+    />
   ))
 }
 
@@ -56,10 +61,12 @@ export default function Comment({
   comment,
   articleId,
   articleUserId,
+  pageNumber,
 }: {
   comment: IComment
   articleId: string
   articleUserId: string
+  pageNumber?: number
 }) {
   const { mutate } = useSWRConfig()
   const { currentUser, isLoading, isError } = useCurrentUser()
@@ -110,12 +117,17 @@ export default function Comment({
       )
       setReplyBody('')
       setReplyInputVisible(false)
+      // mutate(
+      //   `${
+      //     process.env.NEXT_PUBLIC_API_URL
+      //   }/replies?page=${count}&limit=${4}&articleId=${articleId}&commentId=${
+      //     comment._id
+      //   }`
+      // )
       mutate(
         `${
           process.env.NEXT_PUBLIC_API_URL
-        }/replies?page=${count}&limit=${4}&articleId=${articleId}&commentId=${
-          comment._id
-        }`
+        }/comments?page=${pageNumber}&limit=${10}&articleId=${articleId}`
       )
       toast.success('Reply posted')
     } catch (e) {
@@ -213,7 +225,9 @@ export default function Comment({
             )}
           </div>
         </div>
-        <p>{comment.body}</p>
+        <p>
+          <pre>{comment.body}</pre>
+        </p>
       </div>
       <div className={page.btn_container}>
         <button
@@ -221,7 +235,7 @@ export default function Comment({
           onClick={handleLike}
           disabled={hasLiked}
         >
-          {data && data.liked ? (
+          {hasLiked ? (
             <RiThumbUpFill className={page.icon} />
           ) : (
             <RiThumbUpLine className={page.icon} />
@@ -253,7 +267,10 @@ export default function Comment({
           onChange={e => setReplyBody(e.target.value)}
           placeholder='Write your reply...'
         />
-        <button type='submit' disabled={isPostReplyMutating}>
+        <button
+          type='submit'
+          disabled={replyBody === '' || isPostReplyMutating}
+        >
           Post
         </button>
       </form>
@@ -269,7 +286,10 @@ export default function Comment({
           onChange={e => setCommentBody(e.target.value)}
           placeholder='Write your reply...'
         />
-        <button type='submit' disabled={isEditCommentMutating}>
+        <button
+          type='submit'
+          disabled={commentBody === '' || isEditCommentMutating}
+        >
           Post
         </button>
       </form>

@@ -84,11 +84,13 @@ main .separator .lines {
   background-color: rgba(0, 0, 0, 0.75);
 }
 
-.login-link {
+.login-link,
+.forgot-password {
   margin-top: 1rem;
 }
 
-.login-link a {
+.login-link a,
+.forgot-password a {
   color: #fff;
   text-decoration: underline;
 }

@@ -7,12 +7,11 @@ import { useArticles } from '@/lib/article'
 import HomeArticlesSkeleton from './skeleton-loading/HomeArticles'
 
 export default function HomeArticles() {
-  const { data, isError, isLoading } = useArticles(8)
+  const { data, isError, isLoading } = useArticles(1, 8)
 
   if (isLoading) return <HomeArticlesSkeleton />
 
   if (!data || isError) {
-    console.log({ isError })
     throw new Error('Failed to fetch articles')
   }
 
@@ -63,36 +62,6 @@ export default function HomeArticles() {
           <h3 className='title article-title'>{data[2].title}</h3>
         </div>
       </Link>
-
-      {/* Side bar */}
-      <div className='sidebar d-grid'>
-        <h3 className='title featured-content-title'>Trending Articles</h3>
-        {data &&
-          data.slice(3, 8).map((article, i) => (
-            <Link
-              href={article.url}
-              className='trending-news-box'
-              key={article._id}
-            >
-              <div className='trending-news-img-box'>
-                <span className='trending-number place-items-center'>
-                  0{i + 1}
-                </span>
-                <img src={article.image} alt='' className='article-image' />
-              </div>
-
-              <div className='trending-news-data'>
-                <div className='article-data'>
-                  <span>{returnDate(article)}</span>
-                  <span className='article-data-spacer'></span>
-                  <span>{readingTime(article)}</span>
-                </div>
-
-                <h3 className='title article-title'>{article.title}</h3>
-              </div>
-            </Link>
-          ))}
-      </div>
     </>
   )
 }

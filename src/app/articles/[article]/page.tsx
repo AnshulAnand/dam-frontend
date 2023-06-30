@@ -8,7 +8,7 @@ import returnDate from '@/utils/returnDate'
 import readingTime from '@/utils/readingTime'
 import { GET } from '@/utils/fetch'
 import { RiEyeLine } from 'react-icons/ri'
-import { IArticle } from '../../../types'
+import { IArticle } from '@/types'
 
 const Article = async ({ params }: { params: { article: string } }) => {
   const article: IArticle = await GET(

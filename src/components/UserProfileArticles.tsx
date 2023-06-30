@@ -17,9 +17,10 @@ function FetchArticles({
 }): any {
   const { userArticles, isLoading, isError } = useUserArticles(
     userId,
-    pageNumber
+    pageNumber,
+    4
   )
-  console.log({ userArticles })
+
   if (isLoading)
     return (
       <>

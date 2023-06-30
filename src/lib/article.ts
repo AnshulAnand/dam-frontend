@@ -2,13 +2,13 @@
 
 import useSWR from 'swr'
 import useSWRMutation from 'swr/mutation'
-import { GET, POST } from '@/utils/fetch'
+import { GET, PATCH, POST } from '@/utils/fetch'
 import { IArticle } from '@/types'
 
 // GET articles
-export function useArticles(page: number) {
+export function useArticles(page: number, limit: number) {
   const { data, error, isLoading } = useSWR(
-    `${process.env.NEXT_PUBLIC_API_URL}/articles?page=${page}&limit=${4}`,
+    `${process.env.NEXT_PUBLIC_API_URL}/articles?page=${page}&limit=${limit}`,
     GET
   )
   return {
@@ -19,11 +19,9 @@ export function useArticles(page: number) {
 }
 
 // GET User Articles
-export function useUserArticles(userId: string, page: number) {
+export function useUserArticles(userId: string, page: number, limit: number) {
   const { data, error, isLoading } = useSWR(
-    `${
-      process.env.NEXT_PUBLIC_API_URL
-    }/articles/user/${userId}?page=${page}&limit=${4}`,
+    `${process.env.NEXT_PUBLIC_API_URL}/articles/user/${userId}?page=${page}&limit=${limit}`,
     GET
   )
   return {
@@ -43,6 +41,19 @@ export function usePostArticle() {
     triggerPostArticle: trigger,
     postArticleError: error,
     isPostArticleMutating: isMutating,
+  }
+}
+
+// UPDATE Article
+export function useEditArticle() {
+  const { trigger, isMutating, data, error } = useSWRMutation(
+    `${process.env.NEXT_PUBLIC_API_URL}/articles`,
+    PATCH /* options */
+  )
+  return {
+    triggerEditArticle: trigger,
+    editArticleError: error,
+    isEditArticleMutating: isMutating,
   }
 }
 

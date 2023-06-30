@@ -18,7 +18,8 @@ import Modal from './Modal'
 import Share from './Share'
 import { useSWRConfig } from 'swr'
 import toast from 'react-hot-toast'
-import { IArticle } from '@/types'
+import { useRouter } from 'next/navigation'
+import { IArticle, IComment } from '@/types'
 
 function FetchComments({
   page,
@@ -42,13 +43,14 @@ function FetchComments({
     )
   if (isError) return <h1>error...</h1>
   if (comments.length < 10) setNext(false)
-  return comments.map((comment: any, i: number) => {
+  return comments.map((comment: IComment) => {
     articleUserId === comment.user ? (
       <Comment
         comment={comment}
         articleId={articleId}
         articleUserId={articleUserId}
-        key={i}
+        pageNumber={page}
+        key={comment._id}
       />
     ) : null
   })
@@ -65,17 +67,18 @@ function FetchUserComments(articleId: string, articleUserId: string) {
       </>
     )
   if (isError) return <h1>error...</h1>
-  return userComments.map((comment: any, i: number) => (
+  return userComments.map((comment: IComment) => (
     <Comment
       comment={comment}
       articleId={articleId}
       articleUserId={articleUserId}
-      key={i}
+      key={comment._id}
     />
   ))
 }
 
 export default function CommentSection({ article }: { article: IArticle }) {
+  const { push } = useRouter()
   const { mutate } = useSWRConfig()
   const { data, isError, isLoading } = useCheckArticleLike(article._id)
 
@@ -129,12 +132,18 @@ export default function CommentSection({ article }: { article: IArticle }) {
           body: { articleId: article._id },
         } /* options */
       )
+      if (likeArticleError) {
+        toast.error(likeArticleError.info.message)
+        return
+      }
+      toast.success('Article upvoted')
       setArticleLikes(articleLikes + 1)
       setHasLiked(true)
-      toast.success('Article upvoted')
+      mutate(
+        `${process.env.NEXT_PUBLIC_API_URL}/articles/check-like/${article._id}`
+      )
     } catch (e) {
       // error handling
-      console.log(e)
       toast.error('Could not like article')
     }
   }
@@ -154,7 +163,10 @@ export default function CommentSection({ article }: { article: IArticle }) {
             onChange={e => setCommentBody(e.target.value)}
             placeholder='Write your comment...'
           />
-          <button type='submit' disabled={isPostCommentMutating}>
+          <button
+            type='submit'
+            disabled={commentBody === '' || isPostCommentMutating}
+          >
             Post
           </button>
         </form>
@@ -173,7 +185,7 @@ export default function CommentSection({ article }: { article: IArticle }) {
       {/* Controls */}
       <div className={page.controls}>
         <button onClick={handleLike} disabled={hasLiked}>
-          {data && data.liked ? <RiThumbUpFill /> : <RiThumbUpLine />}
+          {hasLiked ? <RiThumbUpFill /> : <RiThumbUpLine />}
           {articleLikes}
         </button>
         <button onClick={() => setCommentsVisible(!commentsVisible)}>
@@ -183,9 +195,9 @@ export default function CommentSection({ article }: { article: IArticle }) {
           <RiShareForwardLine />
           Share
         </button>
-        {/* <button>
+        <button onClick={() => push(`/articles/${article.url}/edit`)}>
           <RiPencilLine /> Edit
-        </button> */}
+        </button>
       </div>
       {/* Modal */}
       <Modal showModal={showModal} onCloseModal={setShowModal}>

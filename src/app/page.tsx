@@ -3,6 +3,7 @@ import { RiArrowRightSLine } from 'react-icons/ri'
 import Tag from '@/components/Tag'
 import Newsletter from '@/components/Newsletter'
 import HomeArticles from '@/components/HomeArticles'
+import Sidebar from '@/components/Sidebar'
 import OfficialPosts from '@/components/OfficialPosts'
 
 export default function Home() {
@@ -24,6 +25,7 @@ export default function Home() {
             </div>
             <HomeArticles />
           </div>
+          <Sidebar />
         </div>
 
         <div className='see-more-container'>

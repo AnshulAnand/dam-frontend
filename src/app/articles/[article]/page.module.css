@@ -76,18 +76,18 @@
 
 .article_body h1,
 .article_body h2 {
-  padding: 15px;
+  margin-bottom: 15px;
 }
 
 .article_body h3,
 .article_body h4,
 .article_body h5,
 .article_body h6 {
-  padding: 12px;
+  margin-bottom: 12px;
 }
 
 .article_body p {
-  padding: 10px;
+  margin-bottom: 10px;
 }
 
 .article_views {
@@ -217,7 +217,7 @@
 }
 
 .controls {
-  width: 300px;
+  /* width: 300px; */
   border-radius: 100px;
   height: 40px;
   padding: 1rem 2rem;
@@ -242,7 +242,6 @@
 
 .user_articles {
   background-color: var(--secondary-background-color);
-  height: 500px;
   padding: 2rem;
 }
 
@@ -263,6 +262,7 @@
   justify-content: center;
   font-size: var(--font-size-lg);
   margin-top: var(--gap);
+  gap: var(--gap);
 }
 
 .desktop_ad {

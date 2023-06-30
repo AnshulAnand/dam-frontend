@@ -6,7 +6,7 @@ export async function GET(url: string) {
     })
     if (!res.ok) {
       const error: any = new Error('An error occurred while fetching the data')
-      error.message = await res.json()
+      error.info = await res.json()
       error.status = res.status
       throw error
     }
@@ -27,7 +27,7 @@ export async function POST(url: string, { arg }: { arg: { body: any } }) {
     })
     if (!res.ok) {
       const error: any = new Error('An error occurred while fetching the data')
-      error.message = await res.json()
+      error.info = await res.json()
       error.status = res.status
       throw error
     }
@@ -48,7 +48,7 @@ export async function PATCH(url: string, { arg }: { arg: { body: any } }) {
     })
     if (!res.ok) {
       const error: any = new Error('An error occurred while fetching the data')
-      error.message = await res.json()
+      error.info = await res.json()
       error.status = res.status
       throw error
     }

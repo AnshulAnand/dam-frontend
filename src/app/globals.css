@@ -187,7 +187,7 @@ body.light-theme {
 
 /* skeleton */
 .skeleton {
-  background-color: rgb(199, 199, 199);
+  background-color: rgb(199, 199, 199) !important;
 }
 
 .comment-skeleton {

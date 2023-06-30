@@ -66,7 +66,6 @@ export default function Reply({
       toast.success('Reply posted')
     } catch (e) {
       // error handling
-      console.log(e)
       toast.error('Could not post reply')
     }
   }
@@ -131,7 +130,6 @@ export default function Reply({
       setHasLiked(true)
       toast.success('Reply upvoted')
     } catch (e) {
-      console.log(e)
       toast.error('Could not like reply')
     }
   }
@@ -162,14 +160,16 @@ export default function Reply({
           )}
         </div>
       </div>
-      <p>{reply.body}</p>
+      <p>
+        <pre>{reply.body}</pre>
+      </p>
       <div className={page.btn_container}>
         <button
           className={`${page.btn} ${page.comment_btn}`}
           onClick={handleLike}
           disabled={hasLiked}
         >
-          {data && data.like ? (
+          {hasLiked ? (
             <RiThumbUpFill className={page.icon} />
           ) : (
             <RiThumbUpLine className={page.icon} />
@@ -195,7 +195,10 @@ export default function Reply({
           onChange={e => setReplyBody(e.target.value)}
           placeholder='Write your reply...'
         />
-        <button type='submit' disabled={isPostReplyMutating}>
+        <button
+          type='submit'
+          disabled={replyBody === '' || isPostReplyMutating}
+        >
           Post
         </button>
       </form>
@@ -211,7 +214,10 @@ export default function Reply({
           onChange={e => setEditedReplyBody(e.target.value)}
           placeholder='Write your reply...'
         />
-        <button type='submit' disabled={isEditReplyMutating}>
+        <button
+          type='submit'
+          disabled={editedReplyBody === '' || isEditReplyMutating}
+        >
           Post
         </button>
       </form>

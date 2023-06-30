@@ -44,6 +44,32 @@ export function useLogoutUser() {
   }
 }
 
+// FORGOT password
+export function useForgotPassword() {
+  const { trigger, isMutating, data, error } = useSWRMutation(
+    `${process.env.NEXT_PUBLIC_API_URL}/users/forgot-password`,
+    POST /* options */
+  )
+  return {
+    triggerForgotPassword: trigger,
+    forgotPasswordError: error,
+    isForgotPasswordMutating: isMutating,
+  }
+}
+
+// CHANGE password
+export function useChangePassword() {
+  const { trigger, isMutating, data, error } = useSWRMutation(
+    `${process.env.NEXT_PUBLIC_API_URL}/users/change-password`,
+    POST /* options */
+  )
+  return {
+    triggerChangePassword: trigger,
+    changePasswordError: error,
+    isChangePasswordMutating: isMutating,
+  }
+}
+
 // GET current user
 export default function useCurrentUser() {
   const { data, error, isLoading } = useSWR(
@@ -63,8 +89,6 @@ export function useUserById(id: string) {
     `${process.env.NEXT_PUBLIC_API_URL}/users/id/${id}`,
     GET
   )
-
-  console.log({ data })
 
   return {
     user: data as IUser,
