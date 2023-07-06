@@ -159,7 +159,7 @@ body.light-theme {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 1rem;
+  padding: 2rem 1rem;
   background-color: var(--secondary-background-color);
   width: 300px;
   border-radius: 1rem;
@@ -168,6 +168,7 @@ body.light-theme {
 
 .modal-container .close-btn {
   cursor: pointer;
+  margin-top: 1rem;
   padding: 1rem 1.5rem;
   border-radius: 100px;
 }

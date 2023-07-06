@@ -20,6 +20,7 @@ import page from '@/app/articles/[article]/page.module.css'
 import Profile from './Profile'
 import { toast } from 'react-hot-toast'
 import { IReply } from '@/types'
+import { numberFormatter } from '@/utils/compactNumber'
 
 export default function Reply({
   reply,
@@ -174,7 +175,7 @@ export default function Reply({
           ) : (
             <RiThumbUpLine className={page.icon} />
           )}
-          {replyLikes}
+          {numberFormatter(replyLikes)}
         </button>
         <button
           onClick={() => setReplyInputVisible(!replyInputVisible)}

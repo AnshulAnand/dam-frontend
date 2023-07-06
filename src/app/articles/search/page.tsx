@@ -29,8 +29,8 @@ function FetchArticles({
   }
   if (isError) return <h1>error...</h1>
   if (data.length < 4) setNext(false)
-  return data.map((article: IArticle, i: number) => (
-    <Article article={article} key={i} />
+  return data.map((article: IArticle) => (
+    <Article article={article} key={article._id} />
   ))
 }
 

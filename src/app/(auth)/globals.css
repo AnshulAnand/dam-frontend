@@ -94,3 +94,7 @@ main .separator .lines {
   color: #fff;
   text-decoration: underline;
 }
+
+.visible {
+  display: none !important;
+}

@@ -4,6 +4,7 @@ import Profile from '@/components/Profile'
 import CommentSection from '@/components/CommentSection'
 import UserArticles from '@/components/UserArticles'
 import NotFound from '@/components/NotFound'
+import { numberFormatter } from '@/utils/compactNumber'
 import returnDate from '@/utils/returnDate'
 import readingTime from '@/utils/readingTime'
 import { GET } from '@/utils/fetch'
@@ -53,7 +54,7 @@ const Article = async ({ params }: { params: { article: string } }) => {
             dangerouslySetInnerHTML={{ __html: article.body }}
           />
           <div className={page.article_views}>
-            <RiEyeLine /> <p>{article.views} views</p>
+            <RiEyeLine /> <p>{numberFormatter(article.views)} views</p>
           </div>
         </article>
 

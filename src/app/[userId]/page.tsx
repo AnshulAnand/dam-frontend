@@ -12,16 +12,13 @@ import ProfileEditBtn from '@/components/ProfileEditBtn'
 import UserProfileArticles from '@/components/UserProfileArticles'
 import User from '@/components/skeleton-loading/User'
 import { useUserByUsername } from '@/lib/user'
+import { numberFormatter } from '@/utils/compactNumber'
 import page from './page.module.css'
 
 export default function Profile({ params }: { params: { userId: string } }) {
   const username = params.userId.replace('%40', '')
 
-  console.log({ username })
-
   const { user, isLoading, isError } = useUserByUsername(username)
-
-  console.log({ user })
 
   if (isLoading) return <User />
 
@@ -54,10 +51,11 @@ export default function Profile({ params }: { params: { userId: string } }) {
               )}
               <div>
                 <RiEyeLine className='icon' />
-                {user.views} content views
+                {numberFormatter(user.views)} content views
               </div>
               <div>
-                <RiFileList3Line className='icon' /> {user.articles} articles
+                <RiFileList3Line className='icon' />
+                {numberFormatter(user.articles)} articles
               </div>
             </div>
             {user.link !== '' && (

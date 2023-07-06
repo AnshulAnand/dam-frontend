@@ -5,13 +5,18 @@ import {
   RiThumbUpLine,
   RiThumbUpFill,
   RiPencilLine,
+  RiDeleteBinLine,
   RiChat1Line,
   RiCloseLine,
 } from 'react-icons/ri'
 import { Dispatch, SetStateAction, useState } from 'react'
 import page from '@/app/articles/[article]/page.module.css'
 import { useComments, useUserComments, usePostComment } from '@/lib/comments'
-import { useLikeArticle, useCheckArticleLike } from '@/lib/article'
+import {
+  useLikeArticle,
+  useCheckArticleLike,
+  useDeleteArticle,
+} from '@/lib/article'
 import Comment from './Comment'
 import CommentLoading from './skeleton-loading/Comment'
 import Modal from './Modal'
@@ -20,6 +25,7 @@ import { useSWRConfig } from 'swr'
 import toast from 'react-hot-toast'
 import { useRouter } from 'next/navigation'
 import { IArticle, IComment } from '@/types'
+import { numberFormatter } from '@/utils/compactNumber'
 
 function FetchComments({
   page,
@@ -123,6 +129,28 @@ export default function CommentSection({ article }: { article: IArticle }) {
     }
   }
 
+  const { triggerDeleteArticle, deleteArticleError, isDeleteArticleMutating } =
+    useDeleteArticle()
+
+  const handleDeleteClick = async () => {
+    try {
+      const result = await triggerDeleteArticle({
+        body: { articleId: article._id },
+      })
+      toast.success('Article delete successfully')
+      location.assign(window.location.origin)
+    } catch (e) {
+      console.log({ e, deleteArticleError })
+      if (
+        deleteArticleError &&
+        deleteArticleError.info &&
+        deleteArticleError.info.message
+      )
+        toast.error(deleteArticleError.info.message)
+      else toast('An unexpected error occurred')
+    }
+  }
+
   const { triggerLikeArticle, likeArticleError } = useLikeArticle()
 
   const handleLike = async () => {
@@ -132,7 +160,11 @@ export default function CommentSection({ article }: { article: IArticle }) {
           body: { articleId: article._id },
         } /* options */
       )
-      if (likeArticleError) {
+      if (
+        likeArticleError &&
+        likeArticleError.info &&
+        likeArticleError.info.message
+      ) {
         toast.error(likeArticleError.info.message)
         return
       }
@@ -186,17 +218,17 @@ export default function CommentSection({ article }: { article: IArticle }) {
       <div className={page.controls}>
         <button onClick={handleLike} disabled={hasLiked}>
           {hasLiked ? <RiThumbUpFill /> : <RiThumbUpLine />}
-          {articleLikes}
+          {numberFormatter(articleLikes)}
         </button>
         <button onClick={() => setCommentsVisible(!commentsVisible)}>
-          <RiChat1Line /> {article.comments}
+          <RiChat1Line /> {numberFormatter(article.comments)}
         </button>
         <button onClick={() => setShowModal(true)}>
           <RiShareForwardLine />
           Share
         </button>
-        <button onClick={() => push(`/articles/${article.url}/edit`)}>
-          <RiPencilLine /> Edit
+        <button onClick={handleDeleteClick}>
+          <RiDeleteBinLine /> Delete
         </button>
       </div>
       {/* Modal */}

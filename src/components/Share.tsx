@@ -9,7 +9,7 @@ import {
 
 export default function Share({ shareUrl }: { shareUrl: string }) {
   return (
-    <div style={{ display: 'flex', gap: '1rem' }}>
+    <div style={{ display: 'flex', gap: '2rem' }}>
       <WhatsappShareButton url={shareUrl}>
         <WhatsappIcon size={40} round={true} />
       </WhatsappShareButton>

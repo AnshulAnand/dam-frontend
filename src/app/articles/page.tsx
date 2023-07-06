@@ -14,7 +14,7 @@ function FetchArticles({
   page: number
   setNext: Dispatch<SetStateAction<boolean>>
 }): any {
-  const { data, isLoading, isError } = useArticles(page)
+  const { data, isLoading, isError } = useArticles(page, 4)
   if (isLoading) {
     return (
       <>

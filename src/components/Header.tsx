@@ -38,7 +38,8 @@ export default function Header() {
 
   const handleLogout = async () => {
     const res = await GET(`http://localhost:5000/users/logout`)
-    console.log(await res.json())
+    console.log({ res: await res.json() })
+    location.assign(window.location.origin)
   }
 
   useEffect(() => {

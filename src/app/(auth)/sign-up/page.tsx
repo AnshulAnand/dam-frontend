@@ -1,13 +1,16 @@
 'use client'
 
 import Link from 'next/link'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { RiGoogleLine } from 'react-icons/ri'
 import useCurrentUser, { useRegisterUser } from '@/lib/user'
 import getGoogleOAuthURL from '@/utils/getGoogleUrl'
+import { EMAIL_REGEX, PWD_REGEX, USER_REGEX } from '@/utils/regex'
 import { toast } from 'react-hot-toast'
 
 export default function SignUp() {
+  const userRef = useRef<HTMLInputElement>(null)
+
   const { currentUser } = useCurrentUser()
 
   if (currentUser) {
@@ -24,14 +27,66 @@ export default function SignUp() {
     password: '',
   })
 
+  const [validName, setValidName] = useState(false)
+  const [validUsername, setValidUsername] = useState(false)
+  const [validEmail, setValidEmail] = useState(false)
+  const [validPwd, setValidPwd] = useState(false)
+  const [emailFocus, setEmailFocus] = useState(false)
+  const [pwdFocus, setPwdFocus] = useState(false)
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const name = e.target.name
     const value = e.target.value
     setUser(user => ({ ...user, [name]: value }))
   }
 
+  useEffect(() => {
+    userRef.current?.focus()
+  }, [])
+
+  useEffect(() => {
+    const result = USER_REGEX.test(user.name)
+    console.log({ result, user })
+    setValidName(result)
+  }, [user])
+
+  useEffect(() => {
+    const result = USER_REGEX.test(user.username)
+    console.log({ result, user })
+    setValidUsername(result)
+  }, [user])
+
+  useEffect(() => {
+    const result = EMAIL_REGEX.test(user.email)
+    console.log({ result, user })
+    setValidEmail(result)
+  }, [user])
+
+  useEffect(() => {
+    const result = PWD_REGEX.test(user.password)
+    console.log({ result, user })
+    setValidPwd(result)
+  }, [user])
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    if (!validName) {
+      toast.error('Invalid name (atleast 3 chars)')
+      return
+    } else if (!validUsername) {
+      toast.error(
+        'Invalid username (atleast 3 chars, only letters, numbers, "-" and "_")'
+      )
+      return
+    } else if (!validEmail) {
+      toast.error('Invalid email')
+      return
+    } else if (!validPwd) {
+      toast.error(
+        'Invalid password (atleast one lowercase, uppercase, digit and one special char, atleast 6 chars)'
+      )
+      return
+    }
     try {
       const result = await triggerRegisterUser({ body: user } /* options */)
       location.assign(window.location.origin)
@@ -52,6 +107,7 @@ export default function SignUp() {
           type='text'
           id='name'
           name='name'
+          ref={userRef}
           value={user.name || ''}
           onChange={handleChange}
           required

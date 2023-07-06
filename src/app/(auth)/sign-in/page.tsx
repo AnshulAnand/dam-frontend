@@ -1,27 +1,47 @@
 'use client'
 
 import Link from 'next/link'
-import { useState } from 'react'
 import { RiGoogleLine } from 'react-icons/ri'
+import { useEffect, useRef, useState } from 'react'
 import useCurrentUser, { useLoginUser } from '@/lib/user'
 import getGoogleOAuthURL from '@/utils/getGoogleUrl'
+import { EMAIL_REGEX, PWD_REGEX } from '@/utils/regex'
 import { toast } from 'react-hot-toast'
 
 export default function SignIn() {
+  const userRef = useRef<HTMLInputElement>(null)
+
+  const [user, setUser] = useState({
+    email: '',
+    password: '',
+  })
+
+  const [validEmail, setValidEmail] = useState(false)
+  const [validPwd, setValidPwd] = useState(false)
+  const [emailFocus, setEmailFocus] = useState(false)
+  const [pwdFocus, setPwdFocus] = useState(false)
+
   const { currentUser } = useCurrentUser()
 
   if (currentUser) {
     location.assign(window.location.origin)
   }
 
-  const { triggerLoginUser, loginUserError, isLoginUserMutating } =
-    useLoginUser()
+  useEffect(() => {
+    userRef.current?.focus()
+  }, [])
 
-  const [user, setUser] = useState({
-    username: '',
-    email: '',
-    password: '',
-  })
+  useEffect(() => {
+    const result = EMAIL_REGEX.test(user.email)
+    console.log({ result, user })
+    setValidEmail(result)
+  }, [user])
+
+  useEffect(() => {
+    const result = PWD_REGEX.test(user.password)
+    console.log({ result, user })
+    setValidPwd(result)
+  }, [user])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const name = e.target.name
@@ -29,14 +49,29 @@ export default function SignIn() {
     setUser(user => ({ ...user, [name]: value }))
   }
 
+  const { triggerLoginUser, loginUserError, isLoginUserMutating } =
+    useLoginUser()
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    if (!validEmail) {
+      toast.error('Invalid email')
+      return
+    } else if (!validPwd) {
+      toast.error(
+        'Invalid password (atleast one lowercase, uppercase, digit and one special char, atleast 6 chars)'
+      )
+    }
     try {
       const result = await triggerLoginUser({ body: user } /* options */)
+      if (loginUserError) {
+        console.log({ loginUserError })
+        toast.error('An error occurred')
+      }
       location.assign(window.location.origin)
-    } catch (e) {
+    } catch (e: any) {
       // error handling
-      console.log(e)
+      console.log({ e, loginUserError })
       toast.error('Could not sign in')
     }
   }
@@ -46,22 +81,17 @@ export default function SignIn() {
       <h1>Login into your Account</h1>
       <h3>And continue writing and engaging with the community</h3>
       <form onSubmit={handleSubmit}>
-        <label htmlFor='username'>Username</label>
-        <input
-          type='text'
-          id='username'
-          name='username'
-          value={user.username || ''}
-          onChange={handleChange}
-          required
-        />
         <label htmlFor='email'>Email</label>
         <input
-          type='email'
           id='email'
+          type='email'
           name='email'
+          ref={userRef}
           value={user.email || ''}
           onChange={handleChange}
+          onFocus={() => setEmailFocus(true)}
+          onBlur={() => setEmailFocus(false)}
+          aria-invalid={validEmail ? 'false' : 'true'}
           required
         />
         <label htmlFor='password'>Password</label>
@@ -71,6 +101,9 @@ export default function SignIn() {
           name='password'
           value={user.password || ''}
           onChange={handleChange}
+          onFocus={() => setPwdFocus(true)}
+          onBlur={() => setPwdFocus(false)}
+          aria-invalid={validPwd ? 'false' : 'true'}
           required
         />
         <button type='submit' disabled={isLoginUserMutating}>

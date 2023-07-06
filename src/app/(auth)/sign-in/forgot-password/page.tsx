@@ -33,13 +33,19 @@ export default function ForgotPassword() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     try {
-      const result = await triggerForgotPassword({ body: user } /* options */)
-      // location.assign(window.location.origin)
+      const result = await triggerForgotPassword({ body: user })
+      if (result && result.message) toast.success(result.message)
       push('/sign-in/change-password')
     } catch (e) {
       // error handling
-      console.log(e)
-      toast.error('Could not sign in')
+      console.log({ e, forgotPasswordError })
+      if (
+        forgotPasswordError &&
+        forgotPasswordError.info &&
+        forgotPasswordError.info.message
+      )
+        toast.error(forgotPasswordError.info.message)
+      else toast.error('An unexpected error occurred')
     }
   }
 

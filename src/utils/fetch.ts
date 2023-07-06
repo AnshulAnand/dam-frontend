@@ -33,6 +33,7 @@ export async function POST(url: string, { arg }: { arg: { body: any } }) {
     }
     return res.json()
   } catch (e) {
+    console.log({ e })
     throw new Error('Failed to fetch data')
   }
 }

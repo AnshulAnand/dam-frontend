@@ -2,7 +2,6 @@
 
 import OfficialPostsSkeleton from '@/components/skeleton-loading/OfficialPosts'
 import { useUserArticles } from '@/lib/article'
-import { useUserByUsername } from '@/lib/user'
 import { IArticle } from '@/types'
 import readingTime from '@/utils/readingTime'
 import returnDate from '@/utils/returnDate'
@@ -16,10 +15,11 @@ function FetchArticles({
   page: number
   setNext: Dispatch<SetStateAction<boolean>>
 }): any {
-  const { user } = useUserByUsername('dam')
-
-  const { userArticles, isError, isLoading } = useUserArticles(user._id, page)
-
+  const { userArticles, isError, isLoading } = useUserArticles(
+    process.env.NEXT_PUBLIC_OFFICIAL_ID as string,
+    page,
+    4
+  )
   if (isLoading) return <OfficialPostsSkeleton />
 
   if (!userArticles || isError) {
@@ -39,7 +39,7 @@ function FetchArticles({
         <div className='article-data'>
           <span>{returnDate(article)}</span>
           <span className='article-data-spacer'></span>
-          <span>{readingTime(article)}</span>
+          <span>{readingTime(article)} Min read</span>
         </div>
         <h3 className='title article-title'>{article.title}</h3>
         <p className='article-description'>{article.description}</p>

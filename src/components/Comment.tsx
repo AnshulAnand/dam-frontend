@@ -24,6 +24,7 @@ import { Dispatch, SetStateAction, useState } from 'react'
 import { useSWRConfig } from 'swr'
 import { toast } from 'react-hot-toast'
 import { IComment, IReply } from '@/types'
+import { numberFormatter } from '@/utils/compactNumber'
 
 function FetchReplies({
   page,
@@ -240,13 +241,14 @@ export default function Comment({
           ) : (
             <RiThumbUpLine className={page.icon} />
           )}
-          {commentLikes}
+          {numberFormatter(commentLikes)}
         </button>
         <button
           className={`${page.btn} ${page.comment_btn}`}
           onClick={() => setRepliesVisible(!repliesVisible)}
         >
-          <RiChat1Line className={page.icon} /> {comment.replies}
+          <RiChat1Line className={page.icon} />
+          {numberFormatter(comment.replies)}
         </button>
         <button
           onClick={() => setReplyInputVisible(!replyInputVisible)}

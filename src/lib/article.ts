@@ -2,7 +2,7 @@
 
 import useSWR from 'swr'
 import useSWRMutation from 'swr/mutation'
-import { GET, PATCH, POST } from '@/utils/fetch'
+import { DELETE, GET, PATCH, POST } from '@/utils/fetch'
 import { IArticle } from '@/types'
 
 // GET articles
@@ -54,6 +54,19 @@ export function useEditArticle() {
     triggerEditArticle: trigger,
     editArticleError: error,
     isEditArticleMutating: isMutating,
+  }
+}
+
+// DELETE Article
+export function useDeleteArticle() {
+  const { trigger, isMutating, data, error } = useSWRMutation(
+    `${process.env.NEXT_PUBLIC_API_URL}/articles`,
+    DELETE /* options */
+  )
+  return {
+    triggerDeleteArticle: trigger,
+    deleteArticleError: error,
+    isDeleteArticleMutating: isMutating,
   }
 }
 
