@@ -8,12 +8,15 @@ import {
   RiCloseLine,
 } from 'react-icons/ri'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import SearchBox from './Search'
 import useCurrentUser from '@/lib/user'
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { GET } from '@/utils/fetch'
 
 export default function Header() {
+  const pathname = usePathname()
+
   const { currentUser, isLoading, isError } = useCurrentUser()
 
   const [searchOpen, setSearchOpen] = useState(false)
@@ -63,7 +66,7 @@ export default function Header() {
               <li className='list-item'>
                 <Link
                   href='/'
-                  className='list-link current'
+                  className={`list-link ${pathname === '/' ? 'current' : null}`}
                   onClick={() => setToggle(false)}
                 >
                   Home
@@ -72,7 +75,9 @@ export default function Header() {
               <li className='list-item'>
                 <Link
                   href='/articles'
-                  className='list-link'
+                  className={`list-link ${
+                    pathname === '/articles' ? 'current' : null
+                  }`}
                   onClick={() => setToggle(false)}
                 >
                   Articles
@@ -81,7 +86,9 @@ export default function Header() {
               <li className='list-item'>
                 <Link
                   href='/official-posts'
-                  className='list-link'
+                  className={`list-link ${
+                    pathname === '/official-posts' ? 'current' : null
+                  }`}
                   onClick={() => setToggle(false)}
                 >
                   Official Posts
@@ -90,7 +97,9 @@ export default function Header() {
               <li className='list-item'>
                 <Link
                   href='/tags'
-                  className='list-link'
+                  className={`list-link ${
+                    pathname === '/tags' ? 'current' : null
+                  }`}
                   onClick={() => setToggle(false)}
                 >
                   Tags
@@ -99,7 +108,9 @@ export default function Header() {
               <li className='list-item'>
                 <Link
                   href='/new'
-                  className='list-link'
+                  className={`list-link ${
+                    pathname === '/new' ? 'current' : null
+                  }`}
                   onClick={() => setToggle(false)}
                 >
                   Write
@@ -108,7 +119,9 @@ export default function Header() {
               <li className='list-item'>
                 <Link
                   href='/about'
-                  className='list-link'
+                  className={`list-link ${
+                    pathname === '/about' ? 'current' : null
+                  }`}
                   onClick={() => setToggle(false)}
                 >
                   About
@@ -117,7 +130,9 @@ export default function Header() {
               <li className='list-item'>
                 <Link
                   href='/contact'
-                  className='list-link'
+                  className={`list-link ${
+                    pathname === '/contact' ? 'current' : null
+                  }`}
                   onClick={() => setToggle(false)}
                 >
                   Contact

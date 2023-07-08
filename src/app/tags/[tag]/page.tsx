@@ -4,6 +4,7 @@ import { useTagArticle } from '@/lib/article'
 import page from './page.module.css'
 import Article from '@/components/Article'
 import { Dispatch, SetStateAction, useState } from 'react'
+import ArticleSkeleton from '@/components/skeleton-loading/Article'
 
 function FetchArticles({
   page,
@@ -15,7 +16,15 @@ function FetchArticles({
   setNext: Dispatch<SetStateAction<boolean>>
 }): any {
   const { data, isLoading, isError } = useTagArticle(tag, page)
-  if (isLoading) return <h1>loading...</h1>
+  if (isLoading)
+    return (
+      <>
+        <ArticleSkeleton />
+        <ArticleSkeleton />
+        <ArticleSkeleton />
+        <ArticleSkeleton />
+      </>
+    )
   if (isError) return <h1>{isError.info.message}</h1>
   if (data.length < 4) setNext(false)
   return data.map((article: any, i: number) => (

@@ -4,7 +4,6 @@ import {
   RiShareForwardLine,
   RiThumbUpLine,
   RiThumbUpFill,
-  RiPencilLine,
   RiDeleteBinLine,
   RiChat1Line,
   RiCloseLine,
@@ -23,9 +22,9 @@ import Modal from './Modal'
 import Share from './Share'
 import { useSWRConfig } from 'swr'
 import toast from 'react-hot-toast'
-import { useRouter } from 'next/navigation'
 import { IArticle, IComment } from '@/types'
 import { numberFormatter } from '@/utils/compactNumber'
+import useCurrentUser from '@/lib/user'
 
 function FetchComments({
   page,
@@ -47,7 +46,7 @@ function FetchComments({
         <CommentLoading />
       </>
     )
-  if (isError) return <h1>error...</h1>
+  if (isError) return <h1>comments error...</h1>
   if (comments.length < 10) setNext(false)
   return comments.map((comment: IComment) => {
     articleUserId === comment.user ? (
@@ -72,7 +71,7 @@ function FetchUserComments(articleId: string, articleUserId: string) {
         <CommentLoading />
       </>
     )
-  if (isError) return <h1>error...</h1>
+  if (isError) return <h1>fetch user comments error...</h1>
   return userComments.map((comment: IComment) => (
     <Comment
       comment={comment}
@@ -84,7 +83,8 @@ function FetchUserComments(articleId: string, articleUserId: string) {
 }
 
 export default function CommentSection({ article }: { article: IArticle }) {
-  const { push } = useRouter()
+  const { currentUser } = useCurrentUser()
+
   const { mutate } = useSWRConfig()
   const { data, isError, isLoading } = useCheckArticleLike(article._id)
 
@@ -203,7 +203,7 @@ export default function CommentSection({ article }: { article: IArticle }) {
           </button>
         </form>
         {/* Comment container */}
-        {FetchUserComments(article._id, article.user)}
+        {currentUser && FetchUserComments(article._id, article.user)}
         {list}
         {next ? (
           <button
@@ -227,9 +227,11 @@ export default function CommentSection({ article }: { article: IArticle }) {
           <RiShareForwardLine />
           Share
         </button>
-        <button onClick={handleDeleteClick}>
-          <RiDeleteBinLine /> Delete
-        </button>
+        {currentUser && article.user && currentUser._id === article.user ? (
+          <button onClick={handleDeleteClick}>
+            <RiDeleteBinLine /> Delete
+          </button>
+        ) : null}
       </div>
       {/* Modal */}
       <Modal showModal={showModal} onCloseModal={setShowModal}>

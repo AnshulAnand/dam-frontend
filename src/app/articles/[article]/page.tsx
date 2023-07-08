@@ -10,8 +10,38 @@ import readingTime from '@/utils/readingTime'
 import { GET } from '@/utils/fetch'
 import { RiEyeLine } from 'react-icons/ri'
 import { IArticle } from '@/types'
+import { Metadata } from 'next'
 
-const Article = async ({ params }: { params: { article: string } }) => {
+export async function generateMetadata({
+  params,
+}: {
+  params: { article: string }
+}): Promise<Metadata> {
+  const article: IArticle = await GET(
+    `${process.env.NEXT_PUBLIC_API_URL}/articles/${params.article}`
+  )
+
+  return {
+    title: article.title,
+    description: article.description,
+    keywords: article.tags,
+    twitter: {
+      card: 'summary_large_image',
+      title: article.title,
+      description: article.description,
+      images: {
+        url: article.image,
+      },
+      site: '@dam',
+    },
+  }
+}
+
+export default async function Article({
+  params,
+}: {
+  params: { article: string }
+}) {
   const article: IArticle = await GET(
     `${process.env.NEXT_PUBLIC_API_URL}/articles/${params.article}`
   )
@@ -73,5 +103,3 @@ const Article = async ({ params }: { params: { article: string } }) => {
     </section>
   )
 }
-
-export default Article

@@ -2,7 +2,7 @@ import Toast from '@/components/Toast'
 import './globals.css'
 
 export const metadata = {
-  title: 'Create Account | DAM',
+  title: 'Accounts | DAM',
   description: 'DAM',
 }
 
