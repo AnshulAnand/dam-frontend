@@ -6,7 +6,7 @@ export default function Tag({ tag }: { tag: string }) {
       <span className='tag-name'>#{tag}</span>
       <img
         src={`/images/tags/${tag}-tag.jpg`}
-        alt=''
+        alt={tag}
         className='article-image'
       />
     </Link>

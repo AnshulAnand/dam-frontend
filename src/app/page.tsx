@@ -7,7 +7,14 @@ import Sidebar from '@/components/Sidebar'
 import OfficialPosts from '@/components/OfficialPosts'
 
 export default function Home() {
-  const tags = ['bleach', 'db', 'jojo', 'naruto', 'onepiece', 'opm']
+  const tags = [
+    'marvel',
+    'dc',
+    'dragonball',
+    'onepunchman',
+    'naruto',
+    'onepiece',
+  ]
 
   return (
     <>

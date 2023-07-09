@@ -1,28 +1,24 @@
 import Tag from '@/components/Tag'
 
-const page = () => {
+export default function page() {
   const tags = [
+    'marvel',
+    'dc',
     'bleach',
-    'db',
+    'dragonball',
+    'pokemon',
     'jojo',
     'naruto',
     'onepiece',
-    'opm',
-    'bleach',
-    'db',
-    'jojo',
-    'naruto',
-    'onepiece',
-    'opm',
-    'bleach',
-    'db',
-    'jojo',
-    'naruto',
-    'onepiece',
-    'opm',
+    'onepunchman',
+    'jujutsukaisen',
+    'boruto',
+    'blackclover',
+    'fairytail',
   ]
+
   return (
-    <section style={{marginTop: '5rem'}} className='popular-tags section'>
+    <section style={{ marginTop: '5rem' }} className='popular-tags section'>
       <div className='container'>
         <h2 className='title section-title' data-name='Popular tags'>
           Popular tags
@@ -34,4 +30,3 @@ const page = () => {
     </section>
   )
 }
-export default page
