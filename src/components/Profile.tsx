@@ -26,12 +26,7 @@ export default function Profile({
 
   return (
     <Link href={`/@${user.username}`} className='profile'>
-      <img
-        src='/images/featured/featured-1.jpg'
-        alt={`${user.name}`}
-        width={width}
-        height={height}
-      />
+      <img src={user.image} alt={user.name} width={width} height={height} />
       {forArticle ? (
         <div style={{ marginLeft: '60px' }}>
           <p>{user.name}</p>

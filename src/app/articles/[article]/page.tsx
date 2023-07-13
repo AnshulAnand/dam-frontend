@@ -45,7 +45,6 @@ export default async function Article({
   const article: IArticle = await GET(
     `${process.env.NEXT_PUBLIC_API_URL}/articles/${params.article}`
   )
-  console.log({ article })
   if (!article) return <NotFound />
 
   return (

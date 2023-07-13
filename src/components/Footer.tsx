@@ -6,7 +6,7 @@ import {
 } from 'react-icons/ri'
 import Link from 'next/link'
 
-function Footer() {
+export default function Footer() {
   return (
     <footer className='footer section'>
       <div className='footer-container container d-grid'>
@@ -43,7 +43,7 @@ function Footer() {
           </ul>
 
           <span className='copyright-notice'>
-            &copy;2023 DAM. All rights reserved.
+            &copy;{new Date().getFullYear()} DAM. All rights reserved.
           </span>
         </div>
 
@@ -52,22 +52,22 @@ function Footer() {
 
           <ul className='footer-list list'>
             <li className='list-item'>
-              <Link href='#' className='list-link'>
+              <Link href='/tags/anime' className='list-link'>
                 Anime
               </Link>
             </li>
             <li className='list-item'>
-              <Link href='#' className='list-link'>
+              <Link href='/tags/manga' className='list-link'>
                 Manga
               </Link>
             </li>
             <li className='list-item'>
-              <Link href='#' className='list-link'>
+              <Link href='/tags/marvel' className='list-link'>
                 Marvel
               </Link>
             </li>
             <li className='list-item'>
-              <Link href='#' className='list-link'>
+              <Link href='/tags/dc' className='list-link'>
                 DC Comics
               </Link>
             </li>
@@ -79,22 +79,22 @@ function Footer() {
 
           <ul className='footer-list list'>
             <li className='list-item'>
-              <Link href='#' className='list-link'>
+              <Link href='/' className='list-link'>
                 Home
               </Link>
             </li>
             <li className='list-item'>
-              <Link href='#' className='list-link'>
+              <Link href='/articles' className='list-link'>
                 Articles
               </Link>
             </li>
             <li className='list-item'>
-              <Link href='#' className='list-link'>
+              <Link href='/tags' className='list-link'>
                 Tags
               </Link>
             </li>
             <li className='list-item'>
-              <Link href='#' className='list-link'>
+              <Link href='/new' className='list-link'>
                 Write
               </Link>
             </li>
@@ -106,12 +106,12 @@ function Footer() {
 
           <ul className='footer-list list'>
             <li className='list-item'>
-              <Link href='#' className='list-link'>
+              <Link href='/about' className='list-link'>
                 About
               </Link>
             </li>
             <li className='list-item'>
-              <Link href='#' className='list-link'>
+              <Link href='/contact' className='list-link'>
                 Contact
               </Link>
             </li>
@@ -131,4 +131,3 @@ function Footer() {
     </footer>
   )
 }
-export default Footer

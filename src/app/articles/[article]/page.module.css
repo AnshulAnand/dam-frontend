@@ -94,7 +94,11 @@
 }
 
 .article_body p {
-  margin-bottom: 10px;
+  margin-bottom: 2rem;
+}
+
+.article_body img {
+  width: 100% !important;
 }
 
 .article_views {
